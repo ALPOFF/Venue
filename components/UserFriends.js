@@ -22,7 +22,7 @@ const UserEvents = (props) => {
     useEffect(() => {
         AsyncStorage.getItem('userName', (err, item) => {
 
-            axios.post(`https://warm-ravine-29007.herokuapp.com/userevents`, {currentUserId: item})
+            axios.post(`http://185.12.95.84:5000/userevents`, {currentUserId: item})
                 .then(res => {
                     setEventsData(res.data);
                     console.log(res.data)

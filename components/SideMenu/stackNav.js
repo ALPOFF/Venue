@@ -14,7 +14,7 @@ const stackNav = createStackNavigator({
         screen: HomeScreen,
         navigationOptions: ({navigation}) => ({
             title: "Nearest Events",
-            headerStyle: {height: 35},
+            headerStyle: {height: 55, paddingTop: 15},
             headerLeft: (<Image
                     style={{width: 40, height: 40, marginLeft: 10, marginBottom: 15}}
                     source={require('./../../assets/appIcon.png')}
@@ -38,7 +38,7 @@ const stackNav = createStackNavigator({
         screen: DetailScreen,
         navigationOptions: ({navigation}) => ({
             title: "Create new event",
-            headerStyle: {height: 45},
+            headerStyle: {height: 55, paddingTop: 10},
             headerTintColor: 'black',
             headerTitleStyle: {
                 paddingLeft: 20,

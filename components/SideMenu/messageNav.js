@@ -17,7 +17,7 @@ const stackNav = createStackNavigator({
         screen: MessageScreen,
         navigationOptions: ({navigation}) => ({
             title: "MessageScreen",
-            headerStyle: {height: 35},
+            headerStyle: {height: 55, paddingTop: 15},
             headerLeft: (<Image
                     style={{width: 40, height: 40, marginLeft: 10, marginBottom: 15}}
                     source={require('./../../assets/appIcon.png')}
