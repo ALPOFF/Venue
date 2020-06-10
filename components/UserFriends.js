@@ -9,6 +9,7 @@ import {
     Image,
     ActivityIndicator, AsyncStorage, TextInput
 } from "react-native";
+import {Icon} from 'react-native-elements'
 import * as axios from "axios";
 import {connect} from "react-redux";
 
@@ -71,12 +72,12 @@ const UserEvents = (props) => {
                     onprs(text)
                 }} value={data}/>
                 {userList != null && userList.map(d =>
-                    <View style={{marginBottom: 10, display: 'flex', flexDirection: 'row'}}>
-                        <Text style={{paddingRight: 15}}>{d.Username}</Text>
+                    <View style={{marginBottom: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{fontSize: 20, paddingRight: 15}}>{d.Username}</Text>
                         <TouchableOpacity key={d.Username} onPress={() =>
                             addToFriends(d.user_id)
                         }>
-                            <Text>Add to Friends</Text>
+                            <Icon name="person-add" size={30} color={'grey'}/>
                         </TouchableOpacity>
                     </View>
                 )}
@@ -114,7 +115,7 @@ const UserEvents = (props) => {
                                         )
 
                                     }}>
-                                        <Text>ls</Text>
+                                        <Icon name="mail" size={30} color={'grey'}/>
                                     </TouchableOpacity>
                                 </View>
                             </View>

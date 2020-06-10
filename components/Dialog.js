@@ -49,7 +49,10 @@ class Dialog extends Component {
             this.props.setUserId(item);
             this.setState({key: item})
         });
-        this.props.getDUsers(this.state.dialog_id)
+        console.log('this.state.dialog_id:', this.state.dialog_id)
+        if (this.state.dialog_id != null) {
+            this.props.getDUsers(this.state.dialog_id);
+        }
         console.log('HEREX:', this.props.dialogs)
     }
 
@@ -62,7 +65,7 @@ class Dialog extends Component {
                 this.props.setUserId(item);
                 this.setState({key: item})
             });
-            this.props.getDUsers(this.state.dialog_id)
+            this.state.dialog_id != null && this.props.getDUsers(this.state.dialog_id)
         }
     }
 
@@ -81,7 +84,7 @@ class Dialog extends Component {
         //ON SEND
         const onTextSend = () => {
             AsyncStorage.getItem('userToken', (err, item) => {
-                if (this.state.dialog_id !== "") {
+                if (this.state.dialog_id !== null) {
                     let to_id = this.props.curdialogusers.map(t => t.users_id.filter(u => u != this.state.key))[0][0];
 
                     console.log('to_id', this.state.friend_id)

@@ -54,7 +54,7 @@ class MessageScreen extends Component {
         console.log('prevProps:', prevProps.dialogs)
         console.log('props:', this.props.dialogs)
 
- 
+
         if (prevProps.dialogs == this.props.dialogs ) {
             AsyncStorage.getItem('userToken', (err, item) => {
                 this.props.getCurDialogsUser(item)
@@ -114,6 +114,7 @@ class MessageScreen extends Component {
                             }}>
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>{d.dialogTitle}</Text>
                                 <Text>{d.last_msg}</Text>
+                                <Text>{d.dialog_id}</Text>
                             </View>
                         </TouchableOpacity>
                     )}
