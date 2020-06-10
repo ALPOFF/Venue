@@ -17,6 +17,7 @@ const UserEvents = (props) => {
     const [userList, setUserList] = useState([]);
     const [data, setData] = useState([]);
     const [friends, setFriends] = useState([]);
+    const [choosenFriendDlg, setChoosenFriendDlg] = useState(null);
 
 
     useEffect(() => {
@@ -89,72 +90,82 @@ const UserEvents = (props) => {
                         }}>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                                 <Text style={{fontSize: 20, paddingRight: 20}}>{f.Username}</Text>
-                                <TouchableOpacity key={f.Username} onPress={() => {
-                                    AsyncStorage.getItem('userToken', (err, item) => {
-                                        axios.post(`https://warm-ravine-29007.herokuapp.com/friends_ls`, {
-                                            currentUserId: item,
-                                            friend_id: f.user_id
-                                        })
-                                    }).then(res => {
-                                            props.navigation.navigate('Dialog', {
-                                                dialog_id: "",
+                                <View key={f.Username}>
+                                    <TouchableOpacity key={f.Username} onPress={() => {
+                                        AsyncStorage.getItem('userToken', (err, item) => {
+                                            console.log('cuId:', item)
+                                            console.log('frId:', f.user_id)
+                                            axios.post(`https://warm-ravine-29007.herokuapp.com/friends_ls`, {
+                                                currentUserId: item,
                                                 friend_id: f.user_id
-                                            })
-                                        }
-                                    )
+                                            }).then(res => {
+                                                    console.log('resXx:', res.data[0].dialog_id)
+                                                    setChoosenFriendDlg(res.data[0].dialog_id)
+                                                }
+                                            )
+                                        }).then(res => {
+                                                console.log('resX:', res)
+                                                console.log('fr_id:', f.user_id)
+                                                props.navigation.navigate('Dialog', {
+                                                    dialog_id: choosenFriendDlg,
+                                                    friend_id: f.user_id
+                                                })
+                                            }
+                                        )
 
-                                }}>
-                                    <Text>ls</Text>
+                                    }}>
+                                        <Text>ls</Text>
                                     </TouchableOpacity>
-                                    </View>
-                                    </View>
-                                    )}
-                                    </View>
-                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    )}
+                </View>
+            </View>
 
-                                    </View>
-                                    )
-                                    };
+        </View>
+    )
+};
 
-                                    const styles = StyleSheet.create({
-                                    resetSignUpView: {
-                                    display: 'flex',
-                                    flexDirection: 'row'
-                                    },
-                                    signIn: {
-                                    fontStyle: 'normal',
-                                    fontWeight: 'bold',
-                                    fontSize: 22,
-                                    lineHeight: 42,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    textAlign: 'center',
-                                    letterSpacing: -0.015,
+const styles = StyleSheet.create({
+    resetSignUpView: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    signIn: {
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: 22,
+        lineHeight: 42,
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'center',
+        letterSpacing: -0.015,
 
-                                    color: '#3C2274'
-                                    },
-                                    container: {
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    },
-                                    FacebookStyle: {
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    backgroundColor: '#485a96',
-                                    borderWidth: 0.5,
-                                    borderColor: '#fff',
-                                    height: 40,
-                                    width: 220,
-                                    borderRadius: 5,
-                                    margin: 5,
-                                    },
-                                    });
+        color: '#3C2274'
+    },
+    container: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+    },
+    FacebookStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#485a96',
+        borderWidth: 0.5,
+        borderColor: '#fff',
+        height: 40,
+        width: 220,
+        borderRadius: 5,
+        margin: 5,
+    },
+});
 
-                                    const mapStateToProps = (state) => ({
-                                    userId: state.appReducer.userId
-                                    })
+const mapStateToProps = (state) => ({
+    userId: state.appReducer.userId
+})
 
-                                    export default connect(mapStateToProps, {})(UserEvents);
+export default connect(mapStateToProps, {})(UserEvents);
 

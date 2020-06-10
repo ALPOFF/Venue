@@ -12,7 +12,7 @@ import {
 import {Icon} from "react-native-elements";
 import * as axios from "axios";
 import {connect} from "react-redux";
-import {getDUsers, setCurDialogsUser, setDialogName, setUserDialog, setUserId} from "../state/appReducer";
+import {getDUsers, setCurDialogsUser, setDialogName, setNewLstMsg, setUserDialog, setUserId} from "../state/appReducer";
 
 class Dialog extends Component {
     constructor(props) {
@@ -50,6 +50,7 @@ class Dialog extends Component {
             this.setState({key: item})
         });
         this.props.getDUsers(this.state.dialog_id)
+        console.log('HEREX:', this.props.dialogs)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -69,6 +70,7 @@ class Dialog extends Component {
 
         // ON MESSAGING
         const onTextInput = (text) => {
+            console.log(this.props.dialogs)
             console.log("text: " + text);
             console.log(this.state.key)
             console.log('cdu', this.props.curdialogusers)
@@ -92,6 +94,8 @@ class Dialog extends Component {
                         {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: this.state.friend_id});
                     setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
                 }
+                console.log('LETS GO:', this.props.curdialogusers)
+                this.props.setNewLstMsg(this.props.curdialogusers[0].dialog_id, this.state.msgContent)
             })
         };
 
@@ -177,6 +181,7 @@ export default connect(mapStateToProps, {
     getDUsers,
     setUserDialog,
     setDialogName,
-    setUserId
+    setUserId,
+    setNewLstMsg
 })(Dialog);
 

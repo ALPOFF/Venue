@@ -27,13 +27,15 @@ class MessageScreen extends Component {
         super(props);
         this.state = {
             userList: [],
-            data: ''
+            data: '',
+            upd: true
         };
     }
 
     componentDidMount() {
         AsyncStorage.getItem('userToken', (err, item) => {
             this.props.getCurDialogsUser(item)
+            console.log('GXGGXGXGXGXGXG:', this.props.dialogs)
         });
 
         socket.on('connect', () => {
@@ -46,6 +48,18 @@ class MessageScreen extends Component {
         socket.on('message', res => {
             this.props.setSocket(res)
         })
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('prevProps:', prevProps.dialogs)
+        console.log('props:', this.props.dialogs)
+
+ 
+        if (prevProps.dialogs == this.props.dialogs ) {
+            AsyncStorage.getItem('userToken', (err, item) => {
+                this.props.getCurDialogsUser(item)
+            });
+        }
     }
 
     onprs(text) {
@@ -85,8 +99,9 @@ class MessageScreen extends Component {
                     )}
                 </View>
 
+               {(this.props.dialogs !== undefined) ?
                 <View>
-                    {this.props.dialogs.map(d =>
+                    {this.props.dialogs[0] != undefined && this.props.dialogs.map(d =>
                         <TouchableOpacity key={d.dialog_id} onPress={() =>
                             this.props.navigation.navigate('Dialog', {
                                 dialog_id: d.dialog_id, dialogTitle: d.dialogTitle, users_id: d.users_id
@@ -102,7 +117,7 @@ class MessageScreen extends Component {
                             </View>
                         </TouchableOpacity>
                     )}
-                </View>
+                </View> : <View><Text>1111</Text></View>}
             </View>
         );
     }

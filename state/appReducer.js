@@ -6,6 +6,7 @@ const SET_CUR_DIALOG_USERS = 'tariff/SET_CUR_DIALOG_USERS';
 const SETTT_USER_DIALOG = 'tariff/SETTT_USER_DIALOG';
 const SET_DIALOG_NAME = 'tariff/SET_DIALOG_NAME';
 const SET_USER_ID = 'tariff/SET_USER_ID';
+const SET_NEW_LST_MSG = 'tariff/SET_NEW_LST_MSG';
 
 let initialState = {
     dialogList: [
@@ -31,17 +32,17 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 skt: action.skt
             };
-            case SET_CUR_DIALOGS_USER:
+        case SET_CUR_DIALOGS_USER:
             return {
                 ...state,
                 dialogs: action.dialogs
             };
-            case SET_CUR_DIALOG_USERS:
+        case SET_CUR_DIALOG_USERS:
             return {
                 ...state,
                 curdialogusers: action.curdialogusers
             };
-            case SETTT_USER_DIALOG:
+        case SETTT_USER_DIALOG:
             return {
                 ...state,
                 userDialog: action.userDialog.reverse()
@@ -55,6 +56,11 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userId: action.userId
+            };
+        case SET_NEW_LST_MSG:
+            return {
+                ...state,
+                dialogs: state.dialogs.map(d => {console.log('d:', action.dlg_id); if (d.dialog_id == action.dlg_id) {d.last_msg = action.lst_msg}})
             };
         default:
             return state;
@@ -103,6 +109,14 @@ export const setUserId = (userId) => {
     }
 };
 
+export const setNewLstMsg = (dlg_id, lst_msg) => {
+    return {
+        type: SET_NEW_LST_MSG,
+        dlg_id,
+        lst_msg
+    }
+};
+
 export const getCurDialogsUser = (currentUserId) => async (dispatch) => {
     console.log("1111111111111111111111")
     let response = await getCurUsD(currentUserId);
@@ -118,5 +132,6 @@ export const setUserDialog = (dialog_id) => async (dispatch) => {
     let response = await getUserDialog(dialog_id)
     dispatch(setttUserDialog(response.data))
 }
+
 
 export default appReducer;
