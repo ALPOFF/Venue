@@ -31,8 +31,7 @@ export async function request_location_runtime_permission() {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
 
             Alert.alert("Location Permission Granted.");
-        }
-        else {
+        } else {
 
             Alert.alert("Location Permission Not Granted");
 
@@ -48,7 +47,8 @@ class MapForPickPlace extends Component<{}> {
         this.state = {
             lat: null,
             long: null,
-            err: ''
+            err: '',
+            marker: {}
         };
     }
 
@@ -58,77 +58,17 @@ class MapForPickPlace extends Component<{}> {
             this.setState({lat: position.coords.latitude})
             this.setState({long: position.coords.longitude})
         }, (error) => {
-            // См. таблицы кодов ошибок выше.
             console.log(error.code, error.message);
         }, {
             enableHighAccuracy: false,
             timeout: 10000,
             maximumAge: 100000
         });
-
-        //let that = this;
-        //Checking for the permission just after component loaded
-        // async function requestCameraPermission() {
-        //     //Calling the permission function
-        //     const granted = await PermissionsAndroid.request(
-        //         PermissionsAndroid.PERMISSIONS.CAMERA,
-        //         {
-        //             title: 'AndoridPermissionExample App Camera Permission',
-        //             message: 'AndoridPermissionExample App needs access to your camera ',
-        //         }
-        //     );
-        //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        //         that.proceed();
-        //     } else {
-        //         alert('CAMERA Permission Denied.');
-        //     }
-        // }
-        // if (Platform.OS === 'android') {
-        //     requestCameraPermission();
-        // } else {
-        //     this.proceed();
-        // }
-
-        // Geolocation.getCurrentPosition((position) => {
-        //     console.log(position);
-        // }, (error) => {
-        //     // См. таблицы кодов ошибок выше.
-        //     console.log(error.code, error.message);
-        // }, {
-        //     enableHighAccuracy: false,
-        //     timeout: 10000,
-        //     maximumAge: 100000
-        // });
-
-        // Geolocation.getCurrentPosition(
-        //      info => console.log(info) //was false
-        // );
-        //
-        // (position) => {
-        //     setLat(position.coords.latitude);
-        //     console.log(position.coords.latitude)
-        //     setLong(position.coords.longitude)
-        //     console.log(position.coords.longitude)
-        //
-        // },
-        //     (error) => setError(error.message),
-        //     { enableHighAccuracy: true, timeout: 5000, maximumAge: 10000 },
     }
 
     render() {
         let markers = [
-            {
-                latitude: 54.940290,
-                longitude: 43.328117,
-                title: '1 km',
-                subtitle: 'Somebody wants to do drink some coffee?'
-            },
-            {
-                latitude: 54.936761,
-                longitude: 43.329193,
-                title: '1.4 km',
-                subtitle: 'Search a partner for morning run'
-            }
+            {"latitude": 37.42167759934996, "longitude": -122.08439078181983}
         ];
         return (
             <View style={styles.container}>
@@ -144,30 +84,28 @@ class MapForPickPlace extends Component<{}> {
                             longitudeDelta: 0.005 * (screenWidth / screenHeight),
                         }}
                         customMapStyle={mapStyle}
+                        onPress={(e) => {
+                            console.log(e.nativeEvent.coordinate);
+                            this.setState({marker: e.nativeEvent.coordinate})
+                        }}
                     >
-
-                        {
-                            markers.map(m => <Marker key={m.latitude}
-                                                     draggable
-                                                     coordinate={{
-                                                         latitude: m.latitude,
-                                                         longitude: m.longitude,
-                                                     }}
-                                                     onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
-                                                     title={m.title}
-                                                     description={m.subtitle}
+                        {this.state.marker.latitude != null &&
+                            <Marker
+                                draggable
+                                coordinate={{
+                                    latitude: this.state.marker.latitude,
+                                    longitude: this.state.marker.longitude,
+                                }}
+                                onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
                             >
                                 <View style={{display: 'flex', alignItems: 'center'}}>
-                                    <Icon name="md-hand" type="ionicon" size={40} color={'#010743'}/>
-                                    <Text style={{color: '#010743', fontWeight: 'bold'}}>{m.title}</Text>
+                                    <Icon name="explore" size={40} color={'#010743'}/>
+                                    <Text style={{color: '#010743', fontWeight: 'bold'}}>HERE!</Text>
                                 </View>
-
-
-                            </Marker>)
+                            </Marker>
                         }
 
-                        {this.state.lat !== null && this.state.long !== null &&
-                        <Marker
+                        {<Marker
                             draggable
                             coordinate={{
                                 latitude: this.state.lat,
@@ -176,7 +114,7 @@ class MapForPickPlace extends Component<{}> {
                             onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
 
                         >
-                            <Text style={{color: '#010743', fontWeight: 'bold'}}>You are here</Text>
+                            <Text style={{color: '#010743', fontWeight: 'bold'}}>You HERE</Text>
                             <Icon name="navigation" size={30} color={'#010743'}/>
                         </Marker>
                         }
@@ -195,7 +133,8 @@ class MapForPickPlace extends Component<{}> {
                                   }}
                                   onPress={() =>
                                       this.props.navigation.navigate('Detail')}>
-                    <Icon style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}} name="close" size={40} color={'#3C2274'}/>
+                    <Icon style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}
+                          name="close" size={40} color={'#3C2274'}/>
                 </TouchableOpacity>
             </View>
         );
