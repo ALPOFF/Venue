@@ -9,6 +9,7 @@ import {Icon, Input} from "react-native-elements";
 import {Field} from "redux-form";
 import imgEvent from './../../assets/imgEvent.png'
 import ImagePicker from 'react-native-image-crop-picker';
+import {connect} from "react-redux";
 
 const renderInput = ({placeholder, input: {onChange, inputType, ...restInput}}) => {
     return <TextInput placeholder={placeholder}
@@ -71,8 +72,12 @@ class DetailScreen extends Component {
         }
 
         let sendimg = async () => {
-            console.log(this.state.image)
-            axios.post(`http://185.12.95.84:5000/sendimage`, {img: res})
+            console.log('marker:', this.props.marker)
+            console.log('eventName:', this.state.eventName)
+            console.log('category:', this.state.category)
+            console.log('description:', this.state.description)
+            console.log('pickedImg:', this.state.pickedImg)
+            // axios.post(`http://185.12.95.84:5000/sendimage`, {img: res})
         }
 
         return (
@@ -80,14 +85,14 @@ class DetailScreen extends Component {
                 {this.state.pickedImg.path === undefined ? <Image source={imgEvent} style={{width: '100%', height: 200}} alt=""/>
                     : <Image source={{uri: this.state.pickedImg.path}} style={{width: '100%', height: 200}} alt=""/>}
                 <View>
-                <TextInput onChange={(value) => {this.setState({eventName: value})}} name="eventName" component={renderInput} placeholder={'Event Name...'}/>
+                <TextInput onChangeText={(value) => {this.setState({eventName: value})}} value={this.state.eventName} placeholder={'Event Name...'}/>
                 {this.state.image.image ? <Image
                     style={{width: '80%', height: '30%', marginTop: 10, marginBottom: 15}}
                     source={{uri: this.state.image.image}}
                 /> : <View/>
                 }
-                <TextInput onChange={(value) => {this.setState({description: value})}} name="eventText" component={renderInput} placeholder={'Type here the description of your event...'}/>
-                <TextInput onChange={(value) => {this.setState({category: value})}} name="eventText" component={renderInput} placeholder={'Choose category...'}/>
+                <TextInput onChangeText={(value) => {this.setState({description: value})}} value={this.state.description} placeholder={'Type here the description of your event...'}/>
+                <TextInput onChangeText={(value) => {this.setState({category: value})}} value={this.state.category} placeholder={'Choose category...'}/>
                 </View>
                 <TouchableOpacity onPress={_getPhotoLibrary}
                                   style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
@@ -100,7 +105,7 @@ class DetailScreen extends Component {
                     <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
                     <Icon name="explore" size={40} color={'#3C2274'}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={_getPhotoLibrary}
+                <TouchableOpacity onPress={sendimg}
                                   style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
                     <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
                     <Icon name="event" size={40} color={'#3C2274'}/>
@@ -118,4 +123,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DetailScreen;
+const mapStateToProps = (state) => ({
+    marker: state.appReducer.marker
+});
+
+export default connect(mapStateToProps, {})(DetailScreen);

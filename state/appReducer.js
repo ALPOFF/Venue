@@ -7,6 +7,7 @@ const SETTT_USER_DIALOG = 'tariff/SETTT_USER_DIALOG';
 const SET_DIALOG_NAME = 'tariff/SET_DIALOG_NAME';
 const SET_USER_ID = 'tariff/SET_USER_ID';
 const SET_NEW_LST_MSG = 'tariff/SET_NEW_LST_MSG';
+const SET_MARKER = 'tariff/SET_MARKER';
 
 let initialState = {
     dialogList: [
@@ -22,7 +23,8 @@ let initialState = {
     userDialog: [],
     xxx: 555,
     dialogName: '',
-    userId: null
+    userId: null,
+    marker: {}
 };
 
 const appReducer = (state = initialState, action) => {
@@ -60,10 +62,27 @@ const appReducer = (state = initialState, action) => {
         case SET_NEW_LST_MSG:
             return {
                 ...state,
-                dialogs: state.dialogs.map(d => {console.log('d:', action.dlg_id); if (d.dialog_id == action.dlg_id) {d.last_msg = action.lst_msg}})
+                dialogs: state.dialogs.map(d => {
+                    console.log('d:', action.dlg_id);
+                    if (d.dialog_id == action.dlg_id) {
+                        d.last_msg = action.lst_msg
+                    }
+                })
+            };
+        case SET_MARKER:
+            return {
+                ...state,
+                marker: action.marker
             };
         default:
             return state;
+    }
+};
+
+export const setMarker = (marker) => {
+    return {
+        type: SET_MARKER,
+        marker
     }
 };
 

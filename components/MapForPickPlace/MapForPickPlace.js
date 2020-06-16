@@ -14,6 +14,8 @@ import Geolocation from "@react-native-community/geolocation";
 import MapView, {Marker} from "react-native-maps";
 import mapStyle from "../../common/mapConfig";
 import {Icon} from "react-native-elements";
+import {connect} from "react-redux";
+import {setMarker} from "../../state/appReducer";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -48,7 +50,7 @@ class MapForPickPlace extends Component<{}> {
             lat: null,
             long: null,
             err: '',
-            marker: {}
+            // marker: {}
         };
     }
 
@@ -86,15 +88,15 @@ class MapForPickPlace extends Component<{}> {
                         customMapStyle={mapStyle}
                         onPress={(e) => {
                             console.log(e.nativeEvent.coordinate);
-                            this.setState({marker: e.nativeEvent.coordinate})
+                            this.props.setMarker(e.nativeEvent.coordinate)
                         }}
                     >
-                        {this.state.marker.latitude != null &&
+                        {this.props.marker.latitude != null &&
                             <Marker
                                 draggable
                                 coordinate={{
-                                    latitude: this.state.marker.latitude,
-                                    longitude: this.state.marker.longitude,
+                                    latitude: this.props.marker.latitude,
+                                    longitude: this.props.marker.longitude,
                                 }}
                                 onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
                             >
@@ -112,7 +114,6 @@ class MapForPickPlace extends Component<{}> {
                                 longitude: this.state.long,
                             }}
                             onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
-
                         >
                             <Text style={{color: '#010743', fontWeight: 'bold'}}>You HERE</Text>
                             <Icon name="navigation" size={30} color={'#010743'}/>
@@ -142,7 +143,11 @@ class MapForPickPlace extends Component<{}> {
     }
 }
 
-export default MapForPickPlace;
+const mapStateToProps = (state) => ({
+    marker: state.appReducer.marker
+});
+
+export default connect(mapStateToProps, {setMarker})(MapForPickPlace);
 
 const styles = StyleSheet.create({
     resetSignUpView: {
