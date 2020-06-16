@@ -33,12 +33,11 @@ class DetailScreen extends Component {
             <View style={styles.container}>
                 <EventReduxForm _addEvent={_addEvent}/>
                 <TouchableOpacity onPress={() =>
-                    this.props.navigation.navigate('EventMap')}
+                    this.props.navigation.navigate('MapForPickPlace')}
                                   style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
                     <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
-                    <Icon name="satellite" size={40} color={'#3C2274'}/>
+                    <Icon name="explore" size={40} color={'#3C2274'}/>
                 </TouchableOpacity>
-                <Text>{4}</Text>
             </View>
         );
     }

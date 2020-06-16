@@ -1,9 +1,19 @@
 import React, {Component} from "react";
-import {StyleSheet, Text, View, Alert , Dimensions, PermissionsAndroid, Platform, ActivityIndicator} from "react-native";
+import {
+    ActivityIndicator,
+    Alert,
+    Dimensions,
+    Image,
+    PermissionsAndroid,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
+import Geolocation from "@react-native-community/geolocation";
 import MapView, {Marker} from "react-native-maps";
+import mapStyle from "../../common/mapConfig";
 import {Icon} from "react-native-elements";
-import mapStyle from './../common/mapConfig'
-import Geolocation  from '@react-native-community/geolocation';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -32,7 +42,7 @@ export async function request_location_runtime_permission() {
     }
 }
 
-class MapScreen extends Component<{}> {
+class MapForPickPlace extends Component<{}> {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,19 +52,19 @@ class MapScreen extends Component<{}> {
         };
     }
 
-       componentDidMount(): void {
-           Geolocation.getCurrentPosition((position) => {
-               console.log(position);
-               this.setState({lat: position.coords.latitude})
-               this.setState({long: position.coords.longitude})
-           }, (error) => {
-               // См. таблицы кодов ошибок выше.
-               console.log(error.code, error.message);
-           }, {
-               enableHighAccuracy: false,
-               timeout: 10000,
-               maximumAge: 100000
-           });
+    componentDidMount(): void {
+        Geolocation.getCurrentPosition((position) => {
+            console.log(position);
+            this.setState({lat: position.coords.latitude})
+            this.setState({long: position.coords.longitude})
+        }, (error) => {
+            // См. таблицы кодов ошибок выше.
+            console.log(error.code, error.message);
+        }, {
+            enableHighAccuracy: false,
+            timeout: 10000,
+            maximumAge: 100000
+        });
 
         //let that = this;
         //Checking for the permission just after component loaded
@@ -106,9 +116,6 @@ class MapScreen extends Component<{}> {
     }
 
     render() {
-
-
-
         let markers = [
             {
                 latitude: 54.940290,
@@ -178,12 +185,25 @@ class MapScreen extends Component<{}> {
                         <ActivityIndicator size="large" color="#3C2274"/>
                     </View>
                 }
+                <TouchableOpacity activeOpacity={0.8}
+                                  style={{
+                                      position: 'absolute',
+                                      right: 10,
+                                      top: 10,
+                                      backgroundColor: 'transparent',
+                                      zIndex: 999
+                                  }}
+                                  onPress={() =>
+                                      this.props.navigation.navigate('Detail')}>
+                    <Icon style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}} name="close" size={40} color={'#3C2274'}/>
+                </TouchableOpacity>
             </View>
         );
 
     }
 }
 
+export default MapForPickPlace;
 
 const styles = StyleSheet.create({
     resetSignUpView: {
@@ -231,5 +251,3 @@ const styles = StyleSheet.create({
         margin: 5,
     },
 });
-
-export default MapScreen;

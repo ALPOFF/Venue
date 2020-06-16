@@ -8,6 +8,7 @@ import EventDetailsScreen from "./EventDetailsScreen";
 import UserEvents from "../UserEvents";
 import Dialog from "../Dialog";
 import UserFriends from "../UserFriends";
+import stackNavPlace from "./stackNavPlace";
 
 const stackNav = createStackNavigator({
     Main: {
@@ -35,7 +36,7 @@ const stackNav = createStackNavigator({
         })
     },
     Detail: {
-        screen: DetailScreen,
+        screen: stackNavPlace,
         navigationOptions: ({navigation}) => ({
             title: "Create new event",
             headerStyle: {height: 55, paddingTop: 10},

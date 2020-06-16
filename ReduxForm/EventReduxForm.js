@@ -58,12 +58,12 @@ const EventForm = (props) => {
             <TouchableOpacity onPress={_getPhotoLibrary}
                               style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
                 <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
-                <Icon name="satellite" size={40} color={'#3C2274'}/>
+                <Icon name="event" size={40} color={'#3C2274'}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={sendimg}
                               style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
                 <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Send</Text>
-                <Icon name="satellite" size={40} color={'#3C2274'}/>
+                <Icon name="send" size={40} color={'#3C2274'}/>
             </TouchableOpacity>
         </>
     )
