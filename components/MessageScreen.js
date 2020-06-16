@@ -5,9 +5,25 @@ import {connect} from "react-redux";
 import {combineReducers} from "redux";
 import io from "socket.io-client";
 import {getCurDialogsUser, setSocket} from "../state/appReducer";
+import LocalizedStrings from 'react-native-localization';
 
 const URL = 'https://warm-ravine-29007.herokuapp.com/';
 const socket = io(URL, {forceNode: false});
+
+
+let strings = new LocalizedStrings({
+    "en-US":{
+        how:"How do you want your egg today?",
+    },
+    ru: {
+        how:"Come vuoi il tuo uovo oggi?",
+        boiledEgg:"Uovo sodo",
+        softBoiledEgg:"Uovo alla coque",
+        choice:"Come scegliere l'uovo"
+    }
+});
+
+
 
 class MessageScreen extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -75,6 +91,7 @@ class MessageScreen extends Component {
     render() {
         return (
             <View style={{marginTop: 10}}>
+                <Text>{strings.how}</Text>
                 <View style={{marginBottom: 10}}>
                     <TextInput style={{
                         borderTopColor: 'lightgrey',

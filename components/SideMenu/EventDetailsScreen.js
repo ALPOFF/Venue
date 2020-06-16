@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {View, Text, Button, TouchableOpacity, ScrollView, Image, AsyncStorage} from "react-native";
 import {Icon} from "react-native-elements";
 import userPic from './../../assets/Screenshot_6.png'
@@ -11,6 +11,10 @@ const EventDetailsScreen = (props) => {
     const postText = props.navigation.state.params.postText;
     const pic = props.navigation.state.params.pic;
     const visitors = props.navigation.state.params.visitors;
+
+    useEffect(() => {
+        console.log(visitors)
+    }, []);
 
     const iGo = () => {
         console.log("NICE")
