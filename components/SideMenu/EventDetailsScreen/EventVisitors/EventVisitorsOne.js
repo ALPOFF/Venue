@@ -1,5 +1,5 @@
 import {Image, Text, TouchableOpacity, View} from "react-native";
-import userPic from "../../assets/Screenshot_6.png";
+import userPic from "../../../../assets/Screenshot_6.png";
 import React, {useEffect} from "react";
 
 const EventVisitorsOne = (props) => {
@@ -8,10 +8,6 @@ const EventVisitorsOne = (props) => {
     }, []);
 
     return (
-<TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                  onPress={() => props.navigation.navigate('Dialog', {
-                      msg: 'Some Msg'
-                  })}>
     <View style={{display: 'flex', flexDirection: 'row'}}>
         <View style={{
             height: 40,
@@ -36,17 +32,8 @@ const EventVisitorsOne = (props) => {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}/>
-            {/*<Text style={{*/}
-            {/*    fontWeight: 'bold',*/}
-            {/*    color: 'white',*/}
-            {/*    position: 'absolute',*/}
-            {/*    zIndex: 3,*/}
-            {/*    textShadowColor: 'black',*/}
-            {/*    textShadowRadius: 50*/}
-            {/*}}>+25</Text>*/}
         </View>
     </View>
-</TouchableOpacity>
 )
 };
 

@@ -5,7 +5,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import { NavigationContainer } from '@react-navigation/native'
 import DetailScreen from "./DetailScreen";
 import HomeScreen from "../HomeScreen";
-import EventDetailsScreen from "./EventDetailsScreen";
+import EventDetailsScreen from "./EventDetailsScreen/EventDetailsScreen";
 import UserEvents from "../UserEvents";
 import Dialog from "../Dialog";
 import MessageScreen from "../MessageScreen";

@@ -4,11 +4,12 @@ import {TouchableOpacity, Image} from 'react-native';
 import {createStackNavigator} from 'react-navigation-stack';
 import DetailScreen from "./DetailScreen";
 import HomeScreen from "../HomeScreen";
-import EventDetailsScreen from "./EventDetailsScreen";
+import EventDetailsScreen from "./EventDetailsScreen/EventDetailsScreen";
 import UserEvents from "../UserEvents";
 import Dialog from "../Dialog";
 import UserFriends from "../UserFriends";
 import stackNavPlace from "./stackNavPlace";
+import stackNavEventDetailsScreen from "./EventDetailsScreen/stackNavEventDeatailsScreen";
 
 const stackNav = createStackNavigator({
     Main: {
@@ -53,9 +54,9 @@ const stackNav = createStackNavigator({
         })
     },
     EventDetails: {
-        screen: EventDetailsScreen,
+        screen: stackNavEventDetailsScreen,
         navigationOptions: ({navigation}) => ({
-            title: "Event Details",
+            title: "Event Details Screen",
             headerTintColor: 'black',
             headerTitleStyle: {
                 paddingLeft: 20,

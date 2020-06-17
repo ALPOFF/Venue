@@ -1,16 +1,17 @@
 import React, {useEffect} from "react";
 import {View, Text, Button, TouchableOpacity, ScrollView, Image, AsyncStorage} from "react-native";
 import {Icon} from "react-native-elements";
-import userPic from './../../assets/Screenshot_6.png'
+import userPic from '../../../assets/Screenshot_6.png'
 import ImageBackground from "react-native-web/dist/exports/ImageBackground";
 import * as axios from "axios";
-import EventVisitors from "./EventVisitors";
-import EventVisitorsTwo from "./EventVisitorsTwo";
-import EventVisitorsOne from "./EventVisitorsOne";
+import EventVisitors from "./EventVisitors/EventVisitors";
+import EventVisitorsTwo from "./EventVisitors/EventVisitorsTwo";
+import EventVisitorsOne from "./EventVisitors/EventVisitorsOne";
+import {connect} from "react-redux";
 
 const EventDetailsScreen = (props) => {
     const postId = props.navigation.state.params.postId;
-    const userId = props.navigation.state.params.userId;
+    const userIdOrg = props.navigation.state.params.userId;
     const postText = props.navigation.state.params.postText;
     const pic = props.navigation.state.params.pic;
     const visitors = props.navigation.state.params.visitors;
@@ -33,20 +34,24 @@ const EventDetailsScreen = (props) => {
                 style={{width: '100%', height: 200, borderRadius: 8}}
                 source={{uri: pic}}
             />
-            <Text>Организатор: {userId}</Text>
+            <Text>Организатор: {userIdOrg}</Text>
             <View
                 style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',}}>
-
+                <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
+                                  onPress={() => props.navigation.navigate('EventVisitorsDetailed', {
+                                      visitors: visitors
+                                  })}>
                 {visitors.length >= 3 && <EventVisitors visitors={visitors}/>}
                 {visitors.length === 2 && <EventVisitorsTwo visitors={visitors}/>}
                 {visitors.length === 1 && <EventVisitorsOne visitors={visitors}/>}
+                </TouchableOpacity>
 
-                <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
+                {props.userId !== userIdOrg && <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                   onPress={() => iGo()}>
                     <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>Я пойду!</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>}
 
                 <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                   onPress={() => props.navigation.navigate('Dialog', {
@@ -64,4 +69,8 @@ const EventDetailsScreen = (props) => {
     )
 };
 
-export default EventDetailsScreen;
+const mapStateToProps = (state) => ({
+    userId: state.appReducer.userId
+})
+
+export default connect(mapStateToProps, {})(EventDetailsScreen);
