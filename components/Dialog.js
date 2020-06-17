@@ -39,17 +39,16 @@ class Dialog extends Component {
             //Text color of ActionBar
         };
     };
-
+//d_id null frid 4
     componentDidMount() {
         this.props.navigation.setParams({Title: this.state.dialogTitle})
-        console.log("mounted")
+        console.log("mounted");
         console.log("dialog_id: " + this.state.dialog_id);
         this.props.setUserDialog(this.state.dialog_id);
         AsyncStorage.getItem('userToken', (err, item) => {
             this.props.setUserId(item);
             this.setState({key: item})
         });
-        console.log('this.state.dialog_id:', this.state.dialog_id)
         if (this.state.dialog_id != null) {
             this.props.getDUsers(this.state.dialog_id);
         }
@@ -60,7 +59,9 @@ class Dialog extends Component {
         if (this.props.skt !== prevProps.skt) {
             console.log("mounted")
             console.log("dialog_id: " + this.state.dialog_id);
-            this.props.setUserDialog(this.state.dialog_id);
+            if (this.state.dialog_id != null) {
+                this.props.setUserDialog(this.state.dialog_id);
+            }
             AsyncStorage.getItem('userToken', (err, item) => {
                 this.props.setUserId(item);
                 this.setState({key: item})
@@ -86,7 +87,6 @@ class Dialog extends Component {
             AsyncStorage.getItem('userToken', (err, item) => {
                 if (this.state.dialog_id !== null) {
                     let to_id = this.props.curdialogusers.map(t => t.users_id.filter(u => u != this.state.key))[0][0];
-
                     console.log('to_id', this.state.friend_id)
                     axios.post(`https://warm-ravine-29007.herokuapp.com/sendmsg`,
                         {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: to_id});
@@ -104,6 +104,8 @@ class Dialog extends Component {
 
         return (
             <KeyboardAvoidingView style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+                {this.state.dialog_id == null && <Text>GGGGGGGGGGGGGGGGGGGGGG</Text>}
+                {this.state.dialog_id !== null && <Text>YA</Text>}
                 {(this.props.userDialog != []) ?
                     <ScrollView showsVerticalScrollIndicator={true} decelerationRate={"normal"}
                                 style={{display: "flex", margin: 7, backgroundColor: '#F1EFF1'}}>

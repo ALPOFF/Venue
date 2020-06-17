@@ -91,6 +91,7 @@ const UserEvents = (props) => {
                         }}>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
                                 <Text style={{fontSize: 20, paddingRight: 20}}>{f.Username}</Text>
+                                <Text style={{fontSize: 20, paddingRight: 20}}>{f.user_id}</Text>
                                 <View key={f.Username}>
                                     <TouchableOpacity key={f.Username} onPress={() => {
                                         AsyncStorage.getItem('userToken', (err, item) => {
@@ -101,19 +102,15 @@ const UserEvents = (props) => {
                                                 friend_id: f.user_id
                                             }).then(res => {
                                                     console.log('resXx:', res.data[0].dialog_id)
-                                                    setChoosenFriendDlg(res.data[0].dialog_id)
+                                                     setChoosenFriendDlg(18)
+                                                    console.log('choosFrDlg:', choosenFriendDlg)
+                                                    props.navigation.navigate('Dialog', {
+                                                        dialog_id: res.data[0].dialog_id,
+                                                        friend_id: f.user_id
+                                                    })
                                                 }
                                             )
-                                        }).then(res => {
-                                                console.log('resX:', res)
-                                                console.log('fr_id:', f.user_id)
-                                                props.navigation.navigate('Dialog', {
-                                                    dialog_id: choosenFriendDlg,
-                                                    friend_id: f.user_id
-                                                })
-                                            }
-                                        )
-
+                                        })
                                     }}>
                                         <Icon name="mail" size={30} color={'grey'}/>
                                     </TouchableOpacity>

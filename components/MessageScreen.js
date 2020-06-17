@@ -91,30 +91,30 @@ class MessageScreen extends Component {
     render() {
         return (
             <View style={{marginTop: 10}}>
-                <Text>{strings.how}</Text>
-                <View style={{marginBottom: 10}}>
-                    <TextInput style={{
-                        borderTopColor: 'lightgrey',
-                        borderBottomColor: 'lightgrey',
-                        borderTopWidth: 1,
-                        height: 40,
-                        borderBottomWidth: 1
-                    }} placeholder="Type here to find user ..." onChangeText={(text) => {
-                        this.setState({data: text});
-                        this.onprs(text)
-                    }} value={this.state.data}/>
-                    {this.state.userList != null && this.state.userList.map(d =>
-                        <TouchableOpacity key={d.Username} onPress={() =>
-                            this.props.navigation.navigate('Dialog', {
-                                nickname: d.Username, user_id: d.user_id,
-                            })}>
-                            <View style={{marginBottom: 10}}>
-                                <Text>{d.Username}</Text>
-                                <Text>{d.user_id}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                </View>
+                {/*<Text>{strings.how}</Text>*/}
+                {/*<View style={{marginBottom: 10}}>*/}
+                {/*    <TextInput style={{*/}
+                {/*        borderTopColor: 'lightgrey',*/}
+                {/*        borderBottomColor: 'lightgrey',*/}
+                {/*        borderTopWidth: 1,*/}
+                {/*        height: 40,*/}
+                {/*        borderBottomWidth: 1*/}
+                {/*    }} placeholder="Type here to find user ..." onChangeText={(text) => {*/}
+                {/*        this.setState({data: text});*/}
+                {/*        this.onprs(text)*/}
+                {/*    }} value={this.state.data}/>*/}
+                {/*    {this.state.userList != null && this.state.userList.map(d =>*/}
+                {/*        <TouchableOpacity key={d.Username} onPress={() =>*/}
+                {/*            this.props.navigation.navigate('Dialog', {*/}
+                {/*                nickname: d.Username, user_id: d.user_id,*/}
+                {/*            })}>*/}
+                {/*            <View style={{marginBottom: 10}}>*/}
+                {/*                <Text>{d.Username}</Text>*/}
+                {/*                <Text>{d.user_id}</Text>*/}
+                {/*            </View>*/}
+                {/*        </TouchableOpacity>*/}
+                {/*    )}*/}
+                {/*</View>*/}
 
                {(this.props.dialogs !== undefined) ?
                 <View>
@@ -132,6 +132,7 @@ class MessageScreen extends Component {
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>{d.dialogTitle}</Text>
                                 <Text>{d.last_msg}</Text>
                                 <Text>{d.dialog_id}</Text>
+                                <View>{d.users_id.map(f => <Text>{f}</Text>)}</View>
                             </View>
                         </TouchableOpacity>
                     )}
