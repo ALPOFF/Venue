@@ -101,13 +101,19 @@ const UserEvents = (props) => {
                                                 currentUserId: item,
                                                 friend_id: f.user_id
                                             }).then(res => {
-                                                    console.log('resXx:', res.data[0].dialog_id)
-                                                     setChoosenFriendDlg(18)
+                                                    //console.log('resXx:', res.data[0].dialog_id)
+                                                    console.log('res.data:', res.data)
+                                                    setChoosenFriendDlg(18)
                                                     console.log('choosFrDlg:', choosenFriendDlg)
-                                                    props.navigation.navigate('Dialog', {
-                                                        dialog_id: res.data[0].dialog_id,
-                                                        friend_id: f.user_id
-                                                    })
+                                                    res.data[0] !== undefined ?
+                                                        props.navigation.navigate('Dialog', {
+                                                            dialog_id: res.data[0].dialog_id,
+                                                            friend_id: f.user_id
+                                                        }) :
+                                                        props.navigation.navigate('Dialog', {
+                                                            dialog_id: 'none',
+                                                            friend_id: f.user_id
+                                                        })
                                                 }
                                             )
                                         })

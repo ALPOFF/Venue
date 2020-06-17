@@ -4,7 +4,7 @@ import * as axios from "axios";
 import {connect} from "react-redux";
 import {combineReducers} from "redux";
 import io from "socket.io-client";
-import {getCurDialogsUser, setSocket} from "../state/appReducer";
+import {getCurDialogsUser, setCurDialogId, setSocket} from "../state/appReducer";
 import LocalizedStrings from 'react-native-localization';
 
 const URL = 'https://warm-ravine-29007.herokuapp.com/';
@@ -63,12 +63,14 @@ class MessageScreen extends Component {
         });
         socket.on('message', res => {
             this.props.setSocket(res)
+            this.props.setCurDialogId(res.dialog_id)
+            console.log('resresres', res)
         })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('prevProps:', prevProps.dialogs)
-        console.log('props:', this.props.dialogs)
+        // console.log('prevProps:', prevProps.dialogs)
+        // console.log('props:', this.props.dialogs)
 
 
         if (prevProps.dialogs == this.props.dialogs ) {
@@ -193,4 +195,4 @@ const mapStateToProps = (state) => ({
     dialogs: state.appReducer.dialogs
 });
 
-export default connect(mapStateToProps, {setSocket, getCurDialogsUser})(MessageScreen);
+export default connect(mapStateToProps, {setSocket, getCurDialogsUser, setCurDialogId})(MessageScreen);

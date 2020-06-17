@@ -12,7 +12,15 @@ import {
 import {Icon} from "react-native-elements";
 import * as axios from "axios";
 import {connect} from "react-redux";
-import {getDUsers, setCurDialogsUser, setDialogName, setNewLstMsg, setUserDialog, setUserId} from "../state/appReducer";
+import {
+    getDUsers,
+    setCurDialogsUser,
+    setDialogName,
+    setNewLstMsg,
+    setttUserDialog,
+    setUserDialog,
+    setUserId
+} from "../state/appReducer";
 
 class Dialog extends Component {
     constructor(props) {
@@ -43,62 +51,91 @@ class Dialog extends Component {
     componentDidMount() {
         this.props.navigation.setParams({Title: this.state.dialogTitle})
         console.log("mounted");
-        console.log("dialog_id: " + this.state.dialog_id);
-        this.props.setUserDialog(this.state.dialog_id);
-        AsyncStorage.getItem('userToken', (err, item) => {
-            this.props.setUserId(item);
-            this.setState({key: item})
-        });
-        if (this.state.dialog_id != null) {
-            this.props.getDUsers(this.state.dialog_id);
+        if (this.state.dialog_id !== "none") {
+            // SET AND GET INFO ABOUT DIALOG BY ID which is exist
+            this.props.setUserDialog(this.state.dialog_id)
+            AsyncStorage.getItem('userToken', (err, item) => {
+                this.props.setUserId(item);
+                this.setState({key: item})
+            });
+            if (this.state.dialog_id != null) {
+                this.props.getDUsers(this.state.dialog_id);
+            }
+        } else {
+            AsyncStorage.getItem('userToken', (err, item) => {
+                this.props.setUserId(item);
+                this.setState({key: item})
+            });
+            // SET AND GET INFO ABOUT DIALOG BY ID which is not exist
+            //this.props.setttUserDialog([])
         }
         console.log('HEREX:', this.props.dialogs)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('userDialog', this.props.userDialog)
         if (this.props.skt !== prevProps.skt) {
-            console.log("mounted")
+            console.log('prevProps:', prevProps.skt)
+            console.log('props:', this.props.skt)
+            console.log("mountedUpdate")
             console.log("dialog_id: " + this.state.dialog_id);
-            if (this.state.dialog_id != null) {
-                this.props.setUserDialog(this.state.dialog_id);
+            if (this.state.dialog_id !== "none") {
+                if (this.state.dialog_id != null) {
+                    this.props.setUserDialog(this.state.dialog_id);
+                } else {
+                    this.props.setUserDialog([this.state.dialog_id]);
+                }
+                AsyncStorage.getItem('userToken', (err, item) => {
+                    this.props.setUserId(item);
+                    this.setState({key: item})
+                });
+                this.state.dialog_id != null && this.props.getDUsers(this.state.dialog_id)
+            } else {
+
+                    this.props.setUserDialog(this.props.skt.dialog_id);
+
+                AsyncStorage.getItem('userToken', (err, item) => {
+                    this.props.setUserId(item);
+                    this.setState({key: item})
+                });
+                this.props.getDUsers(this.props.skt.dialog_id)
+                this.setState({dialog_id: this.props.skt.dialog_id})
             }
-            AsyncStorage.getItem('userToken', (err, item) => {
-                this.props.setUserId(item);
-                this.setState({key: item})
-            });
-            this.state.dialog_id != null && this.props.getDUsers(this.state.dialog_id)
         }
     }
 
     render() {
-
         // ON MESSAGING
         const onTextInput = (text) => {
-            console.log(this.props.dialogs)
-            console.log("text: " + text);
-            console.log(this.state.key)
-            console.log('cdu', this.props.curdialogusers)
-            console.log(this.state.dialogTitle)
-            //console.log('xxx:', this.props.curdialogusers.map(t => t.users_id.filter(u => u != this.state.key))[0][0])
+            // console.log(this.props.dialogs)
+            // console.log("text: " + text);
+            // console.log(this.state.key)
+            // console.log('cdu', this.props.curdialogusers)
+            // console.log(this.state.dialogTitle)
         };
 
         //ON SEND
         const onTextSend = () => {
             AsyncStorage.getItem('userToken', (err, item) => {
-                if (this.state.dialog_id !== null) {
+                if (this.state.dialog_id !== 'none') {
+                    console.log('dialog id is not none')
                     let to_id = this.props.curdialogusers.map(t => t.users_id.filter(u => u != this.state.key))[0][0];
                     console.log('to_id', this.state.friend_id)
                     axios.post(`https://warm-ravine-29007.herokuapp.com/sendmsg`,
                         {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: to_id});
                     setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
                 } else {
-                    console.log('HIHIHIHIHI')
+                    console.log('dialog id is none')
+
+                    // axios.post(`https://warm-ravine-29007.herokuapp.com/setnewdialogid`,
+                    //     {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: this.state.friend_id});
+
                     axios.post(`https://warm-ravine-29007.herokuapp.com/sendmsg`,
                         {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: this.state.friend_id});
                     setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
                 }
                 console.log('LETS GO:', this.props.curdialogusers)
-                this.props.setNewLstMsg(this.props.curdialogusers[0].dialog_id, this.state.msgContent)
+                //this.props.setNewLstMsg(this.props.curdialogusers[0].dialog_id, this.state.msgContent)
             })
         };
 
@@ -178,12 +215,14 @@ const mapStateToProps = (state) => ({
     dialogs: state.appReducer.dialogs,
     curdialogusers: state.appReducer.curdialogusers,
     userDialog: state.appReducer.userDialog,
-    dialogName: state.appReducer.dialogName
+    dialogName: state.appReducer.dialogName,
+    curDialogId: state.appReducer.curDialogId
 });
 
 export default connect(mapStateToProps, {
     setCurDialogsUser,
     getDUsers,
+    setttUserDialog,
     setUserDialog,
     setDialogName,
     setUserId,
