@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {View, Text, Button, TouchableOpacity, ScrollView, Image, AsyncStorage} from "react-native";
 import {Icon} from "react-native-elements";
 import userPic from '../../../assets/Screenshot_6.png'
@@ -16,8 +16,12 @@ const EventDetailsScreen = (props) => {
     const pic = props.navigation.state.params.pic;
     const visitors = props.navigation.state.params.visitors;
 
+    const [currentUserId, setCurrentUserId] = useState(false);
+
     useEffect(() => {
-        console.log(visitors)
+        AsyncStorage.getItem('userToken', (err, item) => {
+            setCurrentUserId(item)
+        })
     }, []);
 
     const iGo = () => {
@@ -41,17 +45,22 @@ const EventDetailsScreen = (props) => {
                                   onPress={() => props.navigation.navigate('EventVisitorsDetailed', {
                                       visitors: visitors
                                   })}>
-                {visitors.length >= 3 && <EventVisitors visitors={visitors}/>}
-                {visitors.length === 2 && <EventVisitorsTwo visitors={visitors}/>}
-                {visitors.length === 1 && <EventVisitorsOne visitors={visitors}/>}
+                    {visitors.length >= 3 && <EventVisitors visitors={visitors}/>}
+                    {visitors.length === 2 && <EventVisitorsTwo visitors={visitors}/>}
+                    {visitors.length === 1 && <EventVisitorsOne visitors={visitors}/>}
                 </TouchableOpacity>
-
-                {props.userId !== userIdOrg && <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                                  onPress={() => iGo()}>
+                {visitors.some(v => currentUserId !== v) ?
                     <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>Я пойду!</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>Вы идете</Text>
                     </View>
-                </TouchableOpacity>}
+                    :
+                    <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
+                                      onPress={() => iGo()}>
+                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>Я пойду!</Text>
+                        </View>
+                    </TouchableOpacity>
+                }
 
                 <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                   onPress={() => props.navigation.navigate('Dialog', {
@@ -69,8 +78,4 @@ const EventDetailsScreen = (props) => {
     )
 };
 
-const mapStateToProps = (state) => ({
-    userId: state.appReducer.userId
-})
-
-export default connect(mapStateToProps, {})(EventDetailsScreen);
+export default connect(null, {})(EventDetailsScreen);
