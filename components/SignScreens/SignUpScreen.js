@@ -12,6 +12,7 @@ import * as axios from "axios";
 import {connect} from "react-redux";
 import {setUserId} from "../../state/appReducer";
 import SignUpReduxForm from "../../ReduxForm/SignUpReduxForm";
+import { BackHandler } from "react-native";
 
 const SignUpScreen = (props) => {
     const [hasError, setHasError] = useState(false);
@@ -34,13 +35,23 @@ const SignUpScreen = (props) => {
     useEffect(() => {
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+        BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
 
         // cleanup function
         return () => {
             Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
             Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+            BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
         };
-    }, []);
+    }, [() => {props.navigation.navigate('SignInScreen')}]);
+
+    const handleBackButtonClick = () => {
+        // After clicking on Back Button
+        // To go to any other screen
+        props.navigation.navigate('SignInScreen');
+        // Returning true/false is described below
+        return true;
+    }
 
     const _keyboardDidShow = () => {
         setKeyboardT(true)

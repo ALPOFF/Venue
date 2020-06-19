@@ -32,7 +32,7 @@ const LoginForm = (props) => {
                     <Icon type='antdesign' name="login" size={35} color={'#009788'}/>
                 </TouchableOpacity>
             </View>
-        </> 
+        </>
     )
 };
 
