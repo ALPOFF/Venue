@@ -1,0 +1,21 @@
+import React from 'react';
+import SignInScreen from "./SignInScreen";
+import SignUpScreen from "./SignUpScreen";
+import {createSwitchNavigator} from "react-navigation";
+
+const stackNavSignScreens = createSwitchNavigator({
+    SignInScreen: {
+        screen: SignInScreen,
+        navigationOptions: ({navigation}) => ({
+            header: null
+        })
+    },
+    SignUpScreen: {
+        screen: SignUpScreen,
+        navigationOptions: ({navigation}) => ({
+            header: null
+        })
+    }
+});
+
+export default stackNavSignScreens;

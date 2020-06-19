@@ -1,29 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React, {useState, useEffect } from "react";
 import {
     AsyncStorage,
-    Image,
-    Linking,
-    TextInput,
+    Image, KeyboardAvoidingView, Keyboard,
     StyleSheet,
     Text,
-    TouchableOpacity,
-    View,
-    ActivityIndicator
+    View
 } from "react-native";
-import appIcon from "../assets/appIcon.png";
-import avaSign from "../assets/avatarSign.png";
-import SignInReduxForm from "../ReduxForm/LogInReduxForm";
+import appIcon from "../../assets/Venue_new/logo_hands.png";
+import avaSign from "../../assets/Venue_new/avatarSign.png";
 import * as axios from "axios";
 import {connect} from "react-redux";
-import {setUserId} from "../state/appReducer";
+import {setUserId} from "../../state/appReducer";
+import SignUpReduxForm from "../../ReduxForm/SignUpReduxForm";
 
-const SignInScreen = (props) => {
-    const [loading, setLoading] = useState(false);
+const SignUpScreen = (props) => {
     const [hasError, setHasError] = useState(false);
-
-    useEffect(() => {
-
-    }, []);
+    const [keyboardT, setKeyboardT] = useState(false);
 
     const _signInAsync = (value) => {
         console.log('submitting form', value.email);
@@ -39,37 +31,49 @@ const SignInScreen = (props) => {
             });
     };
 
+    useEffect(() => {
+        Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+
+        // cleanup function
+        return () => {
+            Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
+    }, []);
+
+    const _keyboardDidShow = () => {
+        setKeyboardT(true)
+    };
+
+    const _keyboardDidHide = () => {
+        setKeyboardT(false)
+    };
+
+
     return (
-        <View style={styles.container}>
-            <Image
-                style={{width: 60, height: 60, marginTop: 50, marginBottom: 15}}
-                source={appIcon}
-            />
-            {
-                <Text style={styles.signIn}>Sign In</Text>
-            }
-            <Image
+        <KeyboardAvoidingView style={styles.container}>
+            <Text style={styles.custom}>Venue</Text>
+            {/*{*/}
+            {/*    !keyboardT && <Text style={{fontSize: 20}}>Sign Up</Text>*/}
+            {/*}*/}
+            {!keyboardT && <Image
                 style={{width: 130, height: 130, margin: 20}}
                 source={avaSign}
-            />
-            <SignInReduxForm hasError={hasError} _signInAsync={_signInAsync}/>
-
-            <View style={{marginTop: 100, display: 'flex', alignItems: 'center'}}>
-                <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7'}}>Forgot your password? </Text>
-                    <Text style={{color: '#3C2274'}} onPress={() => this.props.navigation.navigate('')}>Reset</Text>
-                </View>
-                <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7'}}>Don't have an account? </Text>
-                    <Text style={{color: '#3C2274'}} onPress={() => Linking.openURL('http://google.com')}>Sign Up</Text>
-                </View>
-            </View>
-        </View>
+            />}
+            <SignUpReduxForm hasError={hasError} _signInAsync={_signInAsync}/>
+        </KeyboardAvoidingView>
     );
 
 }
 
 const styles = StyleSheet.create({
+    custom: {
+        fontFamily: 'Yesteryear-Regular',
+        fontSize: 60,
+        color: '#009788',
+        paddingTop: 20
+    },
     resetSignUpView: {
         display: 'flex',
         flexDirection: 'row'
@@ -82,10 +86,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center',
         letterSpacing: -0.015,
-        color: '#3C2274'
+        color: '#009788'
     },
     container: {
         display: 'flex',
+        flex: 1,
         top: 0,
         left: 0,
         right: 0,
@@ -117,4 +122,4 @@ const mapStateToProps = (state) => ({
 
 })
 
-export default connect(mapStateToProps, {setUserId})(SignInScreen);
+export default connect(mapStateToProps, {setUserId})(SignUpScreen);

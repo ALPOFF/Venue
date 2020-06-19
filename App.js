@@ -4,7 +4,7 @@ import {Dimensions, Text, View} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import SignInScreen from "./components/SignInScreen";
+import SignInScreen from "./components/SignScreens/SignInScreen";
 import AuthLoadingScreen from "./components/AuthLoadingScreen";
 import MapScreen from "./components/MapScreen";
 import MessageScreen from "./components/MessageScreen";
@@ -16,6 +16,8 @@ import messageNav from "./components/SideMenu/messageNav";
 import io from "socket.io-client";
 import {setSocket} from "./state/appReducer";
 import {render} from "react-native-web";
+import SplashScreen from "react-native-splash-screen";
+import stackNavSignScreens from "./components/SignScreens/stackNavSignScreens";
 
 class App extends React.Component {
     constructor(props) {
@@ -25,14 +27,13 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-
+        SplashScreen.hide()
     }
-
 
     render() {
         return (
             <Provider store={store}>
-                <Aa screenProps={{params1: 'test'}}/>
+                <AppMainNav screenProps={{params1: 'test'}}/>
             </Provider>
         );
     }
@@ -40,7 +41,7 @@ class App extends React.Component {
 
 
 
-const AppStack = createBottomTabNavigator(
+const BottomTabNav = createBottomTabNavigator(
     {
         Home: {
             screen: stackNav,
@@ -84,10 +85,9 @@ const AppStack = createBottomTabNavigator(
     }
 );
 
-//const AuthStack = createStackNavigator({ SignIn: SignInScreen });
-const GGG = createDrawerNavigator({
+const DrawerNav = createDrawerNavigator({
     Item1: {
-        screen: AppStack,
+        screen: BottomTabNav,
     }
 }, {
     contentComponent: SideMenu,
@@ -96,9 +96,9 @@ const GGG = createDrawerNavigator({
 });
 
 
-export const Aa = createAppContainer(
+export const AppMainNav = createAppContainer(
     (createSwitchNavigator(
-            {AuthLoading: AuthLoadingScreen, App: GGG, Auth: SignInScreen},
+            {AuthLoading: AuthLoadingScreen, App: DrawerNav, Auth: stackNavSignScreens},
             {initialRouteName: 'AuthLoading'}
         )
     )
