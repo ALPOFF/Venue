@@ -31,36 +31,38 @@ class SideMenu extends Component {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={true} decelerationRate={"normal"}>
           <View>
-            <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', borderBottomWidth: 2, borderBottomColor: '#3C2274'}}>
-              <Icon name="verified-user" size={40} color='#3C2274'/>
-              <Text style={{fontWeight: 'bold', fontSize: 20, color: '#3C2274', margin: 10}}>{this.state.name}</Text>
+            <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#009788'}}>
+              <Icon name="verified-user" type='Ionicons' size={40} color='black'/>
+              <Text style={{fontWeight: 'bold', fontSize: 20, color: 'black', margin: 10}}>{this.state.name}</Text>
             </View>
           </View>
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                             onPress={() => this.props.navigation.navigate('MyEvents')}>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <Icon name="message" size={25} color='#3C2274'/>
-              <Text style={{fontWeight: 'bold', fontSize: 20, color: '#3C2274', margin: 10}}>Your profile</Text>
+              <View style={{width: 30}}><Icon name="md-person" type='ionicon' size={25} color='#263238'/></View>
+              <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10, textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>Your profile</Text>
+              <Text style={{color: 'orange'}}>In dev</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                             onPress={() => this.props.navigation.navigate('MyFriends')}>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <Icon name="people" size={25} color='#3C2274'/>
-              <Text style={{fontWeight: 'bold', fontSize: 20, color: '#3C2274', margin: 10}}>Friends</Text>
+              <View style={{width: 30}}><Icon name="people" size={25} color='#263238'/></View>
+              <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Friends</Text>
             </View>
           </TouchableOpacity>
           <View>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <Icon name="settings-applications" size={25} color='#3C2274'/>
-              <Text style={{fontWeight: 'bold', fontSize: 20, color: '#3C2274', margin: 10}}>Settings</Text>
+              <View style={{width: 30}}><Icon name="ios-settings" type='ionicon' size={25} color='#263238'/></View>
+              <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10, textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>Settings</Text>
+              <Text style={{color: 'orange'}}>In dev</Text>
             </View>
           </View>
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                             onPress={() => this.props.navigation.navigate('MyEvents')}>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <Icon name="event-note" size={25} color='#3C2274'/>
-              <Text style={{fontWeight: 'bold', fontSize: 20, color: '#3C2274', margin: 10}}>My events</Text>
+              <View style={{width: 30}}><Icon name="event-note" size={25} color='#263238'/></View>
+              <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>My events</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}} onPress={async () => {
@@ -68,9 +70,9 @@ class SideMenu extends Component {
             this.props.navigation.navigate('Auth')
           }}>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <Icon name="exit-to-app" size={25} color='#3C2274'/>
+              <View style={{width: 30}}><Icon name="md-exit" type='ionicon' size={25} color='#263238'/></View>
+              <Text style={styles.sectionHeadingStyle}>Sign Out</Text>
             </View>
-            <Text style={styles.sectionHeadingStyle}>Sign Out</Text>
           </TouchableOpacity>
         </ScrollView>
 {/*        <View style={styles.footerContainer}>

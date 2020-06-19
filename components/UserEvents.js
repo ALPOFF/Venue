@@ -67,9 +67,9 @@ const UserEvents = () => {
                                     alignItems: 'center',
                                     padding: 10,
                                     borderBottomWidth: 1,
-                                    borderBottomColor: '#3C2274'
+                                    borderBottomColor: '#009788'
                                 }}>
-                                    <Text style={{color: '#3C2274', fontFamily: 'arr', fontSize: 20}}>{a.postTitle}</Text>
+                                    <Text style={{color: '#009788', fontFamily: 'arr', fontSize: 20}}>{a.postTitle}</Text>
                                     <Image
                                         style={{width: '100%', height: 200, borderRadius: 8}}
                                         source={{uri: a.pic}}
@@ -78,7 +78,7 @@ const UserEvents = () => {
                                     <Text>{a.postText}</Text>
                                 </View></TouchableOpacity>)}
                             </ScrollView>
-                            : <ActivityIndicator size="large" color="#3C2274" style={{margin: 30}}/>
+                            : <ActivityIndicator size="large" color="#009788" style={{margin: 30}}/>
                         }
                     </View>
                 </View>

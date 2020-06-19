@@ -121,7 +121,7 @@ class MapForPickPlace extends Component<{}> {
                         }
 
                     </MapView> : <View>
-                        <ActivityIndicator size="large" color="#3C2274"/>
+                        <ActivityIndicator size="large" color="#009788"/>
                     </View>
                 }
                 <TouchableOpacity activeOpacity={0.8}

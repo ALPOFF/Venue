@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         letterSpacing: -0.015,
 
-        color: '#3C2274'
+        color: '#009788'
     },
     container: {
         position: 'absolute',

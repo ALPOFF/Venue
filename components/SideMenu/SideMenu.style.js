@@ -11,11 +11,10 @@ export default {
     backgroundColor: '#009688'
   },
   sectionHeadingStyle: {
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    fontWeight: 'bold',
+    fontWeight: 'regular',
     fontSize: 20,
-    color: '#3C2274'
+    color: 'black',
+    margin: 10
   },
   footerContainer: {
     padding: 15,

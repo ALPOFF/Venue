@@ -10,6 +10,7 @@ import {
     View,
     ScrollView, ActivityIndicator
 } from "react-native";
+import {Icon} from "react-native-elements";
 
 const HomeScreen = (props) => {
     const [eventsData, setEventsData] = useState([]);
@@ -71,7 +72,7 @@ const HomeScreen = (props) => {
                             borderBottomWidth: 1,
                             borderBottomColor: 'lightgrey'
                         }}>
-                            <Text style={{color: '#3C2274', fontSize: 20}}>{a.postTitle}</Text>
+                            <Text style={{color: 'black', fontSize: 20}}>{a.postTitle}</Text>
                             <Image
                                 style={{width: '100%', height: 200, borderRadius: 8}}
                                 source={{uri: a.pic}}
@@ -81,7 +82,7 @@ const HomeScreen = (props) => {
                         </View></TouchableOpacity>)}
                     </ScrollView>
                     : <View style={{height: '100%'}}>
-                        <ActivityIndicator size="large" color="#3C2274" style={{margin: 30}}/>
+                        <ActivityIndicator size="large" color="#009788" style={{margin: 30}}/>
                     </View>
                 }
             </View>
@@ -94,8 +95,8 @@ const HomeScreen = (props) => {
                                   zIndex: 999
                               }}
                               onPress={() => props.navigation.navigate('Detail')}>
-                <Image style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}
-                       source={require('./../assets/addIcon3.png')}/>
+                <Image style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}
+                       source={require('./../assets/Venue_new/addIcon3.png')}/>
             </TouchableOpacity>
         </View>
     );
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         letterSpacing: -0.015,
         fontFamily: 'arr',
-        color: '#3C2274'
+        color: '#009788'
     },
     container: {
         position: 'absolute',

@@ -57,14 +57,14 @@ const EventForm = (props) => {
             <Field name="eventText" component={renderInput} placeholder={'Choose category...'}/>
             <TouchableOpacity onPress={_getPhotoLibrary}
                               style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
-                <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
-                <Icon name="event" size={40} color={'#3C2274'}/>
+                <Text style={{color: '#009788', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
+                <Icon name="event" size={40} color={'#009788'}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() =>
                 this.props.navigation.navigate('MapForPickPlace')}
                               style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
-                <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
-                <Icon name="explore" size={40} color={'#3C2274'}/>
+                <Text style={{color: '#009788', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
+                <Icon name="explore" size={40} color={'#009788'}/>
             </TouchableOpacity>
         </>
     )

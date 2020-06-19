@@ -3,9 +3,10 @@ import {View, TextInput, TouchableOpacity, Text, Image} from 'react-native'
 import { reduxForm, Field } from 'redux-form';
 import {Icon} from "react-native-elements";
 
-const renderInput = ({ placeholder, input: { onChange, inputType, ...restInput }}) => {
+const renderInput = ({ placeholder, security, input: { onChange, inputType, ...restInput }}) => {
     return <TextInput placeholder={placeholder}
                       type={inputType}
+                      secureTextEntry={security}
                       style={{
                           textAlign: 'center',
                           margin: 7,
@@ -18,16 +19,16 @@ const renderInput = ({ placeholder, input: { onChange, inputType, ...restInput }
 };
 
 const LoginForm = (props) => {
-    const {hasError, _signInAsync, handleSubmit} = props;
+    const {hasError, _signUpAsync, handleSubmit} = props;
 
     return (
         <>
-            <Field name="email" component={renderInput} placeholder={'Email'}/>
-            <Field name="password" component={renderInput} placeholder={'Password'} inputType={'password'}/>
-            <Field name="password" component={renderInput} placeholder={'Retype password'} inputType={'password'}/>
-            {(hasError === 'ERROR') && <Text style={{color: 'red'}}>Incorrect login or password</Text>}
+            <Field name="email" onChange={() => {props.setHasError(false)}}component={renderInput} placeholder={'Email'}/>
+            <Field name="password" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={'Password'} security={true} inputType={'password'}/>
+            <Field name="passwordVerif" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={'Retype password'} security={true} inputType={'password'}/>
+            {(hasError === 'ERROR') && <Text style={{color: 'red'}}>Password mismatch</Text>}
             <View style={{display: 'flex', justifyContent: 'flex-end', paddingTop: 20}}>
-                <TouchableOpacity onPress={handleSubmit(_signInAsync)}>
+                <TouchableOpacity onPress={handleSubmit(_signUpAsync)}>
                     {/*<Image style={{width: 40, height: 34}} source={require('./../assets/rightArrow.png')}/>*/}
                     <Icon type='antdesign' name="login" size={35} color={'#009788'}/>
                 </TouchableOpacity>

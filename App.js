@@ -75,7 +75,7 @@ const BottomTabNav = createBottomTabNavigator(
         defaultNavigationOptions: ({navigation}) => ({}),
         tabBarOptions: {
             showIcon: true,
-            activeTintColor: '#3C2274',
+            activeTintColor: '#009788',
             inactiveTintColor: 'gray',
             tabStyle: {},
             showLabel: false,

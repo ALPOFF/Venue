@@ -32,7 +32,7 @@ const stackNav = createStackNavigator({
                 fontStyle: 'italic',
                 fontSize: 28,
                 letterSpacing: -0.015,
-                color: '#3C2274'
+                color: '#009788'
             }
         })
     },
@@ -48,7 +48,7 @@ const stackNav = createStackNavigator({
                 fontStyle: 'italic',
                 fontSize: 28,
                 letterSpacing: -0.015,
-                color: '#3c2274'
+                color: '#009788'
             }
 
         })
@@ -63,7 +63,7 @@ const stackNav = createStackNavigator({
                 fontStyle: 'italic',
                 fontSize: 28,
                 letterSpacing: -0.015,
-                color: '#3C2274'
+                color: '#009788'
             }
 
         })
@@ -77,7 +77,7 @@ const stackNav = createStackNavigator({
                 fontStyle: 'italic',
                 fontSize: 28,
                 letterSpacing: -0.015,
-                color: '#3C2274'
+                color: '#009788'
             }
 
         })
@@ -91,7 +91,7 @@ const stackNav = createStackNavigator({
                 fontStyle: 'italic',
                 fontSize: 28,
                 letterSpacing: -0.015,
-                color: '#3C2274'
+                color: '#009788'
             }
 
         })

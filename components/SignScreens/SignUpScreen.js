@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {
     AsyncStorage,
     Image, KeyboardAvoidingView, Keyboard,
@@ -12,24 +12,28 @@ import * as axios from "axios";
 import {connect} from "react-redux";
 import {setUserId} from "../../state/appReducer";
 import SignUpReduxForm from "../../ReduxForm/SignUpReduxForm";
-import { BackHandler } from "react-native";
+import {BackHandler} from "react-native";
 
 const SignUpScreen = (props) => {
     const [hasError, setHasError] = useState(false);
     const [keyboardT, setKeyboardT] = useState(false);
 
-    const _signInAsync = (value) => {
-        console.log('submitting form', value.email);
-        axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {Username: value.email, Password: value.password})
-            .then(async res => {
-                console.log("ALL: "+res.data);
-                setHasError(res.data);
-                if (res.data) {
-                    await AsyncStorage.setItem('userToken', res.data[0].user_id.toString());
-                    await AsyncStorage.setItem('userName', value.email);
-                    props.navigation.navigate('App')
-                }
-            });
+    const _signUpAsync = (value) => {
+        console.log('submitting form', value.email, value.password, value.passwordVerif);
+
+        (value.passwordVerif !== value.password) ? setHasError(true) :
+            axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {
+                Username: value.email,
+                Password: value.password
+            })
+                .then(async res => {
+                    console.log("ALL: " + res.data);
+                    if (res.data) {
+                        await AsyncStorage.setItem('userToken', res.data[0].user_id.toString());
+                        await AsyncStorage.setItem('userName', value.email);
+                        props.navigation.navigate('App')
+                    }
+                });
     };
 
     useEffect(() => {
@@ -43,7 +47,9 @@ const SignUpScreen = (props) => {
             Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
             BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
         };
-    }, [() => {props.navigation.navigate('SignInScreen')}]);
+    }, [() => {
+        props.navigation.navigate('SignInScreen')
+    }]);
 
     const handleBackButtonClick = () => {
         // After clicking on Back Button
@@ -72,7 +78,7 @@ const SignUpScreen = (props) => {
                 style={{width: 130, height: 130, margin: 20}}
                 source={avaSign}
             />}
-            <SignUpReduxForm hasError={hasError} _signInAsync={_signInAsync}/>
+            <SignUpReduxForm setHasError={setHasError} hasError={hasError} _signUpAsync={_signUpAsync}/>
         </KeyboardAvoidingView>
     );
 
@@ -128,8 +134,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = (state) => ({
-
-})
+const mapStateToProps = (state) => ({})
 
 export default connect(mapStateToProps, {setUserId})(SignUpScreen);

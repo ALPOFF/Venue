@@ -33,7 +33,7 @@ const stackNav = createStackNavigator({
                 fontSize: 28,
                 marginBottom: 20,
                 letterSpacing: -0.015,
-                color: '#3C2274'
+                color: '#009788'
             }
         })
     },
@@ -46,7 +46,7 @@ Dialog: {
                 fontStyle: 'italic',
                 fontSize: 28,
                 letterSpacing: -0.015,
-                color: '#3C2274'
+                color: '#009788'
             }
 
         })

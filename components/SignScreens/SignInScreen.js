@@ -35,11 +35,13 @@ const SignInScreen = (props) => {
 
     const _signInAsync = (value) => {
         console.log('submitting form', value.email);
-        axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {Username: value.email, Password: value.password})
+            axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {Username: value.email, Password: value.password})
             .then(async res => {
                 console.log("ALL: "+res.data);
-                setHasError(res.data);
-                if (res.data) {
+                if (res.data === 'ERROR') {
+                    setHasError(res.data);
+                }
+                else {
                     await AsyncStorage.setItem('userToken', res.data[0].user_id.toString());
                     await AsyncStorage.setItem('userName', value.email);
                     props.navigation.navigate('App')
@@ -57,23 +59,25 @@ const SignInScreen = (props) => {
 
     return (
         <KeyboardAvoidingView style={styles.container}>
+            {loading && <ActivityIndicator size="large" color="#009788" />}
             <Text style={styles.custom}>Venue</Text>
             {!keyboardT && <Image
                 style={{width: 130, height: 130, margin: 20}}
                 source={avaSign}
             />}
-            <SignInReduxForm hasError={hasError} _signInAsync={_signInAsync}/>
+            <SignInReduxForm setHasError={setHasError} hasError={hasError} _signInAsync={_signInAsync}/>
 
-            <View style={{marginTop: 50, display: 'flex', alignItems: 'center'}}>
+            {!keyboardT && <View style={{marginTop: 50, display: 'flex', alignItems: 'center'}}>
                 <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7'}}>Forgot your password? </Text>
-                    <Text style={{color: '#009788'}} onPress={() => props.navigation.navigate('')}>Reset</Text>
+                    <Text style={{color: '#A7A7A7', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>Forgot your password? </Text>
+                    <Text style={{color: '#009788', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}} onPress={() => props.navigation.navigate('')}>Reset</Text>
+                    <Text style={{color: 'orange', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>-In dev</Text>
                 </View>
                 <View style={styles.resetSignUpView}>
                     <Text style={{color: '#A7A7A7'}}>Don't have an account? </Text>
                     <Text style={{color: '#009788'}} onPress={() => props.navigation.navigate('SignUpScreen')}>Sign Up</Text>
                 </View>
-            </View>
+            </View>}
         </KeyboardAvoidingView>
     );
 
@@ -88,7 +92,8 @@ const styles = StyleSheet.create({
     },
     resetSignUpView: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingTop: 5
     },
     signIn: {
         fontStyle: 'normal',
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center',
         letterSpacing: -0.015,
-        color: '#3C2274'
+        color: '#009788'
     },
     container: {
         display: 'flex',
