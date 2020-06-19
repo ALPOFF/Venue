@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import * as axios from "axios";
+import { useDarkMode } from 'react-native-dark-mode'
 
 import {
     Image,
@@ -13,6 +14,7 @@ import {
 import {Icon} from "react-native-elements";
 
 const HomeScreen = (props) => {
+    
     const [eventsData, setEventsData] = useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -54,7 +56,8 @@ const HomeScreen = (props) => {
                 display: 'flex',
                 alignItems: 'center',
                 flexDirection: 'row',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                paddingTop: 10
             }}>
             </View>
             <View>
@@ -72,13 +75,13 @@ const HomeScreen = (props) => {
                             borderBottomWidth: 1,
                             borderBottomColor: 'lightgrey'
                         }}>
-                            <Text style={{color: 'black', fontSize: 20}}>{a.postTitle}</Text>
+                            <Text style={{color: '#14171A', fontSize: 20, fontFamily: 'Oxygen-Regular'}}>{a.postTitle}</Text>
                             <Image
                                 style={{width: '100%', height: 200, borderRadius: 8}}
                                 source={{uri: a.pic}}
                             />
-                            <Text style={{color: 'darkgrey', fontSize: 15}}>{a.place}</Text>
-                            <Text>{a.postText.substr(0, 120) + '...'}</Text>
+                            <Text style={{color: '#14171A', fontSize: 15, fontFamily: 'Oxygen-Light'}}>{a.place}</Text>
+                            <Text style={{color: '#14171A', fontSize: 15, fontFamily: 'Oxygen-Regular'}}>{a.postText.substr(0, 120) + '...'}</Text>
                         </View></TouchableOpacity>)}
                     </ScrollView>
                     : <View style={{height: '100%'}}>

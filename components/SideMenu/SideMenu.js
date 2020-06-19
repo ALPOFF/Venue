@@ -75,6 +75,18 @@ class SideMenu extends Component {
             </View>
           </TouchableOpacity>
         </ScrollView>
+        <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
+                          onPress={() => {
+                            AsyncStorage.setItem('darkMode', true);
+                            AsyncStorage.getItem('darkMode', (err, item) => {
+                              console.log('darkMode:', item)
+                            });
+                          }}>
+          <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{width: 30}}><Icon name="switch" type='entypo' size={25} color='#263238'/></View>
+            <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Dark Mode</Text>
+          </View>
+        </TouchableOpacity>
 {/*        <View style={styles.footerContainer}>
           <Text>Fixed footer for info</Text>
         </View>*/}

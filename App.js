@@ -2,6 +2,7 @@ import React from 'react';
 import {Icon} from 'react-native-elements'
 import {Dimensions, Text, View} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {DefaultTheme, DarkTheme, NavigationContainer} from "@react-navigation/native";
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import SignInScreen from "./components/SignScreens/SignInScreen";
@@ -18,12 +19,15 @@ import {setSocket} from "./state/appReducer";
 import {render} from "react-native-web";
 import SplashScreen from "react-native-splash-screen";
 import stackNavSignScreens from "./components/SignScreens/stackNavSignScreens";
+import {AppearanceProvider} from "react-native-appearance";
+import { DarkModeProvider } from 'react-native-dark-mode'
+
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         // Не вызывайте здесь this.setState()!
-        this.state = { msgData: null };
+        this.state = {msgData: null};
     }
 
     componentDidMount() {
@@ -33,12 +37,13 @@ class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <AppMainNav screenProps={{params1: 'test'}}/>
+                <DarkModeProvider mode="dark">
+                    <AppMainNav screenProps={{params1: 'test'}}/>
+                </DarkModeProvider>
             </Provider>
         );
     }
 }
-
 
 
 const BottomTabNav = createBottomTabNavigator(
@@ -76,11 +81,13 @@ const BottomTabNav = createBottomTabNavigator(
         tabBarOptions: {
             showIcon: true,
             activeTintColor: '#009788',
-            inactiveTintColor: 'gray',
+            inactiveTintColor: '#75818A',
             tabStyle: {},
             showLabel: false,
-            style: {borderTopWidth: 2,
-                borderTopColor: "lightgrey", paddingTop: 2}
+            style: {
+                borderTopWidth: 2,
+                borderTopColor: "lightgrey", paddingTop: 2
+            }
         },
     }
 );

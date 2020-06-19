@@ -25,7 +25,7 @@ const stackNav = createStackNavigator({
             ),
             headerRight: (<TouchableOpacity onPress={() => navigation.openDrawer()}>
                 <Image style={{width: 40, height: 40, marginRight: 10, marginBottom: 15}}
-                       source={require('./../../assets/userIcon.png')}/>
+                       source={require('./../../assets/Venue_new/userIcon.png')}/>
             </TouchableOpacity>),
             headerTitleStyle: {
                 // paddingLeft: 20,
