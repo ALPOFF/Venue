@@ -15,11 +15,11 @@ const stackNav = createStackNavigator({
     Main: {
         screen: HomeScreen,
         navigationOptions: ({navigation}) => ({
-            title: "Nearest Events",
+            title: "Venue",
             headerStyle: {height: 55, paddingTop: 15},
             headerLeft: (<Image
-                    style={{width: 40, height: 40, marginLeft: 10, marginBottom: 15}}
-                    source={require('./../../assets/appIcon.png')}
+                    style={{width: 60, height: 60, marginLeft: 10, marginBottom: 15}}
+                    source={require('./../../assets/Venue_new/logo_hands.png')}
                 />
             ),
             headerRight: (<TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -27,11 +27,13 @@ const stackNav = createStackNavigator({
                        source={require('./../../assets/userIcon.png')}/>
             </TouchableOpacity>),
             headerTitleStyle: {
-                paddingLeft: 20,
                 marginBottom: 20,
-                fontStyle: 'italic',
-                fontSize: 28,
-                letterSpacing: -0.015,
+                textAlign:"center",
+                flex:1,
+                // fontStyle: 'italic',
+                fontFamily: 'Yesteryear-Regular',
+                fontSize: 40,
+                // letterSpacing: -0.015,
                 color: '#009788'
             }
         })
