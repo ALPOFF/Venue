@@ -82,8 +82,7 @@ const styles = StyleSheet.create({
     custom: {
         fontFamily: 'Yesteryear-Regular',
         fontSize: 60,
-        color: '#009788',
-        paddingTop: 20
+        color: '#009788'
     },
     resetSignUpView: {
         display: 'flex',
