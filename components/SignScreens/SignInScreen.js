@@ -24,7 +24,6 @@ const SignInScreen = (props) => {
     const [keyboardT, setKeyboardT] = useState(false);
 
     useEffect(() => {
-        const isDarkMode = useDarkMode()
         AsyncStorage.setItem('darkMode', false);
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);

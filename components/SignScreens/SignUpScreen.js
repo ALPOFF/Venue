@@ -22,8 +22,8 @@ const SignUpScreen = (props) => {
         console.log('submitting form', value.email, value.password, value.passwordVerif);
 
         (value.passwordVerif !== value.password) ? setHasError(true) :
-            axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {
-                Username: value.email,
+            axios.post(`https://warm-ravine-29007.herokuapp.com/registr/`, {
+                email: value.email,
                 Password: value.password
             })
                 .then(async res => {
@@ -67,7 +67,6 @@ const SignUpScreen = (props) => {
         setKeyboardT(false)
     };
 
-
     return (
         <KeyboardAvoidingView style={styles.container}>
             <Text style={styles.custom}>Venue</Text>
@@ -81,7 +80,6 @@ const SignUpScreen = (props) => {
             <SignUpReduxForm setHasError={setHasError} hasError={hasError} _signUpAsync={_signUpAsync}/>
         </KeyboardAvoidingView>
     );
-
 }
 
 const styles = StyleSheet.create({
