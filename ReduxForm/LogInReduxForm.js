@@ -23,7 +23,7 @@ const LoginForm = (props) => {
 
     return (
         <>
-            <Field name="email" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={'Login'}/>
+            <Field name="loginOrEmail" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={'Login or Email'}/>
             <Field name="password" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={'Password'} security={true} inputType={'password'}/>
             {(hasError === 'ERROR') && <Text style={{color: 'red'}}>Incorrect login or password</Text>}
             <View style={{display: 'flex', justifyContent: 'flex-end', paddingTop: 20}}>

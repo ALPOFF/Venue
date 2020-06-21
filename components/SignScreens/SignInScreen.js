@@ -16,7 +16,7 @@ import SignInReduxForm from "../../ReduxForm/LogInReduxForm";
 import * as axios from "axios";
 import {connect} from "react-redux";
 import {setUserId} from "../../state/appReducer";
-import { useDarkMode } from 'react-native-dark-mode'
+import {useDarkMode} from 'react-native-dark-mode'
 
 const SignInScreen = (props) => {
     const [loading, setLoading] = useState(false);
@@ -36,17 +36,19 @@ const SignInScreen = (props) => {
     }, []);
 
     const _signInAsync = (value) => {
-        console.log('submitting form', value.email);
-            axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {Username: value.email, Password: value.password})
+        console.log('submitting form', value.loginOrEmail);
+        axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {loginOrEmail: value.loginOrEmail, Password: value.password})
             .then(async res => {
-                console.log("ALL: "+res.data);
+                console.log("ALL: " + res.data);
+                console.log(res.data);
                 if (res.data === 'ERROR') {
                     setHasError(res.data);
-                }
-                else {
-                    await AsyncStorage.setItem('userToken', res.data[0].user_id.toString());
-                    await AsyncStorage.setItem('userName', value.email);
+                } else if (res.data.done === true) {
+                    await AsyncStorage.setItem('userToken', res.data.resRows[0].user_id.toString());
+                    await AsyncStorage.setItem('userName', res.data.resRows[0].Username.toString());
                     props.navigation.navigate('App')
+                } else {
+                    alert('server error')
                 }
             });
     };
@@ -61,7 +63,7 @@ const SignInScreen = (props) => {
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            {loading && <ActivityIndicator size="large" color="#009788" />}
+            {loading && <ActivityIndicator size="large" color="#009788"/>}
             <Text style={styles.custom}>Venue</Text>
             {!keyboardT && <Image
                 style={{width: 130, height: 130, margin: 20}}
@@ -71,13 +73,17 @@ const SignInScreen = (props) => {
 
             {!keyboardT && <View style={{marginTop: 50, display: 'flex', alignItems: 'center'}}>
                 <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>Forgot your password? </Text>
-                    <Text style={{color: '#009788', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}} onPress={() => props.navigation.navigate('')}>Reset</Text>
-                    <Text style={{color: 'orange', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>-In dev</Text>
+                    <Text style={{color: '#A7A7A7', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>Forgot
+                        your password? </Text>
+                    <Text style={{color: '#009788', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}
+                          onPress={() => props.navigation.navigate('')}>Reset</Text>
+                    <Text style={{color: 'orange', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>-In
+                        dev</Text>
                 </View>
                 <View style={styles.resetSignUpView}>
                     <Text style={{color: '#A7A7A7'}}>Don't have an account? </Text>
-                    <Text style={{color: '#009788'}} onPress={() => props.navigation.navigate('SignUpScreen')}>Sign Up</Text>
+                    <Text style={{color: '#009788'}} onPress={() => props.navigation.navigate('SignUpScreen')}>Sign
+                        Up</Text>
                 </View>
             </View>}
         </KeyboardAvoidingView>
@@ -137,8 +143,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = (state) => ({
-
-})
+const mapStateToProps = (state) => ({})
 
 export default connect(mapStateToProps, {setUserId})(SignInScreen);
