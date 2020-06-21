@@ -16,23 +16,29 @@ import {BackHandler} from "react-native";
 
 const SignUpScreen = (props) => {
     const [hasError, setHasError] = useState(false);
+    const [emailExists, setEmailExists] = useState(false);
     const [keyboardT, setKeyboardT] = useState(false);
 
     const _signUpAsync = (value) => {
-        console.log('submitting form', value.email, value.password, value.passwordVerif);
+        console.log('submitting form', value.email, value.password, value.passwordVerif, value.login);
 
         (value.passwordVerif !== value.password) ? setHasError(true) :
             axios.post(`https://warm-ravine-29007.herokuapp.com/registr/`, {
-                email: value.email,
-                Password: value.password
+                Email: value.email,
+                Password: value.password,
+                Login: value.login
             })
                 .then(async res => {
                     console.log("ALL: " + res.data);
-                    if (res.data) {
+                    if (res.data === 'done') {
                         await AsyncStorage.setItem('userToken', res.data[0].user_id.toString());
-                        await AsyncStorage.setItem('userName', value.email);
+                        await AsyncStorage.setItem('userName', value.login);
                         props.navigation.navigate('App')
-                    }
+                    } else if (res.data === 'already exists') {
+                        setEmailExists(true)
+                    } else (
+                        alert('error')
+                    )
                 });
     };
 
@@ -77,7 +83,7 @@ const SignUpScreen = (props) => {
                 style={{width: 130, height: 130, margin: 20}}
                 source={avaSign}
             />}
-            <SignUpReduxForm setHasError={setHasError} hasError={hasError} _signUpAsync={_signUpAsync}/>
+            <SignUpReduxForm setEmailExists={setEmailExists} emailExists={emailExists} setHasError={setHasError} hasError={hasError} _signUpAsync={_signUpAsync}/>
         </KeyboardAvoidingView>
     );
 }
