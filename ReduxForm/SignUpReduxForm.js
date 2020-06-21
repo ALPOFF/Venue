@@ -19,16 +19,17 @@ const renderInput = ({ placeholder, security, input: { onChange, inputType, ...r
 };
 
 const LoginForm = (props) => {
-    const {hasError, emailExists, _signUpAsync, handleSubmit} = props;
+    const {hasError, loginExists, emailExists, _signUpAsync, handleSubmit} = props;
 
     return (
         <>
-            <Field name="email" onChange={() => {props.setHasError(false); props.setEmailExists(false)}} component={renderInput} placeholder={'Email'}/>
-            <Field name="login" onChange={() => {props.setHasError(false); props.setEmailExists(false)}} component={renderInput} placeholder={'Login'}/>
-            <Field name="password" onChange={() => {props.setHasError(false); props.setEmailExists(false)}} component={renderInput} placeholder={'Password'} security={true} inputType={'password'}/>
-            <Field name="passwordVerif" onChange={() => {props.setHasError(false); props.setEmailExists(false)}} component={renderInput} placeholder={'Retype password'} security={true} inputType={'password'}/>
+            <Field name="email" onChange={() => {props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false)}} component={renderInput} placeholder={'Email'}/>
+            <Field name="login" onChange={() => {props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false)}} component={renderInput} placeholder={'Login'}/>
+            <Field name="password" onChange={() => {props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false)}} component={renderInput} placeholder={'Password'} security={true} inputType={'password'}/>
+            <Field name="passwordVerif" onChange={() => {props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false)}} component={renderInput} placeholder={'Retype password'} security={true} inputType={'password'}/>
             {(hasError === 'ERROR') && <Text style={{color: 'red'}}>Password mismatch</Text>}
             {(emailExists) && <Text style={{color: 'red'}}>Email already exists</Text>}
+            {(loginExists) && <Text style={{color: 'red'}}>Login already in use</Text>}
             <View style={{display: 'flex', justifyContent: 'flex-end', paddingTop: 20}}>
                 <TouchableOpacity onPress={handleSubmit(_signUpAsync)}>
                     <Icon type='antdesign' name="login" size={35} color={'#009788'}/>

@@ -17,6 +17,7 @@ import {BackHandler} from "react-native";
 const SignUpScreen = (props) => {
     const [hasError, setHasError] = useState(false);
     const [emailExists, setEmailExists] = useState(false);
+    const [loginExists, setLoginExists] = useState(false);
     const [keyboardT, setKeyboardT] = useState(false);
 
     const _signUpAsync = (value) => {
@@ -30,12 +31,14 @@ const SignUpScreen = (props) => {
             })
                 .then(async res => {
                     console.log("ALL: " + res.data);
-                    if (res.data === 'done') {
-                        await AsyncStorage.setItem('userToken', res.data[0].user_id.toString());
+                    if (res.data.done === true) {
+                        await AsyncStorage.setItem('userToken', res.data.resRows[0].user_id.toString());
                         await AsyncStorage.setItem('userName', value.login);
                         props.navigation.navigate('App')
-                    } else if (res.data === 'already exists') {
+                    } else if (res.data === 'email already exists') {
                         setEmailExists(true)
+                    } else if (res.data === 'login already exists') {
+                        setLoginExists(true)
                     } else (
                         alert('error')
                     )
@@ -83,7 +86,8 @@ const SignUpScreen = (props) => {
                 style={{width: 130, height: 130, margin: 20}}
                 source={avaSign}
             />}
-            <SignUpReduxForm setEmailExists={setEmailExists} emailExists={emailExists} setHasError={setHasError} hasError={hasError} _signUpAsync={_signUpAsync}/>
+            <SignUpReduxForm loginExists={loginExists} setLoginExists={setLoginExists} setEmailExists={setEmailExists} emailExists={emailExists} setHasError={setHasError}
+                             hasError={hasError} _signUpAsync={_signUpAsync}/>
         </KeyboardAvoidingView>
     );
 }
