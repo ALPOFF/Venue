@@ -49,7 +49,7 @@ const EventDetailsScreen = (props) => {
                     {visitors.length === 2 && <EventVisitorsTwo visitors={visitors}/>}
                     {visitors.length === 1 && <EventVisitorsOne visitors={visitors}/>}
                 </TouchableOpacity>
-                {visitors.some(v => currentUserId !== v) ?
+                {visitors.some(v => currentUserId == v) ?
                     <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>Вы идете</Text>
                     </View>

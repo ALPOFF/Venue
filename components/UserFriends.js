@@ -13,7 +13,7 @@ import {Icon} from 'react-native-elements'
 import * as axios from "axios";
 import {connect} from "react-redux";
 
-const UserEvents = (props) => {
+const UserFriends = (props) => {
     const [eventsData, setEventsData] = useState([]);
     const [userList, setUserList] = useState([]);
     const [data, setData] = useState([]);
@@ -171,5 +171,5 @@ const mapStateToProps = (state) => ({
     userId: state.appReducer.userId
 })
 
-export default connect(mapStateToProps, {})(UserEvents);
+export default connect(mapStateToProps, {})(UserFriends);
 

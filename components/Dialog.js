@@ -141,8 +141,6 @@ class Dialog extends Component {
 
         return (
             <KeyboardAvoidingView style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-                {this.state.dialog_id == null && <Text>GGGGGGGGGGGGGGGGGGGGGG</Text>}
-                {this.state.dialog_id !== null && <Text>YA</Text>}
                 {(this.props.userDialog != []) ?
                     <ScrollView showsVerticalScrollIndicator={true} decelerationRate={"normal"}
                                 style={{display: "flex", margin: 7, backgroundColor: '#F1EFF1'}}>
