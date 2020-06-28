@@ -34,20 +34,25 @@ class DetailScreen extends Component {
             eventName: '',
             category: '',
             description: '',
-            pickedImg: {}
+            pickedImg: []
         };
     }
 
 
     render() {
          const _addEvent = (value) => {
-            console.log('submitting form', value.eventName);
+             console.log('marker:', this.props.marker)
+             console.log('eventName:', this.state.eventName)
+             console.log('category:', this.state.category)
+             console.log('description:', this.state.description)
+             console.log('pickedImg:', this.state.pickedImg)
              AsyncStorage.getItem('userName', (err, item) => {
-                 axios.post(`https://warm-ravine-29007.herokuapp.com/event/`, {
+                 axios.post(`http://185.12.95.84:3000/event/`, {
                      eventName: value.eventName,
                      eventText: value.eventText,
                      place: value.place,
-                     userId: item
+                     userId: item,
+
                  })
                      .then(res => {
                          if (res.data) {
@@ -64,7 +69,9 @@ class DetailScreen extends Component {
             ImagePicker.openPicker({
                 width: 1080,
                 height: 720,
-                cropping: true
+                cropping: true,
+                //includeBase64: true,
+                multiple: true,
             }).then(image => {
                 console.log(image);
                 this.setState({pickedImg: image})
@@ -72,25 +79,26 @@ class DetailScreen extends Component {
         }
 
         let sendimg = async () => {
-            console.log('marker:', this.props.marker)
-            console.log('eventName:', this.state.eventName)
-            console.log('category:', this.state.category)
-            console.log('description:', this.state.description)
-            console.log('pickedImg:', this.state.pickedImg)
-            // axios.post(`http://185.12.95.84:5000/sendimage`, {img: res})
+
+            console.log('rtype:', this.state.pickedImg[0].path) //pic
+
+
+
+
+            //axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg.data, postTitle: 'postttttl'})
         }
 
         return (
             <View style={styles.container}>
-                {this.state.pickedImg.path === undefined ? <Image source={imgEvent} style={{width: '100%', height: 200}} alt=""/>
-                    : <Image source={{uri: this.state.pickedImg.path}} style={{width: '100%', height: 200}} alt=""/>}
+                {this.state.pickedImg[0] === undefined  ? <Image source={imgEvent} style={{width: '100%', height: 200}} alt=""/>
+                    : <Image source={{uri: this.state.pickedImg[0].path}} style={{width: '100%', height: 200}} alt=""/>}
                 <View>
                 <TextInput onChangeText={(value) => {this.setState({eventName: value})}} value={this.state.eventName} placeholder={'Event Name...'}/>
-                {this.state.image.image ? <Image
-                    style={{width: '80%', height: '30%', marginTop: 10, marginBottom: 15}}
-                    source={{uri: this.state.image.image}}
-                /> : <View/>
-                }
+                {/*{this.state.image.image ? <Image*/}
+                {/*    style={{width: '80%', height: '30%', marginTop: 10, marginBottom: 15}}*/}
+                {/*    source={{uri: this.state.image.image}}*/}
+                {/*/> : <View/>*/}
+                {/*}*/}
                 <TextInput onChangeText={(value) => {this.setState({description: value})}} value={this.state.description} placeholder={'Type here the description of your event...'}/>
                 <TextInput onChangeText={(value) => {this.setState({category: value})}} value={this.state.category} placeholder={'Choose category...'}/>
                 </View>

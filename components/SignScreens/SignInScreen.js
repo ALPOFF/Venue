@@ -18,12 +18,16 @@ import {connect} from "react-redux";
 import {setUserId} from "../../state/appReducer";
 import {useDarkMode} from 'react-native-dark-mode'
 
+
 const SignInScreen = (props) => {
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
     const [keyboardT, setKeyboardT] = useState(false);
 
     useEffect(() => {
+
+
+
         AsyncStorage.setItem('darkMode', false);
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
@@ -37,7 +41,7 @@ const SignInScreen = (props) => {
 
     const _signInAsync = (value) => {
         console.log('submitting form', value.loginOrEmail);
-        axios.post(`https://warm-ravine-29007.herokuapp.com/auth/`, {loginOrEmail: value.loginOrEmail, Password: value.password})
+        axios.post(`http://185.12.95.84:3000/auth/`, {loginOrEmail: value.loginOrEmail, Password: value.password})
             .then(async res => {
                 console.log("ALL: " + res.data);
                 console.log(res.data);
