@@ -52,7 +52,6 @@ class DetailScreen extends Component {
                      eventText: value.eventText,
                      place: value.place,
                      userId: item,
-
                  })
                      .then(res => {
                          if (res.data) {
@@ -70,7 +69,7 @@ class DetailScreen extends Component {
                 width: 1080,
                 height: 720,
                 cropping: true,
-                //includeBase64: true,
+                includeBase64: true,
                 multiple: true,
             }).then(image => {
                 console.log(image);
@@ -81,11 +80,9 @@ class DetailScreen extends Component {
         let sendimg = async () => {
 
             console.log('rtype:', this.state.pickedImg[0].path) //pic
-
-
-
-
-            //axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg.data, postTitle: 'postttttl'})
+            AsyncStorage.getItem('userToken', (err, item) => {
+                axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg, postText: this.state.description, eventName: this.state.eventName, userId: item, postCategory: this.state.category})
+            })
         }
 
         return (
@@ -94,11 +91,6 @@ class DetailScreen extends Component {
                     : <Image source={{uri: this.state.pickedImg[0].path}} style={{width: '100%', height: 200}} alt=""/>}
                 <View>
                 <TextInput onChangeText={(value) => {this.setState({eventName: value})}} value={this.state.eventName} placeholder={'Event Name...'}/>
-                {/*{this.state.image.image ? <Image*/}
-                {/*    style={{width: '80%', height: '30%', marginTop: 10, marginBottom: 15}}*/}
-                {/*    source={{uri: this.state.image.image}}*/}
-                {/*/> : <View/>*/}
-                {/*}*/}
                 <TextInput onChangeText={(value) => {this.setState({description: value})}} value={this.state.description} placeholder={'Type here the description of your event...'}/>
                 <TextInput onChangeText={(value) => {this.setState({category: value})}} value={this.state.category} placeholder={'Choose category...'}/>
                 </View>

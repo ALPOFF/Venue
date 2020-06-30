@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import * as axios from "axios";
-import { useDarkMode } from 'react-native-dark-mode'
+import {useDarkMode} from 'react-native-dark-mode'
 
 import {
     Image,
@@ -14,7 +14,7 @@ import {
 import {Icon} from "react-native-elements";
 
 const HomeScreen = (props) => {
-    
+
     const [eventsData, setEventsData] = useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -24,7 +24,7 @@ const HomeScreen = (props) => {
         //         setEventsData(res.data);
         //         console.log(res.data)
         //     });
-        axios.get(`https://warm-ravine-29007.herokuapp.com/events`)
+        axios.get(`http://185.12.95.84:3000/events`)
             .then(res => {
                 setEventsData(res.data);
                 console.log(res.data)
@@ -42,7 +42,8 @@ const HomeScreen = (props) => {
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        axios.get(`https://warm-ravine-29007.herokuapp.com/events`)
+        // axios.get(`https://warm-ravine-29007.herokuapp.com/events`)
+        axios.get(`http://185.12.95.84:3000/events`)
             .then(res => {
                 setEventsData(res.data);
                 //console.log(res.data)
@@ -75,13 +76,21 @@ const HomeScreen = (props) => {
                             borderBottomWidth: 1,
                             borderBottomColor: 'lightgrey'
                         }}>
-                            <Text style={{color: '#14171A', fontSize: 20, fontFamily: 'Oxygen-Regular'}}>{a.postTitle}</Text>
+                            <Text style={{
+                                color: '#14171A',
+                                fontSize: 20,
+                                fontFamily: 'Oxygen-Regular'
+                            }}>{a.postTitle}</Text>
                             <Image
                                 style={{width: '100%', height: 200, borderRadius: 8}}
-                                source={{uri: a.pic}}
+                                source={{uri: a.pic[0]}}
                             />
                             <Text style={{color: '#14171A', fontSize: 15, fontFamily: 'Oxygen-Light'}}>{a.place}</Text>
-                            <Text style={{color: '#14171A', fontSize: 15, fontFamily: 'Oxygen-Regular'}}>{a.postText.substr(0, 120) + '...'}</Text>
+                            <Text style={{
+                                color: '#14171A',
+                                fontSize: 15,
+                                fontFamily: 'Oxygen-Regular'
+                            }}>{a.postText.substr(0, 120) + '...'}</Text>
                         </View></TouchableOpacity>)}
                     </ScrollView>
                     : <View style={{height: '100%'}}>
