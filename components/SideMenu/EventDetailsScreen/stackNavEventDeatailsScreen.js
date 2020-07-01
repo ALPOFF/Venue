@@ -7,7 +7,7 @@ const stackNavEventDetailsScreen = createStackNavigator({
     EventDetailsScreen: {
         screen: EventDetailsScreen,
         navigationOptions: ({navigation}) => ({
-            header: null
+            // header: null
         })
     },
     EventVisitorsDetailed: {

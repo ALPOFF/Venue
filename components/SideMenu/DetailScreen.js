@@ -39,6 +39,9 @@ class DetailScreen extends Component {
     }
 
 
+
+
+
     render() {
          const _addEvent = (value) => {
              console.log('marker:', this.props.marker)

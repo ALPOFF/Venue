@@ -68,7 +68,7 @@ const HomeScreen = (props) => {
                                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                         {eventsData.map(a => <TouchableOpacity activeOpacity={0.8} key={a.id} onPress={() =>
                             props.navigation.navigate('EventDetails', {
-                                postId: a.id, userId: a.userId, postText: a.postText, pic: a.pic, visitors: a.visitors
+                                postId: a.id, userId: a.userId, postText: a.postText, pic: a.pic, visitors: a.visitors, postTitle: a.postTitle
                             })}><View style={{
                             marginBottom: 10,
                             alignItems: 'center',

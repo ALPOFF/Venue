@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Component, useEffect, useState} from "react";
 import {
     View,
     Text,
@@ -23,7 +23,8 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import AnimatedWithChildren from "react-native-web/dist/vendor/react-native/Animated/nodes/AnimatedWithChildren";
 const { height, width } = Dimensions.get('window');
 
-class EventDetailsScreen extends React.Component<{}> {
+class EventDetailsScreen extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -40,11 +41,19 @@ class EventDetailsScreen extends React.Component<{}> {
             postText: this.props.navigation.state.params.postText,
             pic: this.props.navigation.state.params.pic,
             visitors: this.props.navigation.state.params.visitors,
-            activeSlide: 0
+            activeSlide: 0,
+            postTitle: this.props.navigation.state.params.postTitle
         };
     }
 
+    static navigationOptions = ({navigation}) => {
+        return {
+            title: navigation.getParam('Title', ''),
+        };
+    };
+
     componentDidMount() {
+        this.props.navigation.setParams({Title: this.state.postTitle})
         console.log('honepics:', this.state.pic)
         AsyncStorage.getItem('userToken', (err, item) => {
             this.setState({'currentUserId': item})
@@ -71,9 +80,6 @@ class EventDetailsScreen extends React.Component<{}> {
             <View style={{display: 'flex', flexDirection: 'column', paddingLeft: 10, paddingRight: 10}}>
                 <View >
                     <View style={{
-
-
-
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>

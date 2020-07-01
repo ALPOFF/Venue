@@ -58,16 +58,16 @@ const stackNav = createStackNavigator({
     EventDetails: {
         screen: stackNavEventDetailsScreen,
         navigationOptions: ({navigation}) => ({
-            title: "Event Details Screen",
-            headerTintColor: 'black',
-            headerTitleStyle: {
-                paddingLeft: 20,
-                fontStyle: 'italic',
-                fontSize: 28,
-                letterSpacing: -0.015,
-                color: '#009788'
-            }
-
+            header: null
+            // title: "Event Details Screen",
+            // headerTintColor: 'black',
+            // headerTitleStyle: {
+            //     paddingLeft: 20,
+            //     fontStyle: 'italic',
+            //     fontSize: 28,
+            //     letterSpacing: -0.015,
+            //     color: '#009788'
+            // }
         })
     },
     MyEvents: {
