@@ -49,12 +49,14 @@ class DetailScreen extends Component {
              console.log('category:', this.state.category)
              console.log('description:', this.state.description)
              console.log('pickedImg:', this.state.pickedImg)
+             console.log('this.props.marker:', this.props.marker)
              AsyncStorage.getItem('userName', (err, item) => {
                  axios.post(`http://185.12.95.84:3000/event/`, {
                      eventName: value.eventName,
                      eventText: value.eventText,
                      place: value.place,
                      userId: item,
+                     coords: this.props.marker
                  })
                      .then(res => {
                          if (res.data) {
@@ -81,10 +83,10 @@ class DetailScreen extends Component {
         }
 
         let sendimg = async () => {
-
+            console.log('marker:', this.props.marker)
             console.log('rtype:', this.state.pickedImg[0].path) //pic
             AsyncStorage.getItem('userToken', (err, item) => {
-                axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg, postText: this.state.description, eventName: this.state.eventName, userId: item, postCategory: this.state.category})
+                axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg, postText: this.state.description, eventName: this.state.eventName, userId: item, postCategory: this.state.category, coords: this.props.marker})
             })
         }
 

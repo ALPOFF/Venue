@@ -46,9 +46,19 @@ class EventDetailsScreen extends Component {
         };
     }
 
+
+
     static navigationOptions = ({navigation}) => {
         return {
             title: navigation.getParam('Title', ''),
+            headerTintColor: 'black',
+            headerTitleStyle: {
+                paddingLeft: 20,
+                fontStyle: 'italic',
+                fontSize: 28,
+                letterSpacing: -0.015,
+                color: '#009788'
+            }
         };
     };
 
@@ -58,6 +68,7 @@ class EventDetailsScreen extends Component {
         AsyncStorage.getItem('userToken', (err, item) => {
             this.setState({'currentUserId': item})
         })
+
     }
 
     renderItem = ({item, index}) => {

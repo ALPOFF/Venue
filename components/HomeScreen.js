@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import * as axios from "axios";
 import {useDarkMode} from 'react-native-dark-mode'
+import {distanceFunc} from "../common/distanceFunc";
 
 import {
     Image,
@@ -11,25 +12,38 @@ import {
     View,
     ScrollView, ActivityIndicator
 } from "react-native";
-import {Icon} from "react-native-elements";
+import {connect} from "react-redux";
+import Geolocation from "@react-native-community/geolocation";
+import {setUserCoord} from "../state/appReducer";
+
 
 const HomeScreen = (props) => {
 
     const [eventsData, setEventsData] = useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
+    const [userCoord, setUserCoord] = React.useState({});
 
     useEffect(() => {
-        // axios.get(`http://185.12.95.84:5000/events`)
-        //     .then(res => {
-        //         setEventsData(res.data);
-        //         console.log(res.data)
-        //     });
         axios.get(`http://185.12.95.84:3000/events`)
             .then(res => {
                 setEventsData(res.data);
-                console.log(res.data)
+                console.log('event_array:',res.data)
+                console.log('coords:', res.data[4].place)
             });
 
+        Geolocation.getCurrentPosition((position) => {
+            console.log('current_pos:', position);
+            setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
+        }, (error) => {
+            // См. таблицы кодов ошибок выше.
+            console.log(error.code, error.message);
+        }, {
+            enableHighAccuracy: false,
+            timeout: 10000,
+            maximumAge: 100000
+        });
+
+        console.log('userCoord:', props.userCoord)
     }, []);
 
     const wait = (timeout) => {
@@ -68,7 +82,12 @@ const HomeScreen = (props) => {
                                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                         {eventsData.map(a => <TouchableOpacity activeOpacity={0.8} key={a.id} onPress={() =>
                             props.navigation.navigate('EventDetails', {
-                                postId: a.id, userId: a.userId, postText: a.postText, pic: a.pic, visitors: a.visitors, postTitle: a.postTitle
+                                postId: a.id,
+                                userId: a.userId,
+                                postText: a.postText,
+                                pic: a.pic,
+                                visitors: a.visitors,
+                                postTitle: a.postTitle
                             })}><View style={{
                             marginBottom: 10,
                             alignItems: 'center',
@@ -81,11 +100,16 @@ const HomeScreen = (props) => {
                                 fontSize: 20,
                                 fontFamily: 'Oxygen-Regular'
                             }}>{a.postTitle}</Text>
-                            <Image
+                            <Text>{(Math.ceil((distanceFunc(a.place[1].coords, userCoord)) * 100) / 100)} km from you</Text>
+                            {a.pic[0] != null && <Image
                                 style={{width: '100%', height: 200, borderRadius: 8}}
                                 source={{uri: a.pic[0]}}
-                            />
-                            <Text style={{color: '#14171A', fontSize: 15, fontFamily: 'Oxygen-Light'}}>{a.place}</Text>
+                            />}
+                            <Text style={{
+                                color: '#14171A',
+                                fontSize: 15,
+                                fontFamily: 'Oxygen-Light'
+                            }}>{a.place.coords}</Text>
                             <Text style={{
                                 color: '#14171A',
                                 fontSize: 15,
@@ -160,4 +184,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+
+
+export default connect(null, {setUserCoord})(HomeScreen);

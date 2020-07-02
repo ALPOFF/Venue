@@ -4,6 +4,8 @@ import MapView, {Marker} from "react-native-maps";
 import {Icon} from "react-native-elements";
 import mapStyle from './../common/mapConfig'
 import Geolocation  from '@react-native-community/geolocation';
+import {connect} from "react-redux";
+import {setUserCoord} from "../state/appReducer";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -138,7 +140,6 @@ class MapScreen extends Component<{}> {
                         }}
                         customMapStyle={mapStyle}
                     >
-
                         {
                             markers.map(m => <Marker key={m.latitude}
                                                      draggable
@@ -232,4 +233,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MapScreen;
+export default connect(null, {setUserCoord})(MapScreen);

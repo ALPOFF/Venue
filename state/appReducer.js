@@ -9,6 +9,7 @@ const SET_USER_ID = 'tariff/SET_USER_ID';
 const SET_NEW_LST_MSG = 'tariff/SET_NEW_LST_MSG';
 const SET_MARKER = 'tariff/SET_MARKER';
 const SET_CUR_DIALOG_ID = 'tariff/SET_CUR_DIALOG_ID';
+const SET_USER_COORD = 'tariff/SET_USER_COORD';
 
 let initialState = {
     dialogList: [
@@ -26,7 +27,8 @@ let initialState = {
     dialogName: '',
     userId: null,
     marker: {},
-    curDialogId: null
+    curDialogId: null,
+    userCoord: {}
 };
 
 const appReducer = (state = initialState, action) => {
@@ -61,6 +63,11 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 userId: action.userId
             };
+        case SET_USER_COORD:
+            return {
+                ...state,
+                userCoord: {"latitude": state.lat, "longitude": state.long}
+            };
         case SET_NEW_LST_MSG:
             return {
                 ...state,
@@ -90,6 +97,14 @@ export const setMarker = (marker) => {
     return {
         type: SET_MARKER,
         marker
+    }
+};
+
+export const setUserCoord = (lat, long) => {
+    return {
+        type: SET_USER_COORD,
+        lat,
+        long
     }
 };
 
