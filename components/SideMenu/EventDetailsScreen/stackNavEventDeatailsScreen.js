@@ -14,10 +14,20 @@ const stackNavEventDetailsScreen = createStackNavigator({
         screen: EventVisitorsDetailed,
         navigationOptions: ({navigation
                             }) => ({
-            header: null
+            header: null,
+            gestureResponseDistance: { vertical: 1000 }, // default is 135 },
         })
     }
 },
+    {
+        //headerMode: 'none',
+
+        mode: 'modal',
+        transparentCard: true,
+        cardStyle: {
+            opacity: 1,
+        }
+    },
     // {
     //     headerMode: 'none',
     //     mode: 'modal',

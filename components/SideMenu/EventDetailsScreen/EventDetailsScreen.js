@@ -125,14 +125,16 @@ class EventDetailsScreen extends Component {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                     }}>
-                    <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                                      onPress={() => this.props.navigation.navigate('EventVisitorsDetailed', {
-                                          visitors: this.state.visitors
-                                      })}>
-                        {this.state.visitors.length >= 3 && <EventVisitors visitors={this.state.visitors}/>}
-                        {this.state.visitors.length === 2 && <EventVisitorsTwo visitors={this.state.visitors}/>}
-                        {this.state.visitors.length === 1 && <EventVisitorsOne visitors={this.state.visitors}/>}
-                    </TouchableOpacity>
+                    <SafeAreaView style={styles.container}>
+                        <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
+                                          onPress={() => this.props.navigation.navigate('EventVisitorsDetailed', {
+                                              visitors: this.state.visitors
+                                          })}>
+                            {this.state.visitors.length >= 3 && <EventVisitors visitors={this.state.visitors}/>}
+                            {this.state.visitors.length === 2 && <EventVisitorsTwo visitors={this.state.visitors}/>}
+                            {this.state.visitors.length === 1 && <EventVisitorsOne visitors={this.state.visitors}/>}
+                        </TouchableOpacity>
+                    </SafeAreaView>
                     {this.state.visitors.some(v => this.state.currentUserId == v) ?
                         <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>Вы идете</Text>

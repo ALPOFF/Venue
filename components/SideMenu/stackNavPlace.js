@@ -3,8 +3,9 @@ import React from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
 import DetailScreen from "./DetailScreen";
 import MapForPickPlace from "../MapForPickPlace/MapForPickPlace";
+import {createSwitchNavigator} from "react-navigation";
 
-const stackNavPlace = createStackNavigator({
+const stackNavPlace = createSwitchNavigator({
     Detail: {
         screen: DetailScreen,
         navigationOptions: ({navigation}) => ({
