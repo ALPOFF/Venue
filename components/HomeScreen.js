@@ -14,21 +14,26 @@ import {
 } from "react-native";
 import {connect} from "react-redux";
 import Geolocation from "@react-native-community/geolocation";
-import {setUserCoord} from "../state/appReducer";
+import {addNewEventData, setEventData, setLastPost, setUserCoord} from "../state/appReducer";
 
 
 const HomeScreen = (props) => {
 
-    const [eventsData, setEventsData] = useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
     const [userCoord, setUserCoord] = React.useState({});
+    //const [lastPost, setLastPost] = React.useState(null);
 
     useEffect(() => {
-        axios.get(`http://185.12.95.84:3000/events`)
+        console.log('new_event_array:', props.eventData)
+        console.log('last_post:', props.last_post)
+        axios.post(`http://185.12.95.84:3000/events`,
+            {"lastPost": props.last_post}
+        )
             .then(res => {
-                setEventsData(res.data);
-                console.log('event_array:',res.data)
-                console.log('coords:', res.data[4].place)
+                props.setEventData(res.data.data);
+                props.setLastPost(res.data.last_post)
+                console.log('event_array:', props.eventData)
+
             });
 
         Geolocation.getCurrentPosition((position) => {
@@ -56,10 +61,9 @@ const HomeScreen = (props) => {
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        // axios.get(`https://warm-ravine-29007.herokuapp.com/events`)
         axios.get(`http://185.12.95.84:3000/events`)
             .then(res => {
-                setEventsData(res.data);
+                setEventsData(res.data.data);
                 //console.log(res.data)
             });
         wait(2000).then(() => setRefreshing(false));
@@ -76,11 +80,11 @@ const HomeScreen = (props) => {
             }}>
             </View>
             <View>
-                {eventsData ?
+                {props.eventData ?
                     <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}
                                 refreshControl={
                                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-                        {eventsData.map(a => <TouchableOpacity activeOpacity={0.8} key={a.id} onPress={() =>
+                        {props.eventData.map(a => <TouchableOpacity activeOpacity={0.8} key={a.id} onPress={() =>
                             props.navigation.navigate('EventDetails', {
                                 postId: a.id,
                                 userId: a.userId,
@@ -100,7 +104,8 @@ const HomeScreen = (props) => {
                                 fontSize: 20,
                                 fontFamily: 'Oxygen-Regular'
                             }}>{a.postTitle}</Text>
-                            <Text>{(Math.ceil((distanceFunc(a.place[1].coords, userCoord)) * 100) / 100)} km from you</Text>
+                            <Text>{(Math.ceil((distanceFunc(a.place[1].coords, userCoord)) * 100) / 100)} km from
+                                you</Text>
                             {a.pic[0] != null && <Image
                                 style={{width: '100%', height: 200, borderRadius: 8}}
                                 source={{uri: a.pic[0]}}
@@ -110,6 +115,7 @@ const HomeScreen = (props) => {
                                 fontSize: 15,
                                 fontFamily: 'Oxygen-Light'
                             }}>{a.place.coords}</Text>
+                            <Text>{props.last_post}</Text>
                             <Text style={{
                                 color: '#14171A',
                                 fontSize: 15,
@@ -122,6 +128,24 @@ const HomeScreen = (props) => {
                     </View>
                 }
             </View>
+            <TouchableOpacity activeOpacity={0.8}
+                              style={{
+                                  position: 'absolute',
+                                  left: 10,
+                                  bottom: 10,
+                                  backgroundColor: 'transparent',
+                                  zIndex: 999
+                              }}
+                              onPress={() => {
+                                  axios.post(`http://185.12.95.84:3000/events`, {lastPost: props.last_post})
+                                      .then(res => {
+                                          console.log('new_post_pack:', res.data.data)
+                                          props.addNewEventData(res.data.data);
+                                          console.log('new_event_array:', props.eventData)
+                                      });
+                              }}>
+                <Text>GDFFFFF</Text>
+            </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.8}
                               style={{
                                   position: 'absolute',
@@ -184,6 +208,9 @@ const styles = StyleSheet.create({
     },
 });
 
+let mapStateProps = (state) => ({
+    last_post: state.appReducer.last_post,
+    eventData: state.appReducer.eventData
+})
 
-
-export default connect(null, {setUserCoord})(HomeScreen);
+export default connect(mapStateProps, {setUserCoord, setLastPost, setEventData, addNewEventData})(HomeScreen);

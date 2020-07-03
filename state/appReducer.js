@@ -10,6 +10,9 @@ const SET_NEW_LST_MSG = 'tariff/SET_NEW_LST_MSG';
 const SET_MARKER = 'tariff/SET_MARKER';
 const SET_CUR_DIALOG_ID = 'tariff/SET_CUR_DIALOG_ID';
 const SET_USER_COORD = 'tariff/SET_USER_COORD';
+const SET_LAST_POST = 'tariff/SET_LAST_POST';
+const SET_EVENT_DATA = 'tariff/SET_EVENT_DATA';
+const ADD_NEW_EVENT_DATA = 'tariff/ADD_NEW_EVENT_DATA';
 
 let initialState = {
     dialogList: [
@@ -28,7 +31,9 @@ let initialState = {
     userId: null,
     marker: {},
     curDialogId: null,
-    userCoord: {}
+    userCoord: {},
+    last_post: 0,
+    eventData: []
 };
 
 const appReducer = (state = initialState, action) => {
@@ -38,10 +43,25 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 skt: action.skt
             };
+        case SET_EVENT_DATA:
+            return {
+                ...state,
+                eventData: action.eventData
+            };
+        case ADD_NEW_EVENT_DATA:
+            return {
+                ...state,
+                eventData: [...state.eventData, ...action.newEventData]
+            };
         case SET_CUR_DIALOGS_USER:
             return {
                 ...state,
                 dialogs: action.dialogs
+            };
+        case SET_LAST_POST:
+            return {
+                ...state,
+                last_post: action.last_post
             };
         case SET_CUR_DIALOG_USERS:
             return {
@@ -100,6 +120,20 @@ export const setMarker = (marker) => {
     }
 };
 
+export const setEventData = (eventData) => {
+    return {
+        type: SET_EVENT_DATA,
+        eventData
+    }
+};
+
+export const addNewEventData = (newEventData) => {
+    return {
+        type: ADD_NEW_EVENT_DATA,
+        newEventData
+    }
+};
+
 export const setUserCoord = (lat, long) => {
     return {
         type: SET_USER_COORD,
@@ -112,6 +146,13 @@ export const setSocket = (skt) => {
     return {
         type: SET_SOCKET,
         skt
+    }
+};
+
+export const setLastPost = (last_post) => {
+    return {
+        type: SET_LAST_POST,
+        last_post
     }
 };
 
