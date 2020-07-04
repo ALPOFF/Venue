@@ -21,7 +21,8 @@ import EventVisitorsOne from "./EventVisitors/EventVisitorsOne";
 import {connect} from "react-redux";
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import AnimatedWithChildren from "react-native-web/dist/vendor/react-native/Animated/nodes/AnimatedWithChildren";
-const { height, width } = Dimensions.get('window');
+
+const {height, width} = Dimensions.get('window');
 
 class EventDetailsScreen extends Component {
 
@@ -31,7 +32,7 @@ class EventDetailsScreen extends Component {
             data: [
                 'http://www.bluecode.jp/images/A.png',
                 'http://www.bluecode.jp/images/B.png',
-                 'http://www.bluecode.jp/images/C.png'
+                'http://www.bluecode.jp/images/C.png'
 
 
             ],
@@ -47,12 +48,15 @@ class EventDetailsScreen extends Component {
     }
 
 
-
     static navigationOptions = ({navigation}) => {
         return {
             title: navigation.getParam('Title', ''),
+            headerRight: (<TouchableOpacity onPress={() => navigation.openDrawer()}>
+                <Icon name="undo" type="material" size={30} color='#009788'/>
+            </TouchableOpacity>),
             headerTintColor: 'black',
             headerTitleStyle: {
+                textAlign: 'center',
                 paddingLeft: 20,
                 fontStyle: 'italic',
                 fontSize: 28,
@@ -69,11 +73,15 @@ class EventDetailsScreen extends Component {
             this.setState({'currentUserId': item})
         })
 
+        axios.get(`https://warm-ravine-29007.herokuapp.com/eventvisitors`, {postId: this.state.postId})
+            .then(res => {
+                console.log(res.data)
+            });
     }
 
     renderItem = ({item, index}) => {
         return (
-            <Image style={styles.logoStyle} source={{ uri: item }} />
+            <Image style={styles.logoStyle} source={{uri: item}}/>
         );
     }
 
@@ -89,30 +97,30 @@ class EventDetailsScreen extends Component {
 
         return (
             <View style={{display: 'flex', flexDirection: 'column', paddingLeft: 10, paddingRight: 10}}>
-                <View >
+                <View>
                     <View style={{
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                        <SafeAreaView style={{ height: 240 }}>
-                        <Carousel
-                            inactiveSlideOpacity={0.6}
-                            inactiveSlideScale={0.95}
-                            layoutCardOffset={`18`}
-                            firstItem={0}
-                            itemWidth={width}
-                            sliderWidth={width}
-                            onSnapToItem={index => this.setState({ activeSlide: index })} //for pagination
-                            layout={'stack'}
-                            data={this.state.pic}
-                            renderItem={this.renderItem}
-                            //contentContainerCustomStyle={{ alignItems: 'center' }}
-                        />
-                        <Pagination
-                            dotsLength={this.state.pic.length} //dotの数
-                            activeDotIndex={this.state.activeSlide} //どのdotをactiveにするか
-                            containerStyle={{paddingVertical:15}} //デフォルトではちと広い
-                        />
+                        <SafeAreaView style={{height: 240}}>
+                            <Carousel
+                                inactiveSlideOpacity={0.6}
+                                inactiveSlideScale={0.95}
+                                layoutCardOffset={`18`}
+                                firstItem={0}
+                                itemWidth={width}
+                                sliderWidth={width}
+                                onSnapToItem={index => this.setState({activeSlide: index})} //for pagination
+                                layout={'stack'}
+                                data={this.state.pic}
+                                renderItem={this.renderItem}
+                                //contentContainerCustomStyle={{ alignItems: 'center' }}
+                            />
+                            <Pagination
+                                dotsLength={this.state.pic.length} //dotの数
+                                activeDotIndex={this.state.activeSlide} //どのdotをactiveにするか
+                                containerStyle={{paddingVertical: 15}} //デフォルトではちと広い
+                            />
                         </SafeAreaView>
                     </View>
                 </View>
@@ -165,13 +173,13 @@ class EventDetailsScreen extends Component {
         )
     }
 }
+
 const styles = {
     logoStyle: {
         width: width,
-        height: width/2
+        height: width / 2
     }
 };
-
 
 
 export default connect(null, {})(EventDetailsScreen);

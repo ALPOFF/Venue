@@ -27,7 +27,7 @@ const HomeScreen = (props) => {
         console.log('new_event_array:', props.eventData)
         console.log('last_post:', props.last_post)
         axios.post(`http://185.12.95.84:3000/events`,
-            {"lastPost": props.last_post}
+            {"lastPost": props.last_post, "userCoord": userCoord}
         )
             .then(res => {
                 props.setEventData(res.data.data);
@@ -141,6 +141,7 @@ const HomeScreen = (props) => {
                                       .then(res => {
                                           console.log('new_post_pack:', res.data.data)
                                           props.addNewEventData(res.data.data);
+                                          props.setLastPost(res.data.last_post)
                                           console.log('new_event_array:', props.eventData)
                                       });
                               }}>

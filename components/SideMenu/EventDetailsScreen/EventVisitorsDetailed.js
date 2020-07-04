@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Image, Text, TouchableOpacity, View, StyleSheet, SafeAreaView} from "react-native";
 import {Icon} from "react-native-elements";
 import userPic from '../../../assets/Screenshot_6.png'
+import * as axios from "axios";
+import Geolocation from "@react-native-community/geolocation";
 
 const EventVisitorsDetailed = (props) => {
+
     const visitors = props.navigation.state.params.visitors;
     return (
         <SafeAreaView style={styles.container}>
@@ -62,11 +65,12 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 4,
+            height: 8,
         },
-        shadowOpacity: 0.32,
-        shadowRadius: 5.46,
-        elevation: 9,
+        shadowOpacity: 0.44,
+        shadowRadius: 10.32,
+
+        elevation: 16,
     },
 });
 
