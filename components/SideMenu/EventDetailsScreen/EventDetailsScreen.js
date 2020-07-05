@@ -9,7 +9,7 @@ import {
     ScrollView,
     Image,
     AsyncStorage,
-    SafeAreaView
+    SafeAreaView, ActivityIndicator
 } from "react-native";
 import {Icon} from "react-native-elements";
 import userPic from '../../../assets/Screenshot_6.png'
@@ -29,8 +29,6 @@ import { NativeModules } from 'react-native'
 
 // Android:
 const locale = NativeModules.I18nManager.localeIdentifier // "fr_FR"
-
-
 
 const {height, width} = Dimensions.get('window');
 
@@ -110,6 +108,7 @@ class EventDetailsScreen extends Component {
         }
 
         return (
+            this.state.town === "" ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
             <View style={{display: 'flex', flexDirection: 'column', paddingLeft: 10, paddingRight: 10}}>
                 <View>
                     <View style={{

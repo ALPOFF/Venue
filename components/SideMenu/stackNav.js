@@ -10,6 +10,7 @@ import Dialog from "../Dialog";
 import UserFriends from "../UserFriends";
 import stackNavPlace from "./stackNavPlace";
 import stackNavEventDetailsScreen from "./EventDetailsScreen/stackNavEventDeatailsScreen";
+import YourProfile from "../YourProfile";
 
 const stackNav = createStackNavigator({
     Main: {
@@ -88,6 +89,20 @@ const stackNav = createStackNavigator({
         screen: UserFriends,
         navigationOptions: ({navigation}) => ({
             title: "My Friends",
+            headerTitleStyle: {
+                paddingLeft: 20,
+                fontStyle: 'italic',
+                fontSize: 28,
+                letterSpacing: -0.015,
+                color: '#009788'
+            }
+
+        })
+    },
+    YourProfile: {
+        screen: YourProfile,
+        navigationOptions: ({navigation}) => ({
+            title: "Your Profile",
             headerTitleStyle: {
                 paddingLeft: 20,
                 fontStyle: 'italic',

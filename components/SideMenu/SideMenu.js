@@ -37,7 +37,7 @@ class SideMenu extends Component {
             </View>
           </View>
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                            onPress={() => this.props.navigation.navigate('MyEvents')}>
+                            onPress={() => this.props.navigation.navigate('YourProfile')}>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
               <View style={{width: 30}}><Icon name="md-person" type='ionicon' size={25} color='#263238'/></View>
               <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10, textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>Your profile</Text>
