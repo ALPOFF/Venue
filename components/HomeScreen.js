@@ -104,7 +104,7 @@ const HomeScreen = (props) => {
                                 fontSize: 20,
                                 fontFamily: 'Oxygen-Regular'
                             }}>{a.postTitle}</Text>
-                            <Text>{(Math.ceil((distanceFunc(a.place[1].coords, userCoord)) * 100) / 100)} km from
+                            <Text>{(Math.ceil((distanceFunc(a.place, userCoord)) * 100) / 100)} km from
                                 you</Text>
                             {a.pic[0] != null && <Image
                                 style={{width: '100%', height: 200, borderRadius: 8}}

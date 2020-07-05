@@ -43,7 +43,8 @@ class EventDetailsScreen extends Component {
             pic: this.props.navigation.state.params.pic,
             visitors: this.props.navigation.state.params.visitors,
             activeSlide: 0,
-            postTitle: this.props.navigation.state.params.postTitle
+            postTitle: this.props.navigation.state.params.postTitle,
+            town: ""
         };
     }
 
@@ -73,9 +74,10 @@ class EventDetailsScreen extends Component {
             this.setState({'currentUserId': item})
         })
 
-        axios.get(`https://warm-ravine-29007.herokuapp.com/eventvisitors`, {postId: this.state.postId})
+        axios.post(`http://185.12.95.84:3000/eventdescrip`, {postId: this.state.postId})
             .then(res => {
-                console.log(res.data)
+                this.setState({town: res.data.town})
+                console.log('rrrrrrrrrrrrrrrrr:',res.data)
             });
     }
 
@@ -126,6 +128,7 @@ class EventDetailsScreen extends Component {
                 </View>
 
                 <Text>Организатор: {this.state.userIdOrg}</Text>
+                <Text>Место: {this.state.town}</Text>
                 <View
                     style={{
                         display: 'flex',
