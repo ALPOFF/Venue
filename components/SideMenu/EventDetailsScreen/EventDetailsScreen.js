@@ -21,6 +21,16 @@ import EventVisitorsOne from "./EventVisitors/EventVisitorsOne";
 import {connect} from "react-redux";
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import AnimatedWithChildren from "react-native-web/dist/vendor/react-native/Animated/nodes/AnimatedWithChildren";
+import { NativeModules } from 'react-native'
+
+// iOS:
+// const locale = NativeModules.SettingsManager.settings.AppleLocale ||
+//     NativeModules.SettingsManager.settings.AppleLanguages[0] // "fr_FR"
+
+// Android:
+const locale = NativeModules.I18nManager.localeIdentifier // "fr_FR"
+
+
 
 const {height, width} = Dimensions.get('window');
 
@@ -68,13 +78,15 @@ class EventDetailsScreen extends Component {
     };
 
     componentDidMount() {
+        console.log('locale:', locale)
         this.props.navigation.setParams({Title: this.state.postTitle})
         console.log('honepics:', this.state.pic)
         AsyncStorage.getItem('userToken', (err, item) => {
             this.setState({'currentUserId': item})
         })
-
-        axios.post(`http://185.12.95.84:3000/eventdescrip`, {postId: this.state.postId})
+        let sysLang = ''
+        locale === 'ru_RU' ? sysLang = 'ru_RU' : sysLang = 'en_US';
+        axios.post(`http://185.12.95.84:3000/eventdescrip`, {postId: this.state.postId, sysLang: sysLang})
             .then(res => {
                 this.setState({town: res.data.town})
                 console.log('rrrrrrrrrrrrrrrrr:',res.data)
