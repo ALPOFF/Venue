@@ -86,7 +86,7 @@ class DetailScreen extends Component {
             console.log('marker:', this.props.marker)
             console.log('rtype:', this.state.pickedImg[0].path) //pic
             AsyncStorage.getItem('userToken', (err, item) => {
-                axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg, postText: this.state.description, eventName: this.state.eventName, userId: item, postCategory: this.state.category, coords: this.props.marker})
+                axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg, postText: this.state.description, eventName: this.state.eventName, userId: item, postCategory: this.state.category, coords: this.props.marker}).then(this.props.navigation.navigate('Main'))
             })
         }
 
@@ -110,7 +110,7 @@ class DetailScreen extends Component {
                     <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
                     <Icon name="explore" size={40} color={'#3C2274'}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={sendimg}
+                <TouchableOpacity onPress={() => {sendimg();}}
                                   style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
                     <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
                     <Icon name="event" size={40} color={'#3C2274'}/>

@@ -111,7 +111,7 @@ class EventDetailsScreen extends Component {
         const iGo = () => {
             console.log("NICE")
             AsyncStorage.getItem('userToken', (err, item) => {
-                axios.post(`https://warm-ravine-29007.herokuapp.com/igo`,
+                axios.post(`http://185.12.95.84:3000/igo`,
                     {user_id: item, postId: this.state.postId});
             })
         }
@@ -171,7 +171,7 @@ class EventDetailsScreen extends Component {
                             {this.state.visitors.length === 1 && <EventVisitorsOne visitors={this.state.visitors}/>}
                         </TouchableOpacity>
                     </SafeAreaView>
-                    {this.state.whogo.some(v => this.state.currentUserId === v) ?
+                    {this.state.whogo.some(v => this.state.currentUserId == v) ?
                         <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}  onPress={() => iDontGo()}>
                             <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>Вы идете</Text>
                         </View>
