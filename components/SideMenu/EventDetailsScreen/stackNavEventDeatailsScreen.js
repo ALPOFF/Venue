@@ -8,6 +8,7 @@ const stackNavEventDetailsScreen = createStackNavigator({
         screen: EventDetailsScreen,
         navigationOptions: ({navigation}) => ({
             // header: null
+            headerTransparent: true
         })
     },
     EventVisitorsDetailed: {

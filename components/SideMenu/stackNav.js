@@ -102,7 +102,7 @@ const stackNav = createStackNavigator({
     YourProfile: {
         screen: YourProfile,
         navigationOptions: ({navigation}) => ({
-            title: "Your Profile",
+            headerTransparent: true,
             headerTitleStyle: {
                 paddingLeft: 20,
                 fontStyle: 'italic',

@@ -27,26 +27,27 @@ const HomeScreen = (props) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [userCoord, setUserCoord] = React.useState({});
     const [postsRender, setPostsRender] = React.useState(true);
-    //const [lastPost, setLastPost] = React.useState(null);
+    const [newlastPost, setNewLastPost] = React.useState(0);
+
+    let sysLang = ''
+    locale === 'ru_RU' ? sysLang = 'ru_RU' : sysLang = 'en_US';
 
     useEffect(() => {
         console.log('new_event_array:', props.eventData)
         console.log('last_post:', props.last_post)
-        let sysLang = ''
-        locale === 'ru_RU' ? sysLang = 'ru_RU' : sysLang = 'en_US';
         Geolocation.getCurrentPosition((position) => {
+            setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
             axios.post(`http://185.12.95.84:3000/events`,
-                {"lastPost": props.last_post, "userCoord": position.coords, sysLang: sysLang}
+                {"lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang}
             )
                 .then(res => {
                     console.log('ALLLL:', res.data)
                     props.setEventData(res.data.data);
-                    props.setLastPost(res.data.last_post)
+                    setNewLastPost(res.data.last_post)
                     console.log('event_array:', props.eventData)
                     setPostsRender(res.data.posts)
                 });
             console.log('current_pos:', position);
-            setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
         }, (error) => {
             // См. таблицы кодов ошибок выше.
             console.log(error.code, error.message);
@@ -70,22 +71,33 @@ const HomeScreen = (props) => {
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        axios.get(`http://185.12.95.84:3000/events`)
-            .then(res => {
-                setEventsData(res.data.data);
-                //console.log(res.data)
-            });
+        Geolocation.getCurrentPosition((position) => {
+            setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
+            axios.post(`http://185.12.95.84:3000/events`,
+                {"lastPost": 0, "userCoord": position.coords, sysLang: sysLang}
+            )
+                .then(res => {
+                    console.log('ALLLL:', res.data)
+                    props.setEventData(res.data.data);
+                    setNewLastPost(res.data.last_post)
+                    console.log('event_array:', props.eventData)
+                    setPostsRender(res.data.posts)
+                });
+            console.log('current_pos:', position);
+        }, (error) => {
+            // См. таблицы кодов ошибок выше.
+            console.log(error.code, error.message);
+        }, {
+            enableHighAccuracy: false,
+            timeout: 10000,
+            maximumAge: 100000
+        });
         wait(2000).then(() => setRefreshing(false));
     }, [refreshing]);
 
     return (
         // props.eventData ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
-        !postsRender ?
-            <View style={{display: 'flex', alignItems: "center", paddingTop: 20}}><Text style={{fontSize: 18}}>No events
-                were found in your city!
-                Be the first!</Text></View> :
-            props.eventData.length == 0 ?
-                <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788"/> :
+        // postsRender ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
                 <View style={{display: 'flex', backgroundColor: '#F1EFF1', height: '100%'}}>
                     <View style={{
                         display: 'flex',
@@ -131,6 +143,7 @@ const HomeScreen = (props) => {
                                     fontSize: 15,
                                     fontFamily: 'Oxygen-Regular'
                                 }}>{a.postText.substr(0, 120) + '...'}</Text>
+                                <Text>{a.id}</Text>
                             </View></TouchableOpacity>)}
                         </ScrollView>}
                     </View>
@@ -143,13 +156,35 @@ const HomeScreen = (props) => {
                                           zIndex: 999
                                       }}
                                       onPress={() => {
-                                          axios.post(`http://185.12.95.84:3000/events`, {lastPost: props.last_post})
-                                              .then(res => {
-                                                  console.log('new_post_pack:', res.data.data)
-                                                  props.addNewEventData(res.data.data);
-                                                  props.setLastPost(res.data.last_post)
-                                                  console.log('new_event_array:', props.eventData)
-                                              });
+                                          Geolocation.getCurrentPosition((position) => {
+                                              setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
+                                              axios.post(`http://185.12.95.84:3000/events`,
+                                                  {"lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang}
+                                              )
+                                                  .then(res => {
+                                                      console.log('ALLLL:', res.data)
+                                                      props.addNewEventData(res.data.data);
+                                                      setNewLastPost(res.data.last_post)
+                                                      console.log('event_array:', props.eventData)
+                                                      setPostsRender(res.data.posts)
+                                                  });
+                                              console.log('current_pos:', position);
+                                          }, (error) => {
+                                              // См. таблицы кодов ошибок выше.
+                                              console.log(error.code, error.message);
+                                          }, {
+                                              enableHighAccuracy: false,
+                                              timeout: 10000,
+                                              maximumAge: 100000
+                                          });
+
+                                          // axios.post(`http://185.12.95.84:3000/events`, {lastPost: props.last_post, })
+                                          //     .then(res => {
+                                          //         console.log('new_post_pack:', res.data.data)
+                                          //         props.addNewEventData(res.data.data);
+                                          //         props.setLastPost(res.data.last_post)
+                                          //         console.log('new_event_array:', props.eventData)
+                                          //     });
                                       }}>
                         <Text>GDFFFFF</Text>
                     </TouchableOpacity>

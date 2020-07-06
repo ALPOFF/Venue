@@ -52,7 +52,9 @@ class EventDetailsScreen extends Component {
             visitors: this.props.navigation.state.params.visitors,
             activeSlide: 0,
             postTitle: this.props.navigation.state.params.postTitle,
-            town: ""
+            town: '',
+            whogo: [],
+            org: ''
         };
     }
 
@@ -60,13 +62,14 @@ class EventDetailsScreen extends Component {
     static navigationOptions = ({navigation}) => {
         return {
             title: navigation.getParam('Title', ''),
-            headerRight: (<TouchableOpacity onPress={() => navigation.openDrawer()}>
-                <Icon name="undo" type="material" size={30} color='#009788'/>
+            headerRight: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('Main')}>
+                <Icon name="arrowright" type="antdesign" size={30} color='white'/>
             </TouchableOpacity>),
             headerTintColor: 'black',
             headerTitleStyle: {
                 textAlign: 'center',
                 paddingLeft: 20,
+                paddingRight: 20,
                 fontStyle: 'italic',
                 fontSize: 28,
                 letterSpacing: -0.015,
@@ -76,18 +79,24 @@ class EventDetailsScreen extends Component {
     };
 
     componentDidMount() {
+
         console.log('locale:', locale)
-        this.props.navigation.setParams({Title: this.state.postTitle})
+        // this.props.navigation.setParams({Title: this.state.postTitle})
         console.log('honepics:', this.state.pic)
         AsyncStorage.getItem('userToken', (err, item) => {
             this.setState({'currentUserId': item})
+            console.log("this cur id:", item)
         })
         let sysLang = ''
         locale === 'ru_RU' ? sysLang = 'ru_RU' : sysLang = 'en_US';
         axios.post(`http://185.12.95.84:3000/eventdescrip`, {postId: this.state.postId, sysLang: sysLang})
             .then(res => {
                 this.setState({town: res.data.town})
+                this.setState({org: res.data.org})
+                this.setState({whogo: res.data.whogo})
                 console.log('rrrrrrrrrrrrrrrrr:',res.data)
+                console.log('whogo:', res.data.whogo)
+                console.log('whogostate:', this.state.whogo)
             });
     }
 
@@ -107,15 +116,23 @@ class EventDetailsScreen extends Component {
             })
         }
 
+        const iDontGo = () => {
+            console.log("NICE")
+            AsyncStorage.getItem('userToken', (err, item) => {
+                axios.post(`https://warm-ravine-29007.herokuapp.com/idontgo`,
+                    {user_id: item, postId: this.state.postId});
+            })
+        }
+
         return (
-            this.state.town === "" ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
+            this.state.town === "" ? <ActivityIndicator size="large" color="#009788" /> :
             <View style={{display: 'flex', flexDirection: 'column', paddingLeft: 10, paddingRight: 10}}>
                 <View>
                     <View style={{
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                        <SafeAreaView style={{height: 240}}>
+                        <SafeAreaView style={{height: 190}}>
                             <Carousel
                                 inactiveSlideOpacity={0.6}
                                 inactiveSlideScale={0.95}
@@ -137,9 +154,6 @@ class EventDetailsScreen extends Component {
                         </SafeAreaView>
                     </View>
                 </View>
-
-                <Text>Организатор: {this.state.userIdOrg}</Text>
-                <Text>Место: {this.state.town}</Text>
                 <View
                     style={{
                         display: 'flex',
@@ -157,8 +171,8 @@ class EventDetailsScreen extends Component {
                             {this.state.visitors.length === 1 && <EventVisitorsOne visitors={this.state.visitors}/>}
                         </TouchableOpacity>
                     </SafeAreaView>
-                    {this.state.visitors.some(v => this.state.currentUserId == v) ?
-                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    {this.state.whogo.some(v => this.state.currentUserId === v) ?
+                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}  onPress={() => iDontGo()}>
                             <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>Вы идете</Text>
                         </View>
                         :
@@ -181,8 +195,10 @@ class EventDetailsScreen extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
+                <Text style={{fontSize: 20, color: 'black'}}>{this.state.postTitle}</Text>
+                <Text>Организатор: {this.state.org}</Text>
+                <Text>Street: {this.state.town}</Text>
                 <Text>{this.state.postText}</Text>
-                <Text>{this.state.postId}</Text>
             </View>
         )
     }

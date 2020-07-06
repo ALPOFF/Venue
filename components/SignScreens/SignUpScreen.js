@@ -24,7 +24,7 @@ const SignUpScreen = (props) => {
         console.log('submitting form', value.email, value.password, value.passwordVerif, value.login);
 
         (value.passwordVerif !== value.password) ? setHasError(true) :
-            axios.post(`http://185.12.95.84:5000/registr/`, {
+            axios.post(`http://185.12.95.84:3000/registr/`, {
                 Email: value.email,
                 Password: value.password,
                 Login: value.login

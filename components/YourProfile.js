@@ -1,15 +1,29 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {Icon} from "react-native-elements";
+import Geolocation from "@react-native-community/geolocation";
+import * as axios from "axios";
+import testimg from './../assets/Venue_new/testimg.jpg'
+import prof from './../assets/Venue_new/prof.jpg'
 
 const YourProfile = () => {
+
+    const [a, setA] = React.useState(true);
+
+    useEffect(() => {
+
+    }, []);
+
     return (
-        <View style={{display: 'flex', flexDirection: 'column'}}>
-            {/*<Image*/}
-            {/*    style={{width: '100%', height: 200, borderRadius: 8}}*/}
-            {/*    source={{uri: a.pic[0]}}*/}
-            {/*/>*/}
-            <View style={{display: "flex", flexDirection: "row"}}>
+        <View style={{display: 'flex', flexDirection: 'column', position: "relative"}}>
+
+            {a && <Image source={testimg} style={{height: '30%'}}/>}
+            <View style={{display: "flex", alignItems: "center"}}>
+                {a && <Image source={prof}
+                             style={{width: '30%', height: '30%', borderRadius: 100}}/>}
+            </View>
+
+            <View style={{display: "flex", flexDirection: "row", padding: 10}}>
                 <View>
                     <Text>логин</Text>
                     <Text>подписчики</Text>
