@@ -39,34 +39,30 @@ class DetailScreen extends Component {
     }
 
 
-
-
-
     render() {
-         const _addEvent = (value) => {
-             console.log('marker:', this.props.marker)
-             console.log('eventName:', this.state.eventName)
-             console.log('category:', this.state.category)
-             console.log('description:', this.state.description)
-             console.log('pickedImg:', this.state.pickedImg)
-             console.log('this.props.marker:', this.props.marker)
-             AsyncStorage.getItem('userName', (err, item) => {
-                 axios.post(`http://185.12.95.84:3000/event/`, {
-                     eventName: value.eventName,
-                     eventText: value.eventText,
-                     place: value.place,
-                     userId: item,
-                     coords: this.props.marker
-                 })
-                     .then(res => {
-                         if (res.data) {
-                             this.props.navigation.navigate('Main')
-                         }
-                         else {
-                             alert('error')
-                         }
-                     });
-             });
+        const _addEvent = (value) => {
+            console.log('marker:', this.props.marker)
+            console.log('eventName:', this.state.eventName)
+            console.log('category:', this.state.category)
+            console.log('description:', this.state.description)
+            console.log('pickedImg:', this.state.pickedImg)
+            console.log('this.props.marker:', this.props.marker)
+            AsyncStorage.getItem('userName', (err, item) => {
+                axios.post(`http://185.12.95.84:3000/event/`, {
+                    eventName: value.eventName,
+                    eventText: value.eventText,
+                    place: value.place,
+                    userId: item,
+                    coords: this.props.marker
+                })
+                    .then(res => {
+                        if (res.data) {
+                            this.props.navigation.navigate('Main')
+                        } else {
+                            alert('error')
+                        }
+                    });
+            });
         };
 
         let _getPhotoLibrary = async () => {
@@ -86,35 +82,68 @@ class DetailScreen extends Component {
             console.log('marker:', this.props.marker)
             console.log('rtype:', this.state.pickedImg[0].path) //pic
             AsyncStorage.getItem('userToken', (err, item) => {
-                axios.post(`http://185.12.95.84:3000/sendimage`, {img: this.state.pickedImg, postText: this.state.description, eventName: this.state.eventName, userId: item, postCategory: this.state.category, coords: this.props.marker}).then(this.props.navigation.navigate('Main'))
+                axios.post(`http://185.12.95.84:3000/sendimage`, {
+                    img: this.state.pickedImg,
+                    postText: this.state.description,
+                    eventName: this.state.eventName,
+                    userId: item,
+                    postCategory: this.state.category,
+                    coords: this.props.marker
+                }).then(this.props.navigation.navigate('Main'))
             })
         }
 
         return (
             <View style={styles.container}>
-                {this.state.pickedImg[0] === undefined  ? <Image source={imgEvent} style={{width: '100%', height: 200}} alt=""/>
+                {this.state.pickedImg[0] === undefined ?
+                    <Image source={imgEvent} style={{width: '100%', height: 200}} alt=""/>
                     : <Image source={{uri: this.state.pickedImg[0].path}} style={{width: '100%', height: 200}} alt=""/>}
                 <View>
-                <TextInput onChangeText={(value) => {this.setState({eventName: value})}} value={this.state.eventName} placeholder={'Event Name...'}/>
-                <TextInput onChangeText={(value) => {this.setState({description: value})}} value={this.state.description} placeholder={'Type here the description of your event...'}/>
-                <TextInput onChangeText={(value) => {this.setState({category: value})}} value={this.state.category} placeholder={'Choose category...'}/>
+                    <TextInput onChangeText={(value) => {
+                        this.setState({eventName: value})
+                    }} value={this.state.eventName} placeholder={'Event Name...'}/>
+                    <TextInput onChangeText={(value) => {
+                        this.setState({description: value})
+                    }} value={this.state.description} placeholder={'Type here the description of your event...'}/>
+                    <TextInput onChangeText={(value) => {
+                        this.setState({category: value})
+                    }} value={this.state.category} placeholder={'Choose category...'}/>
                 </View>
-                <TouchableOpacity onPress={_getPhotoLibrary}
-                                  style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                    <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Pic</Text>
-                    <Icon name="camera" size={40} color={'#3C2274'}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() =>
-                    this.props.navigation.navigate('MapForPickPlace')}
-                                  style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                    <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
-                    <Icon name="explore" size={40} color={'#3C2274'}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {sendimg();}}
-                                  style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                    <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
-                    <Icon name="event" size={40} color={'#3C2274'}/>
-                </TouchableOpacity>
+                <View style={{display: "flex", flexDirection: "row"}}>
+                    <TouchableOpacity onPress={_getPhotoLibrary}
+                                      style={{
+                                          display: 'flex',
+                                          flexDirection: 'row',
+                                          alignItems: 'center',
+                                          marginTop: 10
+                                      }}>
+                        <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Pic</Text>
+                        <Icon name="camera" size={40} color={'#3C2274'}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() =>
+                        this.props.navigation.navigate('MapForPickPlace')}
+                                      style={{
+                                          display: 'flex',
+                                          flexDirection: 'row',
+                                          alignItems: 'center',
+                                          marginTop: 10
+                                      }}>
+                        <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
+                        <Icon name="explore" size={40} color={'#3C2274'}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        sendimg();
+                    }}
+                                      style={{
+                                          display: 'flex',
+                                          flexDirection: 'row',
+                                          alignItems: 'center',
+                                          marginTop: 10
+                                      }}>
+                        <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
+                        <Icon name="event" size={40} color={'#3C2274'}/>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
