@@ -112,15 +112,27 @@ class EventDetailsScreen extends Component {
             console.log("NICE")
             AsyncStorage.getItem('userToken', (err, item) => {
                 axios.post(`http://185.12.95.84:3000/igo`,
-                    {user_id: item, postId: this.state.postId});
+                    {user_id: item, postId: this.state.postId}).then(res => {
+                        if (res.data.done) {
+                            this.setState({whogo: [...this.state.whogo, item]})
+                        } else {
+                            console.log('error')
+                        }
+                    });
             })
         }
 
         const iDontGo = () => {
-            console.log("NICE")
+            console.log("dont")
             AsyncStorage.getItem('userToken', (err, item) => {
-                axios.post(`https://warm-ravine-29007.herokuapp.com/idontgo`,
-                    {user_id: item, postId: this.state.postId});
+                axios.post(`http://185.12.95.84:3000/idontgo`,
+                    {user_id: item, postId: this.state.postId}).then(res => {
+                        if (res.data.done) {
+                            this.setState({whogo: this.state.whogo.map(w => w !== this.state.currentUserId)})
+                        } else {
+                            console.log('error')
+                        }
+                });
             })
         }
 
@@ -172,9 +184,12 @@ class EventDetailsScreen extends Component {
                         </TouchableOpacity>
                     </SafeAreaView>
                     {this.state.whogo.some(v => this.state.currentUserId == v) ?
-                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}  onPress={() => iDontGo()}>
+                        <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
+                                          onPress={() => iDontGo()}>
+                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}} >
                             <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>Вы идете</Text>
                         </View>
+                        </TouchableOpacity>
                         :
                         <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                           onPress={() => iGo()}>
