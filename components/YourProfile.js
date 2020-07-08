@@ -10,13 +10,13 @@ import {formatDate} from "../common/formatDate";
 const YourProfile = () => {
 
     const [a, setA] = React.useState(true);
-    const [profile, setProfile] = React.useState([]);
+    const [profile, setProfile] = React.useState({});
 
     useEffect(() => {
         AsyncStorage.getItem('userToken', (err, item) => {
             axios.post(`http://185.12.95.84:3000/getprofile`, {
                 userId: item
-            }).then(res => {setProfile(res.data); console.log('res:', res.data)})
+            }).then(res => {setProfile(res.data[0]); console.log('res:', res.data); console.log('lngth:', res.data[0].subscribers.length)})
         })
     }, []);
 
@@ -27,13 +27,13 @@ const YourProfile = () => {
                 {a && <Image source={prof}
                              style={{width: '30%', height: '30%', borderRadius: 100}}/>}
             </View>
-            {profile.map(i =>
                 <View style={{display: "flex", flexDirection: "row", padding: 10}}>
                     <View>
-                        <Text>{i.Username}логин</Text>
-                        <View>{i.subscribers.map(s => <Text>{s}</Text>)}</View>
-                        <Text>{formatDate(new Date(i.birthday))}др</Text>
-                        <Text>{i.description}описание</Text>
+                        <Text>@{profile.Username}</Text>
+                        <Text>{profile.description}</Text>
+                        <Text>Подписки: {profile.subscribes.length}</Text>
+                        <Text>Подписчики: {profile.subscribers.length}</Text>
+                        <Text>Дата рождения: {formatDate(new Date(profile.birthday))}</Text>
                     </View>
                     <View>
                         <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
@@ -42,7 +42,6 @@ const YourProfile = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
-             )}
         </View>
     )
 }

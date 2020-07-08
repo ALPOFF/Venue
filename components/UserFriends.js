@@ -53,7 +53,7 @@ const UserFriends = (props) => {
 
     let addToFriends = (friend_id) => {
         AsyncStorage.getItem('userToken', (err, item) => {
-            axios.post(`https://warm-ravine-29007.herokuapp.com/addtofriends`, {user_id: item, friend_id: friend_id})
+            axios.post(`http://185.12.95.84:3000/addtofriends`, {user_id: item, friend_id: friend_id})
         });
     }
 
