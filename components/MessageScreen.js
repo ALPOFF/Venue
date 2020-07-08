@@ -10,7 +10,6 @@ import LocalizedStrings from 'react-native-localization';
 const URL = 'https://warm-ravine-29007.herokuapp.com/';
 const socket = io(URL, {forceNode: false});
 
-
 let strings = new LocalizedStrings({
     "en-US":{
         how:"How do you want your egg today?",
@@ -22,8 +21,6 @@ let strings = new LocalizedStrings({
         choice:"Come scegliere l'uovo"
     }
 });
-
-
 
 class MessageScreen extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -133,8 +130,8 @@ class MessageScreen extends Component {
                             }}>
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>{d.dialogTitle}</Text>
                                 <Text>{d.last_msg}</Text>
-                                <Text>{d.dialog_id}</Text>
-                                <View>{d.users_id.map(f => <Text>{f}</Text>)}</View>
+                                {/*<Text>{d.dialog_id}</Text>*/}
+                                {/*<View>{d.users_id.map(f => <Text>{f}</Text>)}</View>*/}
                             </View>
                         </TouchableOpacity>
                     )}
