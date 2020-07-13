@@ -37,19 +37,19 @@ class SideMenu extends Component {
             </View>
           </View>
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                            onPress={() => this.props.navigation.navigate('YourProfile')}>
+                            onPress={() => this.props.navigation.navigate('switchNavEditProfile')}>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
               <View style={{width: 30}}><Icon name="md-person" type='ionicon' size={25} color='#263238'/></View>
               <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Your profile</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                            onPress={() => this.props.navigation.navigate('MyFriends')}>
-            <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <View style={{width: 30}}><Icon name="people" size={25} color='#263238'/></View>
-              <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Friends</Text>
-            </View>
-          </TouchableOpacity>
+          {/*<TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}*/}
+          {/*                  onPress={() => this.props.navigation.navigate('MyFriends')}>*/}
+          {/*  <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>*/}
+          {/*    <View style={{width: 30}}><Icon name="people" size={25} color='#263238'/></View>*/}
+          {/*    <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Friends</Text>*/}
+          {/*  </View>*/}
+          {/*</TouchableOpacity>*/}
           <View>
             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
               <View style={{width: 30}}><Icon name="ios-settings" type='ionicon' size={25} color='#263238'/></View>
@@ -57,13 +57,13 @@ class SideMenu extends Component {
               <Text style={{color: 'orange'}}>In dev</Text>
             </View>
           </View>
-          <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                            onPress={() => this.props.navigation.navigate('MyEvents')}>
-            <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-              <View style={{width: 30}}><Icon name="event-note" size={25} color='#263238'/></View>
-              <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>My events</Text>
-            </View>
-          </TouchableOpacity>
+          {/*<TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}*/}
+          {/*                  onPress={() => this.props.navigation.navigate('MyEvents')}>*/}
+          {/*  <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>*/}
+          {/*    <View style={{width: 30}}><Icon name="event-note" size={25} color='#263238'/></View>*/}
+          {/*    <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>My events</Text>*/}
+          {/*  </View>*/}
+          {/*</TouchableOpacity>*/}
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}} onPress={async () => {
             await AsyncStorage.clear();
             this.props.navigation.navigate('Auth')

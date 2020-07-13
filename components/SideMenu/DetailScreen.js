@@ -7,7 +7,7 @@ import EventReduxForm from "../../ReduxForm/EventReduxForm";
 import * as axios from "axios";
 import {Icon, Input} from "react-native-elements";
 import {Field} from "redux-form";
-import imgEvent from './../../assets/imgEvent.png'
+import imgEvent from './../../assets/Venue_new/new_pic.png'
 import ImagePicker from 'react-native-image-crop-picker';
 import {connect} from "react-redux";
 
@@ -96,8 +96,14 @@ class DetailScreen extends Component {
         return (
             <View style={styles.container}>
                 {this.state.pickedImg[0] === undefined ?
-                    <Image source={imgEvent} style={{width: '100%', height: 200}} alt=""/>
-                    : <Image source={{uri: this.state.pickedImg[0].path}} style={{width: '100%', height: 200}} alt=""/>}
+                    <TouchableOpacity onPress={_getPhotoLibrary}>
+                        <Image source={imgEvent} style={{width: '100%', height: 200}}
+                               alt=""/>
+                    </TouchableOpacity>
+                    : <TouchableOpacity onPress={_getPhotoLibrary}>
+                        <Image source={{uri: this.state.pickedImg[0].path}} style={{width: '100%', height: 200}}
+                               alt=""/>
+                    </TouchableOpacity>}
                 <View>
                     <TextInput onChangeText={(value) => {
                         this.setState({eventName: value})
@@ -109,17 +115,17 @@ class DetailScreen extends Component {
                         this.setState({category: value})
                     }} value={this.state.category} placeholder={'Choose category...'}/>
                 </View>
-                <View style={{display: "flex", flexDirection: "row"}}>
-                    <TouchableOpacity onPress={_getPhotoLibrary}
-                                      style={{
-                                          display: 'flex',
-                                          flexDirection: 'row',
-                                          alignItems: 'center',
-                                          marginTop: 10
-                                      }}>
-                        <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Pic</Text>
-                        <Icon name="camera" size={40} color={'#3C2274'}/>
-                    </TouchableOpacity>
+                <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                    {/*<TouchableOpacity onPress={_getPhotoLibrary}*/}
+                    {/*                  style={{*/}
+                    {/*                      display: 'flex',*/}
+                    {/*                      flexDirection: 'row',*/}
+                    {/*                      alignItems: 'center',*/}
+                    {/*                      marginTop: 10*/}
+                    {/*                  }}>*/}
+                    {/*    <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Pic</Text>*/}
+                    {/*    <Icon name="camera" size={40} color={'#3C2274'}/>*/}
+                    {/*</TouchableOpacity>*/}
                     <TouchableOpacity onPress={() =>
                         this.props.navigation.navigate('MapForPickPlace')}
                                       style={{
@@ -128,8 +134,8 @@ class DetailScreen extends Component {
                                           alignItems: 'center',
                                           marginTop: 10
                                       }}>
-                        <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
-                        <Icon name="explore" size={40} color={'#3C2274'}/>
+                        <Text style={{color: 'rgba(0,0,0,0.72)', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
+                        <Icon name="explore" size={40} color={'rgba(0,0,0,0.72)'}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         sendimg();
@@ -140,8 +146,8 @@ class DetailScreen extends Component {
                                           alignItems: 'center',
                                           marginTop: 10
                                       }}>
-                        <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Add event</Text>
-                        <Icon name="event" size={40} color={'#3C2274'}/>
+                        <Text style={{color: 'rgba(0,0,0,0.72)', fontWeight: 'bold', fontSize: 20}}>Complete</Text>
+                        <Icon name="done" size={40} color={'rgba(0,0,0,0.72)'}/>
                     </TouchableOpacity>
                 </View>
             </View>

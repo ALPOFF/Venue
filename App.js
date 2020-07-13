@@ -20,7 +20,9 @@ import {render} from "react-native-web";
 import SplashScreen from "react-native-splash-screen";
 import stackNavSignScreens from "./components/SignScreens/stackNavSignScreens";
 import {AppearanceProvider} from "react-native-appearance";
-import { DarkModeProvider } from 'react-native-dark-mode'
+import {DarkModeProvider} from 'react-native-dark-mode'
+import SearchScreen from "./components/SearchScreen";
+import SearchNav from "./components/SearchNav";
 
 
 class App extends React.Component {
@@ -54,6 +56,15 @@ const BottomTabNav = createBottomTabNavigator(
                 tabBarLabel: 'Events',
                 tabBarIcon: ({tintColor, activeTintColor}) => (
                     <Icon name="home" size={30} color={tintColor}/>
+                )
+            }
+        },
+        Search: {
+            screen: SearchNav,
+            navigationOptions: {
+                tabBarLabel: 'SearchScreen',
+                tabBarIcon: ({tintColor, activeTintColor}) => (
+                    <Icon name="search" type="font-awesome" size={25} color={tintColor}/>
                 )
             }
         },

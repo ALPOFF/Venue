@@ -64,7 +64,7 @@ class MapForPickPlace extends Component<{}> {
         }, {
             enableHighAccuracy: false,
             timeout: 10000,
-            maximumAge: 100000
+            // maximumAge: 100000
         });
     }
 

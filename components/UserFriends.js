@@ -118,6 +118,7 @@ const UserFriends = (props) => {
                                             )
                                         })
                                     }}>
+                                        <Text>{f.Username}</Text>
                                         <Icon name="mail" size={30} color={'grey'}/>
                                     </TouchableOpacity>
                                 </View>

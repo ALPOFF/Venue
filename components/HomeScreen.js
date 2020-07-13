@@ -33,8 +33,6 @@ const HomeScreen = (props) => {
     locale === 'ru_RU' ? sysLang = 'ru_RU' : sysLang = 'en_US';
 
     useEffect(() => {
-        console.log('new_event_array:', props.eventData)
-        console.log('last_post:', props.last_post)
         Geolocation.getCurrentPosition((position) => {
             setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
             axios.post(`http://185.12.95.84:3000/events`,
@@ -54,7 +52,7 @@ const HomeScreen = (props) => {
         }, {
             enableHighAccuracy: false,
             timeout: 10000,
-            maximumAge: 100000
+            // maximumAge: 100000
         });
 
 
@@ -90,29 +88,42 @@ const HomeScreen = (props) => {
         }, {
             enableHighAccuracy: false,
             timeout: 10000,
-            maximumAge: 100000
+            // maximumAge: 100000
         });
         wait(2000).then(() => setRefreshing(false));
     }, [refreshing]);
 
     return (
-        // props.eventData ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
+        // props.eventData.length !== 0 ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
         // postsRender ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
-                <View style={{display: 'flex', backgroundColor: '#F1EFF1', height: '100%'}}>
-                    <View style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingTop: 10
-                    }}>
-                    </View>
-                    <View>
-                        {props.eventData &&
-                        <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}
+                <View style={{display: 'flex', backgroundColor: '#f1eff1', height: '100%'}}>
+                    <View style={{height: '100%'}}>
+                        <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"} onScrollEndDrag={() => {
+                            Geolocation.getCurrentPosition((position) => {
+                                setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
+                                axios.post(`http://185.12.95.84:3000/events`,
+                                    {"lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang}
+                                )
+                                    .then(res => {
+                                        console.log('ALLLL:', res.data)
+                                        props.addNewEventData(res.data.data);
+                                        setNewLastPost(res.data.last_post)
+                                        console.log('event_array:', props.eventData)
+                                        setPostsRender(res.data.posts)
+                                    });
+                                console.log('current_pos:', position);
+                            }, (error) => {
+                                // См. таблицы кодов ошибок выше.
+                                console.log(error.code, error.message);
+                            }, {
+                                enableHighAccuracy: false,
+                                timeout: 10000,
+                                // maximumAge: 100000
+                            });
+                        }}
                                     refreshControl={
                                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-                            {props.eventData.map(a => <TouchableOpacity activeOpacity={0.8} key={a.id} onPress={() =>
+                            {props.eventData &&props.eventData.map(a => <TouchableOpacity activeOpacity={0.8} key={a.id} onPress={() =>
                                 props.navigation.navigate('EventDetails', {
                                     postId: a.id,
                                     userId: a.userId,
@@ -145,49 +156,41 @@ const HomeScreen = (props) => {
                                 }}>{a.postText.substr(0, 120) + '...'}</Text>
                                 <Text>{a.id}</Text>
                             </View></TouchableOpacity>)}
-                        </ScrollView>}
+                        </ScrollView>
                     </View>
-                    <TouchableOpacity activeOpacity={0.8}
-                                      style={{
-                                          position: 'absolute',
-                                          left: 10,
-                                          bottom: 10,
-                                          backgroundColor: 'transparent',
-                                          zIndex: 999
-                                      }}
-                                      onPress={() => {
-                                          Geolocation.getCurrentPosition((position) => {
-                                              setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
-                                              axios.post(`http://185.12.95.84:3000/events`,
-                                                  {"lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang}
-                                              )
-                                                  .then(res => {
-                                                      console.log('ALLLL:', res.data)
-                                                      props.addNewEventData(res.data.data);
-                                                      setNewLastPost(res.data.last_post)
-                                                      console.log('event_array:', props.eventData)
-                                                      setPostsRender(res.data.posts)
-                                                  });
-                                              console.log('current_pos:', position);
-                                          }, (error) => {
-                                              // См. таблицы кодов ошибок выше.
-                                              console.log(error.code, error.message);
-                                          }, {
-                                              enableHighAccuracy: false,
-                                              timeout: 10000,
-                                              maximumAge: 100000
-                                          });
-
-                                          // axios.post(`http://185.12.95.84:3000/events`, {lastPost: props.last_post, })
-                                          //     .then(res => {
-                                          //         console.log('new_post_pack:', res.data.data)
-                                          //         props.addNewEventData(res.data.data);
-                                          //         props.setLastPost(res.data.last_post)
-                                          //         console.log('new_event_array:', props.eventData)
-                                          //     });
-                                      }}>
-                        <Text>GDFFFFF</Text>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity activeOpacity={0.8}*/}
+                    {/*                  style={{*/}
+                    {/*                      position: 'absolute',*/}
+                    {/*                      left: 10,*/}
+                    {/*                      bottom: 10,*/}
+                    {/*                      backgroundColor: 'transparent',*/}
+                    {/*                      zIndex: 999*/}
+                    {/*                  }}*/}
+                    {/*                  onPress={() => {*/}
+                    {/*                      Geolocation.getCurrentPosition((position) => {*/}
+                    {/*                          setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})*/}
+                    {/*                          axios.post(`http://185.12.95.84:3000/events`,*/}
+                    {/*                              {"lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang}*/}
+                    {/*                          )*/}
+                    {/*                              .then(res => {*/}
+                    {/*                                  console.log('ALLLL:', res.data)*/}
+                    {/*                                  props.addNewEventData(res.data.data);*/}
+                    {/*                                  setNewLastPost(res.data.last_post)*/}
+                    {/*                                  console.log('event_array:', props.eventData)*/}
+                    {/*                                  setPostsRender(res.data.posts)*/}
+                    {/*                              });*/}
+                    {/*                          console.log('current_pos:', position);*/}
+                    {/*                      }, (error) => {*/}
+                    {/*                          // См. таблицы кодов ошибок выше.*/}
+                    {/*                          console.log(error.code, error.message);*/}
+                    {/*                      }, {*/}
+                    {/*                          enableHighAccuracy: false,*/}
+                    {/*                          timeout: 10000,*/}
+                    {/*                          // maximumAge: 100000*/}
+                    {/*                      });*/}
+                    {/*                  }}>*/}
+                    {/*    <Text>GDFFFFF</Text>*/}
+                    {/*</TouchableOpacity>*/}
                     <TouchableOpacity activeOpacity={0.8}
                                       style={{
                                           position: 'absolute',

@@ -12,6 +12,8 @@ import stackNavPlace from "./stackNavPlace";
 import stackNavEventDetailsScreen from "./EventDetailsScreen/stackNavEventDeatailsScreen";
 import YourProfile from "../YourProfile";
 import {Icon} from "react-native-elements";
+import switchNavEditProfile from "../switchNavEditProfile";
+import stackNavSubs from "../stackNavSubs";
 
 const stackNav = createStackNavigator({
     Main: {
@@ -100,8 +102,8 @@ const stackNav = createStackNavigator({
 
         })
     },
-    YourProfile: {
-        screen: YourProfile,
+    stackNavSubs: {
+        screen: stackNavSubs,
         navigationOptions: ({navigation}) => ({
             headerRight: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('Main')}>
                 <Icon name="arrowright" type="antdesign" size={30} color='white'/>
