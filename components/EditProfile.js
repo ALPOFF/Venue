@@ -81,7 +81,9 @@ const EditProfile = (props) => {
                 description: value.bio,
                 profile_pic: prof,
                 background_pic: backgr
-            }).then(res => console.log('complete:', res))
+            }).then(
+                props.navigation.navigate('YourProfile')
+            )
         })
     }
 
@@ -89,7 +91,12 @@ const EditProfile = (props) => {
         <View style={{display: 'flex', flexDirection: 'column'}}>
             <View style={{height: '30%', marginBottom: 10}}>
                 {newBgPic.data === undefined ? <Image blurRadius={3} source={{uri: backgroundPic}}
-                                                style={{height: '100%', position: 'relative', zIndex: -100, top: 0}}/> :
+                                                      style={{
+                                                          height: '100%',
+                                                          position: 'relative',
+                                                          zIndex: -100,
+                                                          top: 0
+                                                      }}/> :
                     <Image blurRadius={1} source={{uri: newBgPic.path}}
                            style={{height: '100%', position: 'relative', zIndex: -100, top: 0}}/>}
                 <TouchableOpacity style={{position: 'absolute', zIndex: 1, top: '37%', left: '44%'}} onPress={() => {
@@ -98,28 +105,29 @@ const EditProfile = (props) => {
                     <Icon name="add-a-photo" type="material" size={40} color='white'/>
                 </TouchableOpacity>
                 {newProfilePic.data === undefined ? <Image blurRadius={1} source={{uri: profilePic}}
-                                                     style={{
-                                                         width: '30%',
-                                                         height: '60%',
-                                                         borderRadius: 100,
-                                                         borderWidth: 2,
-                                                         borderColor: 'white',
-                                                         top: '20%',
-                                                         left: '35%',
-                                                         position: 'absolute',
-                                                         zIndex: 0
-                                                     }}/> : <Image blurRadius={1} source={{uri: newProfilePic.path}}
-                                                                   style={{
-                                                                       width: '30%',
-                                                                       height: '60%',
-                                                                       borderRadius: 100,
-                                                                       borderWidth: 2,
-                                                                       borderColor: 'white',
-                                                                       top: '20%',
-                                                                       left: '35%',
-                                                                       position: 'absolute',
-                                                                       zIndex: 0
-                                                                   }}/>}
+                                                           style={{
+                                                               width: '30%',
+                                                               height: '60%',
+                                                               borderRadius: 100,
+                                                               borderWidth: 2,
+                                                               borderColor: 'white',
+                                                               top: '20%',
+                                                               left: '35%',
+                                                               position: 'absolute',
+                                                               zIndex: 0
+                                                           }}/> :
+                    <Image blurRadius={1} source={{uri: newProfilePic.path}}
+                           style={{
+                               width: '30%',
+                               height: '60%',
+                               borderRadius: 100,
+                               borderWidth: 2,
+                               borderColor: 'white',
+                               top: '20%',
+                               left: '35%',
+                               position: 'absolute',
+                               zIndex: 0
+                           }}/>}
                 <TouchableOpacity style={{position: 'absolute', zIndex: 1, top: '40%', right: '10%'}} onPress={() => {
                     _getBgPicPhoto()
                 }}>
@@ -127,7 +135,11 @@ const EditProfile = (props) => {
                 </TouchableOpacity>
             </View>
             <EditReduxForm xxxx={xxxx}
-                initialValues={{name: `${newName}`, bio: `${newBio}`, birth: `${formatDate(new Date(newBirthday))}`}}/>
+                           initialValues={{
+                               name: `${newName}`,
+                               bio: `${newBio}`,
+                               birth: `${formatDate(new Date(newBirthday))}`
+                           }}/>
             {/*<View style={{height: '70%', paddingHorizontal: 10}}>*/}
             {/*    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>*/}
             {/*        <Text>Name: </Text>*/}

@@ -18,6 +18,7 @@ const YourProfile = (props) => {
     const [eventInfoData, setEventInfoData] = React.useState([]);
     const [backgroundPic, setBackgroundPic] = React.useState('');
     const [profilePic, setProfilePic] = React.useState('');
+    const [refreshing, setRefreshing] = React.useState(false);
 
     useEffect(() => {
         AsyncStorage.getItem('userToken', (err, item) => {
@@ -43,7 +44,42 @@ const YourProfile = (props) => {
             })
         })
     }, []);
+
+    const wait = (timeout) => {
+        return new Promise(resolve => {
+            setTimeout(resolve, timeout);
+        });
+    };
+
     const scroll = React.createRef();
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        AsyncStorage.getItem('userToken', (err, item) => {
+            axios.post(`http://185.12.95.84:3000/getprofile`, {
+                userId: item
+            }).then(res => {
+                setProfile(res.data[0]);
+                console.log('res:', res.data);
+                console.log('lngth:', res.data[0].subscribers.length);
+                setSubscribes(res.data[0].subscribes);
+                setSubscribers(res.data[0].subscribers)
+                setProfilePic(res.data[0].profile_pic)
+                console.log('pr_pic:', res.data[0].profile_pic)
+                setBackgroundPic(res.data[0].background_pic)
+            })
+
+            axios.post(`http://185.12.95.84:3000/geteventinfo`, {
+                userId: item,
+                eventType: 0
+            }).then(res => {
+                setEventInfoData(res.data);
+                console.log(res.data)
+            })
+        })
+        wait(2000).then(() => setRefreshing(false));
+    }, [refreshing]);
+
     const eventInfo = () => {
         AsyncStorage.getItem('userToken', (err, item) => {
             axios.post(`http://185.12.95.84:3000/geteventinfo`, {
@@ -58,7 +94,8 @@ const YourProfile = (props) => {
 
     return (
         <View style={{display: 'flex', flexDirection: 'column'}}>
-            <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}>
+            <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"} refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <View style={{height: 180, marginBottom: 10}}>
                     {a && <Image blurRadius={0.7} source={{uri: backgroundPic}}
                                  style={{height: '100%', position: 'relative', zIndex: -100, top: 0}}/>}
@@ -124,6 +161,20 @@ const YourProfile = (props) => {
                                     </TouchableOpacity>
                                 </View>
                             </View>
+                            {profile.name !== '' && <View style={{display: "flex", flexDirection: "row"}}>
+                                <Text style={{
+                                    color: '#14171A',
+                                    fontSize: 16,
+                                    fontFamily: 'Oxygen-Bold',
+                                    paddingVertical: 2
+                                }}>Name: </Text>
+                                <Text style={{
+                                    color: '#14171A',
+                                    fontSize: 16,
+                                    fontFamily: 'Oxygen-Regular',
+                                    paddingVertical: 2
+                                }}>{profile.name}</Text>
+                            </View>}
                             {profile.description !== '' && <View style={{display: "flex", flexDirection: "row"}}>
                                 <Text style={{
                                     color: '#14171A',
