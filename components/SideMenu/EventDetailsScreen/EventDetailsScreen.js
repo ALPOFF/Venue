@@ -54,7 +54,8 @@ class EventDetailsScreen extends Component {
             postTitle: this.props.navigation.state.params.postTitle,
             town: '',
             whogo: [],
-            org: ''
+            org: '',
+            timer: `Tue Jul 14 2020 22:35:59 GMT+0300 (Москва, стандартное время)`
         };
     }
 
@@ -80,7 +81,7 @@ class EventDetailsScreen extends Component {
     };
 
     componentDidMount() {
-
+        if (new Date() >= new Date(this.state.timer)) {alert('COMPLETE')}
         console.log('locale:', locale)
         // this.props.navigation.setParams({Title: this.state.postTitle})
         console.log('honepics:', this.state.pic)
@@ -215,6 +216,7 @@ class EventDetailsScreen extends Component {
                 <Text>Организатор: {this.state.org}</Text>
                 <Text>Street: {this.state.town}</Text>
                 <Text>{this.state.postText}</Text>
+
             </View>
         )
     }

@@ -7,14 +7,16 @@ import ava from "../assets/Venue_new/userIcon.png";
 const SearchScreen = (props) => {
     const [data, setData] = useState([]);
     const [userList, setUserList] = useState([]);
+    const [text, setText] = useState('');
 
     let onprs = (text) => {
-
+        setText(text)
         console.log("text: " + text);
         axios.post(`http://185.12.95.84:3000/users`, {userName: text})
             .then(res => {
                 setUserList(res.data)
                 console.log(res.data)
+                console.log(data)
             });
     }
 
@@ -36,9 +38,9 @@ const SearchScreen = (props) => {
                 setData({data: text});
                 onprs(text)
             }} value={data}/>
-            {userList != null && userList.map(d =>
-                <View style={{marginBottom: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-
+            {text !== '' && userList != null && userList.map(d =>
+                <View style={{marginBottom: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: 10}}>
+                    <Image source={{uri: d.profile_pic}} style={{height: 40, width: 40, borderRadius: 30}}/>
                     <TouchableOpacity onPress={() => {props.navigation.navigate('UserProfile', {user_id: d.user_id})}}>
                         <Text style={{fontSize: 20, paddingRight: 15}}>
                             {d.Username}

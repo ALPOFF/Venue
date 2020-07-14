@@ -10,7 +10,6 @@ import Dialog from "../Dialog";
 import UserFriends from "../UserFriends";
 import stackNavPlace from "./stackNavPlace";
 import stackNavEventDetailsScreen from "./EventDetailsScreen/stackNavEventDeatailsScreen";
-import YourProfile from "../YourProfile";
 import {Icon} from "react-native-elements";
 import switchNavEditProfile from "../switchNavEditProfile";
 import stackNavSubs from "../stackNavSubs";

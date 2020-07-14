@@ -22,7 +22,7 @@ const UserProfile = (props) => {
     const [refreshing, setRefreshing] = React.useState(false);
 
     useEffect(() => {
-
+            console.log(user_id)
             axios.post(`http://185.12.95.84:3000/getprofile`, {
                 userId: user_id
             }).then(res => {

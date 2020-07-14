@@ -22,13 +22,15 @@ const Subscriptions = (props) => {
             <View style={styles.innerContainer}>
                 {subscrip.map(s => <View style={{display: "flex", flexDirection: "row"}}>
                     {s.profile_pic == null ? <Image source={ava} style={{height: 40, width: 40}}/> :
-                        <Image source={{uri: s.profile_pic}}/>}
-                    <Text style={{
+                        <Image source={{uri: s.profile_pic}} style={{height: 40, width: 40, borderRadius: 30}}/>}
+                    <TouchableOpacity onPress={() => {props.navigation.navigate('UserProfile', {user_id: s.user_id})}}>
+                        <Text style={{
                         paddingLeft: 10, color: '#14171A',
                         fontSize: 18,
                         fontFamily: 'Oxygen-Bold',
                         paddingVertical: 7
                     }}>{s.Username}</Text>
+                    </TouchableOpacity>
                 </View>)}
                 <TouchableOpacity activeOpacity={0.8}
                                   style={{

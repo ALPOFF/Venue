@@ -1,6 +1,5 @@
 import React from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
-import YourProfile from "./YourProfile";
 import Subscribers from "./Subscribers";
 import Subscriptions from "./Subscriptions";
 import yyy from "./EditProfile";
