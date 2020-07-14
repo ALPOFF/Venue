@@ -4,7 +4,7 @@ import * as axios from "axios";
 import {Icon} from "react-native-elements";
 import ava from "../assets/Venue_new/userIcon.png";
 
-const SearchScreen = () => {
+const SearchScreen = (props) => {
     const [data, setData] = useState([]);
     const [userList, setUserList] = useState([]);
 
@@ -39,8 +39,12 @@ const SearchScreen = () => {
             {userList != null && userList.map(d =>
                 <View style={{marginBottom: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
 
-                    <Text style={{fontSize: 20, paddingRight: 15}}>{d.Username}</Text>
-                    {d.profile_pic == null ? <Image source={ava} style={{height: 100, width: 100 }}/> :
+                    <TouchableOpacity onPress={() => {props.navigation.navigate('UserProfile', {user_id: d.user_id})}}>
+                        <Text style={{fontSize: 20, paddingRight: 15}}>
+                            {d.Username}
+                        </Text>
+                    </TouchableOpacity>
+                    {d.profile_pic == null ? <Image source={ava} style={{height: 100, width: 100}}/> :
                         <Image source={{uri: d.profile_pic}}/>}
                     <TouchableOpacity key={d.Username} onPress={() =>
                         addToFriends(d.user_id)
@@ -53,4 +57,4 @@ const SearchScreen = () => {
     )
 }
 
-export default  SearchScreen;
+export default SearchScreen;

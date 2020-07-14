@@ -2,6 +2,9 @@ import React from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
 import SearchScreen from "./SearchScreen";
 import {Image, TouchableOpacity} from "react-native";
+import stackNavPlace from "./SideMenu/stackNavPlace";
+import UserProfile from "./UserProfile";
+import {Icon} from "react-native-elements";
 
 const SearchNav = createStackNavigator({
         SearchScreen: {
@@ -30,17 +33,26 @@ const SearchNav = createStackNavigator({
                     color: '#009788'
                 }
             })
+        },
+        UserProfile: {
+            screen: UserProfile,
+            navigationOptions: ({navigation}) => ({
+                headerRight: (
+                    <TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('SearchScreen')}>
+                        <Icon name="arrowright" type="antdesign" size={30} color='white'/>
+                    </TouchableOpacity>)
+            })
         }
     },
-    {
-        //headerMode: 'none',
-
-        mode: 'modal',
-        transparentCard: true,
-        cardStyle: {
-            opacity: 1,
-        }
-    },
+    // {
+    //     //headerMode: 'none',
+    //
+    //     mode: 'modal',
+    //     transparentCard: true,
+    //     cardStyle: {
+    //         opacity: 1,
+    //     }
+    // },
     // {
     //     headerMode: 'none',
     //     mode: 'modal',
