@@ -28,6 +28,7 @@ class Dialog extends Component {
         this.state = {
             dialog_id: props.navigation.state.params.dialog_id,
             friend_id: props.navigation.state.params.friend_id,
+            eventType: props.navigation.state.params.eventType,
             users_id: props.navigation.state.params.users_id,
             dialogTitle: props.navigation.state.params.dialogTitle,
             key: null,
@@ -74,7 +75,7 @@ class Dialog extends Component {
             AsyncStorage.getItem('userToken', (err, item) => {
                 axios.post(`http://185.12.95.84:3000/getusername`, {user_id: this.state.users_id.map(u => u !== item)[0]}).then(res => {
                         console.log('us:', res.data)
-                        this.setState({ title: res.data[0].userName})
+                        this.setState({title: res.data[0].userName})
                     }
                 )
                 this.props.setUserId(item);
@@ -132,30 +133,65 @@ class Dialog extends Component {
         //ON SEND
         const onTextSend = () => {
             AsyncStorage.getItem('userToken', (err, item) => {
-                if (this.state.dialog_id !== 'none') {
-                    console.log('dialog id is not none')
-                    let to_id = this.props.curdialogusers.map(t => t.users_id.filter(u => u != this.state.key))[0][0];
-                    console.log('to_id', this.state.friend_id)
-                    axios.post(`https://warm-ravine-29007.herokuapp.com/sendmsg`,
-                        {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: to_id});
-                    setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                if (!this.state.eventType) {
+                    if (this.state.dialog_id !== 'none') {
+                        console.log('dialog id is not none')
+                        let to_id = this.props.curdialogusers.map(t => t.users_id.filter(u => u != this.state.key))[0][0];
+                        console.log('to_id', this.state.friend_id)
+                        axios.post(`http://185.12.95.84:3000/sendmsg`,
+                            {
+                                content: this.state.msgContent,
+                                dialog_id: this.state.dialog_id,
+                                from_id: item,
+                                to_id: to_id,
+                                eventType: this.state.eventType
+                            });
+                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                    } else {
+                        console.log('dialog id is none')
+
+                        // axios.post(`https://warm-ravine-29007.herokuapp.com/setnewdialogid`,
+                        //     {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: this.state.friend_id});
+
+                        axios.post(`http://185.12.95.84:3000/sendmsg`,
+                            {
+                                content: this.state.msgContent,
+                                dialog_id: this.state.dialog_id,
+                                from_id: item,
+                                to_id: this.state.friend_id,
+                                eventType: this.state.eventType
+                            });
+                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                    }
+                    console.log('LETS GO:', this.props.curdialogusers)
+                    //this.props.setNewLstMsg(this.props.curdialogusers[0].dialog_id, this.state.msgContent)
                 } else {
-                    console.log('dialog id is none')
+                    console.log('this is event dlg')
 
-                    // axios.post(`https://warm-ravine-29007.herokuapp.com/setnewdialogid`,
-                    //     {content: this.state.msgContent, dialog_id: this.state.dialog_id, from_id: item, to_id: this.state.friend_id});
 
-                    axios.post(`https://warm-ravine-29007.herokuapp.com/sendmsg`,
-                        {
-                            content: this.state.msgContent,
-                            dialog_id: this.state.dialog_id,
-                            from_id: item,
-                            to_id: this.state.friend_id
-                        });
-                    setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+
+                    if (this.state.dialog_id !== 'none') {
+                        console.log('dialog id is not none')
+                        axios.post(`http://185.12.95.84:3000/sendmsg`,
+                            {
+                                content: this.state.msgContent,
+                                dialog_id: this.state.dialog_id,
+                                from_id: item
+                            });
+                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                    } else {
+                        console.log('dialog id is none')
+                        axios.post(`http://185.12.95.84:3000/sendmsg`,
+                            {
+                                content: this.state.msgContent,
+                                dialog_id: this.state.dialog_id,
+                                from_id: item
+                            });
+                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                    }
+
+
                 }
-                console.log('LETS GO:', this.props.curdialogusers)
-                //this.props.setNewLstMsg(this.props.curdialogusers[0].dialog_id, this.state.msgContent)
             })
         };
 

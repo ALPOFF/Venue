@@ -94,13 +94,11 @@ class DetailScreen extends Component {
                 }).then(
                     this.props.navigation.navigate('Main')
                 )
-
                 this.props.setNewEventName('')
                 this.props.setNewEventDescr('')
                 this.props.setNewEventCat('')
                 this.props.setMarker({})
                 this.props.setNewEventPic([])
-                
             })
         }
 

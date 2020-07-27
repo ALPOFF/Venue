@@ -69,7 +69,7 @@ const SearchScreen = (props) => {
                         AsyncStorage.getItem('userToken', (err, item) => {
                             console.log('cuId:', item)
                             console.log('frId:', d.user_id)
-                            axios.post(`https://warm-ravine-29007.herokuapp.com/friends_ls`, {
+                            axios.post(`http://185.12.95.84:3000/friends_ls`, {
                                 currentUserId: item,
                                 friend_id: d.user_id
                             }).then(res => {
@@ -78,11 +78,13 @@ const SearchScreen = (props) => {
                                     res.data[0] !== undefined ?
                                         props.navigation.navigate('Dialog', {
                                             dialog_id: res.data[0].dialog_id,
-                                            friend_id: d.user_id
+                                            friend_id: d.user_id,
+                                            eventType: false
                                         }) :
                                         props.navigation.navigate('Dialog', {
                                             dialog_id: 'none',
-                                            friend_id: d.user_id
+                                            friend_id: d.user_id,
+                                            eventType: false
                                         })
                                 }
                             )

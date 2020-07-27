@@ -7,23 +7,23 @@ import io from "socket.io-client";
 import {getCurDialogsUser, setCurDialogId, setSocket} from "../state/appReducer";
 import LocalizedStrings from 'react-native-localization';
 
-const URL = 'https://warm-ravine-29007.herokuapp.com/';
+const URL = 'http://185.12.95.84:3000/';
 const socket = io(URL, {forceNode: false});
 
 let strings = new LocalizedStrings({
-    "en-US":{
-        how:"How do you want your egg today?",
+    "en-US": {
+        how: "How do you want your egg today?",
     },
     ru: {
-        how:"Come vuoi il tuo uovo oggi?",
-        boiledEgg:"Uovo sodo",
-        softBoiledEgg:"Uovo alla coque",
-        choice:"Come scegliere l'uovo"
+        how: "Come vuoi il tuo uovo oggi?",
+        boiledEgg: "Uovo sodo",
+        softBoiledEgg: "Uovo alla coque",
+        choice: "Come scegliere l'uovo"
     }
 });
 
 class MessageScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
+    static navigationOptions = ({navigation}) => {
         return {
             title: navigation.getParam('Title', 'Default Title1'),
             //Default Title of ActionBar
@@ -41,13 +41,17 @@ class MessageScreen extends Component {
         this.state = {
             userList: [],
             data: '',
-            upd: true
+            upd: true,
+            userTitles: []
         };
     }
 
     componentDidMount() {
         AsyncStorage.getItem('userToken', (err, item) => {
-            this.props.getCurDialogsUser(item)
+            AsyncStorage.getItem('userName', (err, itemname) => {
+                console.log('usnm:', itemname)
+                this.props.getCurDialogsUser(item, itemname)
+            })
             console.log('GXGGXGXGXGXGXG:', this.props.dialogs)
         });
 
@@ -63,14 +67,33 @@ class MessageScreen extends Component {
             this.props.setCurDialogId(res.dialog_id)
             console.log('resresres', res)
         })
+        this.fnc()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.dialogs == this.props.dialogs ) {
+        if (prevProps.dialogs == this.props.dialogs) {
             AsyncStorage.getItem('userToken', (err, item) => {
-                this.props.getCurDialogsUser(item)
+                AsyncStorage.getItem('userName', (err, itemname) => {
+                    console.log('usnm:', itemname)
+                    this.props.getCurDialogsUser(item, itemname)
+                })
             });
         }
+    }
+
+    fnc() {
+        AsyncStorage.getItem('userToken', (err, item) => {
+            console.log(item)
+            let a = []
+            //this.props.dialogs.map(u => a.push({'d_id': u.dialog_id, 'us_id': u.users_id.filter(t => t != item)}))
+            this.props.dialogs.map(u => a.push(...u.users_id.filter(t => t != item)))
+            axios.post(`http://185.12.95.84:3000/msgtitles`, {usersArray: a})
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({userTitles: res.data})
+                });
+            console.log('a:', a)
+        });
     }
 
     onprs(text) {
@@ -111,28 +134,26 @@ class MessageScreen extends Component {
                 {/*    )}*/}
                 {/*</View>*/}
 
-               {(this.props.dialogs !== undefined) ?
-                <View>
-                    {this.props.dialogs[0] != undefined && this.props.dialogs.map(d =>
-                        <TouchableOpacity key={d.dialog_id} onPress={() =>
-                            this.props.navigation.navigate('Dialog', {
-                                dialog_id: d.dialog_id, dialogTitle: d.dialogTitle, users_id: d.users_id
-                            })}>
-                            <View style={{
-                                margin: 10,
-                                paddingBottom: 5,
-                                borderBottomWidth: 1,
-                                borderBottomColor: "lightgrey"
-                            }}>
-                                <Text style={{fontWeight: "bold", fontSize: 18}}>{d.dialogTitle}</Text>
-                                <Text>{d.last_msg}</Text>
-                                {/*<Text>{d.users_id.filter(u => u != item)}</Text>*/}
-                                {/*<Text>{d.dialog_id}</Text>*/}
-                                {/*<View>{d.users_id.map(f => <Text>{f}</Text>)}</View>*/}
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                </View> : <View><Text>1111</Text></View>}
+                {(this.props.dialogs !== undefined) ?
+                    <View>
+                        {this.props.dialogs[0] != undefined && this.props.dialogs.map(d =>
+                            <TouchableOpacity key={d.dialog_id} onPress={() =>
+                                this.props.navigation.navigate('Dialog', {
+                                    dialog_id: d.dialog_id, dialogTitle: d.dialogTitle, users_id: d.users_id
+                                })}>
+                                <View style={{
+                                    margin: 10,
+                                    paddingBottom: 5,
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "lightgrey"
+                                }}>
+                                    {!d.event ? <Text style={{fontWeight: "bold", fontSize: 18}}>{d.Username}</Text> :
+                                        <Text style={{fontWeight: "bold", fontSize: 18}}>{d.dialogTitle}</Text>}
+                                    <Text>{d.last_msg}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                    </View> : <View><Text>1111</Text></View>}
             </View>
         );
     }

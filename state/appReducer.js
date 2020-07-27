@@ -262,9 +262,9 @@ export const setNewEventPic = (newEventPic) => {
     }
 };
 
-export const getCurDialogsUser = (currentUserId) => async (dispatch) => {
+export const getCurDialogsUser = (currentUserId, currentUsername) => async (dispatch) => {
     console.log("1111111111111111111111")
-    let response = await getCurUsD(currentUserId);
+    let response = await getCurUsD(currentUserId, currentUsername);
     dispatch(setCurDialogsUser(response.data))
 }
 

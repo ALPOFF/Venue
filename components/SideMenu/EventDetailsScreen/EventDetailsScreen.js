@@ -256,9 +256,27 @@ class EventDetailsScreen extends Component {
                         }
 
                         <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                                          onPress={() => this.props.navigation.navigate('Dialog', {
-                                              msg: 'Some Msg'
-                                          })}>
+                                          onPress={() => {
+                                              AsyncStorage.getItem('userToken', (err, item) => {
+                                                  axios.post(`http://185.12.95.84:3000/events_ls`, {
+                                                      postTitle: this.state.postTitle,
+                                                      event: true
+                                                  }).then(res => {
+                                                          console.log('res.data:', res.data)
+                                                          console.log('res.data[0] !== undefined:', res.data[0] !== undefined)
+                                                          res.data[0] !== undefined ? //true
+                                                              props.navigation.navigate('Dialog', {
+                                                                  dialog_id: res.data[0].dialog_id,
+                                                                  eventType: true
+                                                              }) :
+                                                              props.navigation.navigate('Dialog', { //false
+                                                                  dialog_id: 'none',
+                                                                  eventType: true
+                                                              })
+                                                      }
+                                                  )
+                                              })
+                                          }}>
                             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>Перейти в
                                     беседу</Text>
