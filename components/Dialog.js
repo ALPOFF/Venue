@@ -73,9 +73,10 @@ class Dialog extends Component {
             }
         } else {
             AsyncStorage.getItem('userToken', (err, item) => {
-                axios.post(`http://185.12.95.84:3000/getusername`, {user_id: this.state.users_id.map(u => u !== item)[0]}).then(res => {
+                axios.post(`http://185.12.95.84:3000/getusername`, {user_id: this.state.friend_id}).then(res => {
                         console.log('us:', res.data)
-                        this.setState({title: res.data[0].userName})
+                        this.props.navigation.setParams({Title: res.data[0].Username})
+                        this.setState({title: res.data[0].Username})
                     }
                 )
                 this.props.setUserId(item);

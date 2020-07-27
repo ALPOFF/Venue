@@ -73,12 +73,13 @@ const SearchScreen = (props) => {
                                 currentUserId: item,
                                 friend_id: d.user_id
                             }).then(res => {
-                                    console.log('res.data:', res.data)
+                                    console.log('res.datafr_ls:', res.data)
                                     console.log('res.data[0] !== undefined:', res.data[0] !== undefined)
                                     res.data[0] !== undefined ?
                                         props.navigation.navigate('Dialog', {
                                             dialog_id: res.data[0].dialog_id,
                                             friend_id: d.user_id,
+                                            users_id: res.data[0].users_id,
                                             eventType: false
                                         }) :
                                         props.navigation.navigate('Dialog', {
