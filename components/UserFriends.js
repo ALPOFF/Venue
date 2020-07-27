@@ -101,7 +101,6 @@ const UserFriends = (props) => {
                                                 currentUserId: item,
                                                 friend_id: f.user_id
                                             }).then(res => {
-                                                    //console.log('resXx:', res.data[0].dialog_id)
                                                     console.log('res.data:', res.data)
                                                     setChoosenFriendDlg(18)
                                                     console.log('choosFrDlg:', choosenFriendDlg)

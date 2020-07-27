@@ -135,7 +135,7 @@ class MapForPickPlace extends Component<{}> {
                                   onPress={() =>
                                       this.props.navigation.navigate('Detail')}>
                     <Icon style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}
-                          name="close" size={40} color={'#3C2274'}/>
+                          name="close" size={40} color={'#009788'}/>
                 </TouchableOpacity>
             </View>
         );

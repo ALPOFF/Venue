@@ -10,6 +10,7 @@ import {Field} from "redux-form";
 import imgEvent from './../../assets/Venue_new/new_pic.png'
 import ImagePicker from 'react-native-image-crop-picker';
 import {connect} from "react-redux";
+import {setMarker, setNewEventCat, setNewEventDescr, setNewEventName, setNewEventPic} from "../../state/appReducer";
 
 const renderInput = ({placeholder, input: {onChange, inputType, ...restInput}}) => {
     return <TextInput placeholder={placeholder}
@@ -45,7 +46,7 @@ class DetailScreen extends Component {
             console.log('eventName:', this.state.eventName)
             console.log('category:', this.state.category)
             console.log('description:', this.state.description)
-            console.log('pickedImg:', this.state.pickedImg)
+            // console.log('pickedImg:', this.state.pickedImg)
             console.log('this.props.marker:', this.props.marker)
             AsyncStorage.getItem('userName', (err, item) => {
                 axios.post(`http://185.12.95.84:3000/event/`, {
@@ -74,58 +75,61 @@ class DetailScreen extends Component {
                 multiple: true,
             }).then(image => {
                 console.log(image);
-                this.setState({pickedImg: image})
+                //this.setState({pickedImg: image})
+                this.props.setNewEventPic(image)
             });
         }
 
         let sendimg = async () => {
             console.log('marker:', this.props.marker)
-            console.log('rtype:', this.state.pickedImg[0].path) //pic
+            console.log('rtype:', this.props.newEventPic[0].path) //pic
             AsyncStorage.getItem('userToken', (err, item) => {
                 axios.post(`http://185.12.95.84:3000/sendimage`, {
-                    img: this.state.pickedImg,
-                    postText: this.state.description,
-                    eventName: this.state.eventName,
+                    img: this.props.newEventPic,
+                    postText: this.props.newEventDescr,
+                    eventName: this.props.newEventName,
                     userId: item,
-                    postCategory: this.state.category,
+                    postCategory: this.props.newEventCat,
                     coords: this.props.marker
-                }).then(this.props.navigation.navigate('Main'))
+                }).then(
+                    this.props.navigation.navigate('Main')
+                )
+
+                this.props.setNewEventName('')
+                this.props.setNewEventDescr('')
+                this.props.setNewEventCat('')
+                this.props.setMarker({})
+                this.props.setNewEventPic([])
+                
             })
         }
 
         return (
             <View style={styles.container}>
-                {this.state.pickedImg[0] === undefined ?
+                {this.props.newEventPic[0] === undefined ?
                     <TouchableOpacity onPress={_getPhotoLibrary}>
                         <Image source={imgEvent} style={{width: '100%', height: 200}}
                                alt=""/>
                     </TouchableOpacity>
                     : <TouchableOpacity onPress={_getPhotoLibrary}>
-                        <Image source={{uri: this.state.pickedImg[0].path}} style={{width: '100%', height: 200}}
+                        <Image source={{uri: this.props.newEventPic[0].path}} style={{width: '100%', height: 200}}
                                alt=""/>
                     </TouchableOpacity>}
                 <View>
                     <TextInput onChangeText={(value) => {
-                        this.setState({eventName: value})
-                    }} value={this.state.eventName} placeholder={'Event Name...'}/>
+                        // this.setState({eventName: value})
+                        this.props.setNewEventName(value)
+                    }} value={this.props.newEventName} placeholder={'Event Name...'}/>
                     <TextInput onChangeText={(value) => {
-                        this.setState({description: value})
-                    }} value={this.state.description} placeholder={'Type here the description of your event...'}/>
+                        // this.setState({description: value})
+                        this.props.setNewEventDescr(value)
+                    }} value={this.props.newEventDescr} placeholder={'Type here the description of your event...'}/>
                     <TextInput onChangeText={(value) => {
-                        this.setState({category: value})
-                    }} value={this.state.category} placeholder={'Choose category...'}/>
+                        //this.setState({category: value})
+                        this.props.setNewEventCat(value)
+                    }} value={this.props.newEventCat} placeholder={'Choose category...'}/>
                 </View>
                 <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    {/*<TouchableOpacity onPress={_getPhotoLibrary}*/}
-                    {/*                  style={{*/}
-                    {/*                      display: 'flex',*/}
-                    {/*                      flexDirection: 'row',*/}
-                    {/*                      alignItems: 'center',*/}
-                    {/*                      marginTop: 10*/}
-                    {/*                  }}>*/}
-                    {/*    <Text style={{color: '#3C2274', fontWeight: 'bold', fontSize: 20}}>Pick Pic</Text>*/}
-                    {/*    <Icon name="camera" size={40} color={'#3C2274'}/>*/}
-                    {/*</TouchableOpacity>*/}
                     <TouchableOpacity onPress={() =>
                         this.props.navigation.navigate('MapForPickPlace')}
                                       style={{
@@ -164,7 +168,17 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    marker: state.appReducer.marker
+    marker: state.appReducer.marker,
+    newEventName: state.appReducer.newEventName,
+    newEventDescr: state.appReducer.newEventDescr,
+    newEventCat: state.appReducer.newEventCat,
+    newEventPic: state.appReducer.newEventPic
 });
 
-export default connect(mapStateToProps, {})(DetailScreen);
+export default connect(mapStateToProps, {
+    setNewEventPic,
+    setMarker,
+    setNewEventName,
+    setNewEventDescr,
+    setNewEventCat
+})(DetailScreen);

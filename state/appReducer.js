@@ -13,6 +13,10 @@ const SET_USER_COORD = 'tariff/SET_USER_COORD';
 const SET_LAST_POST = 'tariff/SET_LAST_POST';
 const SET_EVENT_DATA = 'tariff/SET_EVENT_DATA';
 const ADD_NEW_EVENT_DATA = 'tariff/ADD_NEW_EVENT_DATA';
+const SET_NEW_EVENT_NAME = 'tariff/SET_NEW_EVENT_NAME';
+const SET_NEW_EVENT_DESCR = 'tariff/SET_NEW_EVENT_DESCR';
+const SET_NEW_EVENT_CAT = 'tariff/SET_NEW_EVENT_CAT';
+const SET_NEW_EVENT_PIC = 'tariff/SET_NEW_EVENT_PIC';
 
 let initialState = {
     dialogList: [
@@ -33,7 +37,11 @@ let initialState = {
     curDialogId: null,
     userCoord: {},
     last_post: 0,
-    eventData: []
+    eventData: [],
+    newEventName: '',
+    newEventDescr: '',
+    newEventCat: '',
+    newEventPic: []
 };
 
 const appReducer = (state = initialState, action) => {
@@ -107,6 +115,26 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 curDialogId: action.curDialogId
+            };
+        case SET_NEW_EVENT_NAME:
+            return {
+                ...state,
+                newEventName: action.newEventName
+            };
+        case SET_NEW_EVENT_DESCR:
+            return {
+                ...state,
+                newEventDescr: action.newEventDescr
+            };
+        case SET_NEW_EVENT_CAT:
+            return {
+                ...state,
+                newEventCat: action.newEventCat
+            };
+        case SET_NEW_EVENT_PIC:
+            return {
+                ...state,
+                newEventPic: action.newEventPic
             };
         default:
             return state;
@@ -203,6 +231,34 @@ export const setCurDialogId = (curDialogId) => {
     return {
         type: SET_CUR_DIALOG_ID,
         curDialogId
+    }
+};
+
+export const setNewEventName = (newEventName) => {
+    return {
+        type: SET_NEW_EVENT_NAME,
+        newEventName
+    }
+};
+
+export const setNewEventDescr = (newEventDescr) => {
+    return {
+        type: SET_NEW_EVENT_DESCR,
+        newEventDescr
+    }
+};
+
+export const setNewEventCat = (newEventCat) => {
+    return {
+        type: SET_NEW_EVENT_CAT,
+        newEventCat
+    }
+};
+
+export const setNewEventPic = (newEventPic) => {
+    return {
+        type: SET_NEW_EVENT_PIC,
+        newEventPic
     }
 };
 

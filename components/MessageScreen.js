@@ -66,10 +66,6 @@ class MessageScreen extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log('prevProps:', prevProps.dialogs)
-        // console.log('props:', this.props.dialogs)
-
-
         if (prevProps.dialogs == this.props.dialogs ) {
             AsyncStorage.getItem('userToken', (err, item) => {
                 this.props.getCurDialogsUser(item)
@@ -130,6 +126,7 @@ class MessageScreen extends Component {
                             }}>
                                 <Text style={{fontWeight: "bold", fontSize: 18}}>{d.dialogTitle}</Text>
                                 <Text>{d.last_msg}</Text>
+                                {/*<Text>{d.users_id.filter(u => u != item)}</Text>*/}
                                 {/*<Text>{d.dialog_id}</Text>*/}
                                 {/*<View>{d.users_id.map(f => <Text>{f}</Text>)}</View>*/}
                             </View>
