@@ -52,14 +52,12 @@ class Dialog extends Component {
 
 //d_id null frid 4
     componentDidMount() {
-
-
         console.log('users_id:', this.state.users_id)
         console.log("mounted");
         if (this.state.dialog_id != "none") {
             // SET AND GET INFO ABOUT DIALOG BY ID which is exist
             this.props.setUserDialog(this.state.dialog_id)
-            AsyncStorage.getItem('userToken', (err, item) => {
+            !this.state.eventType ? AsyncStorage.getItem('userToken', (err, item) => {
                 //console.log('title:', this.state.users_id.filter(u => u != item))
                 axios.post(`http://185.12.95.84:3000/getusername`, {user_id: this.state.users_id.filter(t => t != item)}).then(res => {
                         console.log('us:', res.data)
@@ -69,12 +67,12 @@ class Dialog extends Component {
                 )
                 this.props.setUserId(item);
                 this.setState({key: item})
-            });
+            }) : this.props.navigation.setParams({Title: this.state.dialogTitle});
             if (this.state.dialog_id != null) {
                 this.props.getDUsers(this.state.dialog_id);
             }
         } else {
-            AsyncStorage.getItem('userToken', (err, item) => {
+            !this.state.eventType ?  AsyncStorage.getItem('userToken', (err, item) => {
                 axios.post(`http://185.12.95.84:3000/getusername`, {user_id: this.state.friend_id}).then(res => {
                         console.log('us:', res.data)
                         this.props.navigation.setParams({Title: res.data[0].Username})
@@ -83,7 +81,7 @@ class Dialog extends Component {
                 )
                 this.props.setUserId(item);
                 this.setState({key: item})
-            });
+            }) : this.props.navigation.setParams({Title: this.state.dialogTitle}); 
             this.props.setttUserDialog([])
             // SET AND GET INFO ABOUT DIALOG BY ID which is not exist
             //this.props.setttUserDialog([])
