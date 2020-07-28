@@ -83,7 +83,7 @@ const SearchScreen = (props) => {
                                             eventType: false
                                         }) :
                                         props.navigation.navigate('Dialog', {
-                                            dialog_id: 'none',
+                                            dialog_id: "none",
                                             friend_id: d.user_id,
                                             eventType: false
                                         })

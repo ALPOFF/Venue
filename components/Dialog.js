@@ -13,7 +13,7 @@ import {Icon} from "react-native-elements";
 import * as axios from "axios";
 import {connect} from "react-redux";
 import {
-    getDUsers,
+    getDUsers, setCurDialogId,
     setCurDialogsUser,
     setDialogName,
     setNewLstMsg,
@@ -52,14 +52,16 @@ class Dialog extends Component {
 
 //d_id null frid 4
     componentDidMount() {
+
+
         console.log('users_id:', this.state.users_id)
         console.log("mounted");
-        if (this.state.dialog_id !== "none") {
+        if (this.state.dialog_id != "none") {
             // SET AND GET INFO ABOUT DIALOG BY ID which is exist
             this.props.setUserDialog(this.state.dialog_id)
             AsyncStorage.getItem('userToken', (err, item) => {
-                console.log('title:', this.state.users_id.filter(u => u != item))
-                axios.post(`http://185.12.95.84:3000/getusername`, {user_id: this.state.users_id.filter(u => u != item)[0]}).then(res => {
+                //console.log('title:', this.state.users_id.filter(u => u != item))
+                axios.post(`http://185.12.95.84:3000/getusername`, {user_id: this.state.users_id.filter(t => t != item)}).then(res => {
                         console.log('us:', res.data)
                         this.props.navigation.setParams({Title: res.data[0].Username})
                         this.setState({title: res.data[0].Username})
@@ -87,26 +89,29 @@ class Dialog extends Component {
             //this.props.setttUserDialog([])
         }
         console.log('HEREX:', this.props.dialogs)
+        this.props.setCurDialogId(this.state.dialog_id)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log('userDialog', this.props.userDialog)
-        if (this.props.skt !== prevProps.skt) {
+        console.log('dlgidcur:', this.state.dialog_id)
+        console.log('cdi:', this.props.curDialogId)
+        if (this.props.skt !== prevProps.skt ) {
             console.log('prevProps:', prevProps.skt)
             console.log('props:', this.props.skt)
             console.log("mountedUpdate")
-            console.log("dialog_id: " + this.state.dialog_id);
-            if (this.state.dialog_id !== "none") {
-                if (this.state.dialog_id != null) {
-                    this.props.setUserDialog(this.state.dialog_id);
+            console.log("dialog_id: " + this.props.curDialogId);
+            if (this.props.curDialogId !== "none") {
+                if (this.props.curDialogId != null) {
+                    this.props.setUserDialog(this.props.curDialogId);
                 } else {
-                    this.props.setUserDialog([this.state.dialog_id]);
+                    this.props.setUserDialog([this.props.curDialogId]);
                 }
                 AsyncStorage.getItem('userToken', (err, item) => {
                     this.props.setUserId(item);
                     this.setState({key: item})
                 });
-                this.state.dialog_id != null && this.props.getDUsers(this.state.dialog_id)
+                this.props.curDialogId != null && this.props.getDUsers(this.props.curDialogId)
             } else {
 
                 this.props.setUserDialog(this.props.skt.dialog_id);
@@ -118,6 +123,7 @@ class Dialog extends Component {
                 this.props.getDUsers(this.props.skt.dialog_id)
                 this.setState({dialog_id: this.props.skt.dialog_id})
             }
+            this.props.setCurDialogId(this.state.dialog_id)
         }
     }
 
@@ -135,19 +141,21 @@ class Dialog extends Component {
         const onTextSend = () => {
             AsyncStorage.getItem('userToken', (err, item) => {
                 if (!this.state.eventType) {
-                    if (this.state.dialog_id !== 'none') {
+                    console.log('isnull:', this.props.curDialogId)
+                    if (this.props.curDialogId !== 'none') {
+                        console.log(this.props.curDialogId )
                         console.log('dialog id is not none')
-                        let to_id = this.props.curdialogusers.map(t => t.users_id.filter(u => u != this.state.key))[0][0];
+                        let to_id = 4;
                         console.log('to_id', this.state.friend_id)
                         axios.post(`http://185.12.95.84:3000/sendmsg`,
                             {
                                 content: this.state.msgContent,
-                                dialog_id: this.state.dialog_id,
+                                dialog_id: this.props.curDialogId,
                                 from_id: item,
                                 to_id: to_id,
                                 eventType: this.state.eventType
                             });
-                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                        setCurDialogsUser([{dialog_id: this.props.curDialogId, last_msg: this.state.msgContent}])
                     } else {
                         console.log('dialog id is none')
 
@@ -157,12 +165,12 @@ class Dialog extends Component {
                         axios.post(`http://185.12.95.84:3000/sendmsg`,
                             {
                                 content: this.state.msgContent,
-                                dialog_id: this.state.dialog_id,
+                                dialog_id: this.props.curDialogId,
                                 from_id: item,
                                 to_id: this.state.friend_id,
                                 eventType: this.state.eventType
                             });
-                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                        setCurDialogsUser([{dialog_id: this.props.curDialogId, last_msg: this.state.msgContent}])
                     }
                     console.log('LETS GO:', this.props.curdialogusers)
                     //this.props.setNewLstMsg(this.props.curdialogusers[0].dialog_id, this.state.msgContent)
@@ -171,15 +179,15 @@ class Dialog extends Component {
 
 
 
-                    if (this.state.dialog_id !== 'none') {
+                    if (this.props.curDialogId !== 'none') {
                         console.log('dialog id is not none')
                         axios.post(`http://185.12.95.84:3000/sendmsg`,
                             {
                                 content: this.state.msgContent,
-                                dialog_id: this.state.dialog_id,
+                                dialog_id: this.props.curDialogId,
                                 from_id: item
                             });
-                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                        setCurDialogsUser([{dialog_id: this.props.curDialogId, last_msg: this.state.msgContent}])
                     } else {
                         console.log('dialog id is none')
                         axios.post(`http://185.12.95.84:3000/sendmsg`,
@@ -188,7 +196,7 @@ class Dialog extends Component {
                                 dialog_id: this.state.dialog_id,
                                 from_id: item
                             });
-                        setCurDialogsUser([{dialog_id: this.state.dialog_id, last_msg: this.state.msgContent}])
+                        setCurDialogsUser([{dialog_id: this.props.curDialogId, last_msg: this.state.msgContent}])
                     }
 
 
@@ -279,6 +287,7 @@ export default connect(mapStateToProps, {
     getDUsers,
     setttUserDialog,
     setUserDialog,
+    setCurDialogId,
     setDialogName,
     setUserId,
     setNewLstMsg
