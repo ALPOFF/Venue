@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from "react";
-import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View, TextInput} from "react-native";
+import {AsyncStorage, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView} from "react-native";
 import * as axios from "axios";
 import {connect} from "react-redux";
 import {combineReducers} from "redux";
@@ -135,7 +135,7 @@ class MessageScreen extends Component {
                 {/*</View>*/}
 
                 {(this.props.dialogs !== undefined) ?
-                    <View>
+                    <ScrollView showsVerticalScrollIndicator={true} decelerationRate={"normal"}>
                         {this.props.dialogs[0] != undefined && this.props.dialogs.map(d =>
                             <TouchableOpacity key={d.dialog_id} onPress={() =>
                                 this.props.navigation.navigate('Dialog', {
@@ -153,7 +153,7 @@ class MessageScreen extends Component {
                                 </View>
                             </TouchableOpacity>
                         )}
-                    </View> : <View><Text>1111</Text></View>}
+                    </ScrollView> : <View><Text>1111</Text></View>}
             </View>
         );
     }
