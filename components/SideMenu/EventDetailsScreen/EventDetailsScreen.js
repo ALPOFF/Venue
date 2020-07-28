@@ -265,13 +265,15 @@ class EventDetailsScreen extends Component {
                                                           console.log('res.data:', res.data)
                                                           console.log('res.data[0] !== undefined:', res.data[0] !== undefined)
                                                           res.data[0] !== undefined ? //true
-                                                              props.navigation.navigate('Dialog', {
+                                                              this.props.navigation.navigate('Dialog', {
                                                                   dialog_id: res.data[0].dialog_id,
-                                                                  eventType: true
+                                                                  eventType: true,
+                                                                  dialogTitle: this.state.postTitle
                                                               }) :
-                                                              props.navigation.navigate('Dialog', { //false
+                                                              this.props.navigation.navigate('Dialog', { //false
                                                                   dialog_id: 'none',
-                                                                  eventType: true
+                                                                  eventType: true,
+                                                                  dialogTitle: this.state.postTitle
                                                               })
                                                       }
                                                   )

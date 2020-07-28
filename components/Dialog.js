@@ -54,6 +54,7 @@ class Dialog extends Component {
     componentDidMount() {
         console.log('users_id:', this.state.users_id)
         console.log("mounted");
+        console.log('stdlg:', this.state.dialog_id)
         if (this.state.dialog_id != "none") {
             // SET AND GET INFO ABOUT DIALOG BY ID which is exist
             this.props.setUserDialog(this.state.dialog_id)
@@ -81,7 +82,7 @@ class Dialog extends Component {
                 )
                 this.props.setUserId(item);
                 this.setState({key: item})
-            }) : this.props.navigation.setParams({Title: this.state.dialogTitle}); 
+            }) : this.props.navigation.setParams({Title: this.state.dialogTitle});
             this.props.setttUserDialog([])
             // SET AND GET INFO ABOUT DIALOG BY ID which is not exist
             //this.props.setttUserDialog([])
@@ -183,6 +184,8 @@ class Dialog extends Component {
                             {
                                 content: this.state.msgContent,
                                 dialog_id: this.props.curDialogId,
+                                dialogTitle: this.state.dialogTitle,
+                                eventType: this.state.eventType,
                                 from_id: item
                             });
                         setCurDialogsUser([{dialog_id: this.props.curDialogId, last_msg: this.state.msgContent}])
@@ -192,6 +195,8 @@ class Dialog extends Component {
                             {
                                 content: this.state.msgContent,
                                 dialog_id: this.state.dialog_id,
+                                dialogTitle: this.state.dialogTitle,
+                                eventType: this.state.eventType,
                                 from_id: item
                             });
                         setCurDialogsUser([{dialog_id: this.props.curDialogId, last_msg: this.state.msgContent}])
