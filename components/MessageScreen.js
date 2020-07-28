@@ -109,37 +109,12 @@ class MessageScreen extends Component {
     render() {
         return (
             <View style={{marginTop: 10}}>
-                {/*<Text>{strings.how}</Text>*/}
-                {/*<View style={{marginBottom: 10}}>*/}
-                {/*    <TextInput style={{*/}
-                {/*        borderTopColor: 'lightgrey',*/}
-                {/*        borderBottomColor: 'lightgrey',*/}
-                {/*        borderTopWidth: 1,*/}
-                {/*        height: 40,*/}
-                {/*        borderBottomWidth: 1*/}
-                {/*    }} placeholder="Type here to find user ..." onChangeText={(text) => {*/}
-                {/*        this.setState({data: text});*/}
-                {/*        this.onprs(text)*/}
-                {/*    }} value={this.state.data}/>*/}
-                {/*    {this.state.userList != null && this.state.userList.map(d =>*/}
-                {/*        <TouchableOpacity key={d.Username} onPress={() =>*/}
-                {/*            this.props.navigation.navigate('Dialog', {*/}
-                {/*                nickname: d.Username, user_id: d.user_id,*/}
-                {/*            })}>*/}
-                {/*            <View style={{marginBottom: 10}}>*/}
-                {/*                <Text>{d.Username}</Text>*/}
-                {/*                <Text>{d.user_id}</Text>*/}
-                {/*            </View>*/}
-                {/*        </TouchableOpacity>*/}
-                {/*    )}*/}
-                {/*</View>*/}
-
                 {(this.props.dialogs !== undefined) ?
                     <ScrollView showsVerticalScrollIndicator={true} decelerationRate={"normal"}>
                         {this.props.dialogs[0] != undefined && this.props.dialogs.map(d =>
                             <TouchableOpacity key={d.dialog_id} onPress={() =>
                                 this.props.navigation.navigate('Dialog', {
-                                    dialog_id: d.dialog_id, dialogTitle: d.dialogTitle, users_id: d.users_id
+                                    dialog_id: d.dialog_id, dialogTitle: d.dialogTitle, users_id: d.users_id, eventType: d.event
                                 })}>
                                 <View style={{
                                     margin: 10,
