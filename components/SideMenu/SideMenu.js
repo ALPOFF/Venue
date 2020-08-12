@@ -2,14 +2,15 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styles from './SideMenu.style';
 import {NavigationActions} from 'react-navigation';
-import {ScrollView, Text, View, TouchableOpacity, AsyncStorage} from 'react-native';
+import {ScrollView, Text, View, TouchableOpacity, AsyncStorage, Switch} from 'react-native';
 import {Icon} from "react-native-elements";
 
 class SideMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: ''
+      name: '',
+      toggle: false
     }
   }
 
@@ -86,6 +87,15 @@ class SideMenu extends Component {
             <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Dark Mode</Text>
           </View>
         </TouchableOpacity>
+
+        <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor="#f5dd4b"
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={(value) => this.setState({toggle: value})}
+            value={this.state.toggle}
+        />
+
 {/*        <View style={styles.footerContainer}>
           <Text>Fixed footer for info</Text>
         </View>*/}
