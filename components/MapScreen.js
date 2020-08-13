@@ -6,6 +6,7 @@ import mapStyle from './../common/mapConfig'
 import Geolocation  from '@react-native-community/geolocation';
 import {connect} from "react-redux";
 import {setUserCoord} from "../state/appReducer";
+import {localizeMapScreen} from "../localization/localize";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -170,7 +171,7 @@ class MapScreen extends Component<{}> {
                             onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
 
                         >
-                            <Text style={{color: '#010743', fontWeight: 'bold'}}>You are here</Text>
+                            <Text style={{color: '#010743', fontWeight: 'bold'}}>{localizeMapScreen.YouAreHereText}</Text>
                             <Icon name="navigation" size={30} color={'#010743'}/>
                         </Marker>
                         }

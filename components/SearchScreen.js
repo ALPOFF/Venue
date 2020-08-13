@@ -3,6 +3,7 @@ import {AsyncStorage, Image, Text, TextInput, TouchableOpacity, View} from "reac
 import * as axios from "axios";
 import {Icon} from "react-native-elements";
 import ava from "../assets/Venue_new/userIcon.png";
+import {localizeSearchScreen} from "../localization/localize";
 
 const SearchScreen = (props) => {
     const [data, setData] = useState([]);
@@ -36,9 +37,10 @@ const SearchScreen = (props) => {
                 borderTopColor: 'lightgrey',
                 borderBottomColor: 'lightgrey',
                 borderTopWidth: 1,
-                height: 40,
-                borderBottomWidth: 1
-            }} placeholder="Type here to find user ..." onChangeText={(text) => {
+                height: 60,
+                borderBottomWidth: 1,
+                paddingLeft: 10
+            }} placeholder={localizeSearchScreen.TypeHereText} onChangeText={(text) => {
                 setData({data: text});
                 onprs(text)
             }} value={data}/>

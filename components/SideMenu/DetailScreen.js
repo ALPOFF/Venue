@@ -11,6 +11,7 @@ import imgEvent from './../../assets/Venue_new/new_pic.png'
 import ImagePicker from 'react-native-image-crop-picker';
 import {connect} from "react-redux";
 import {setMarker, setNewEventCat, setNewEventDescr, setNewEventName, setNewEventPic} from "../../state/appReducer";
+import {localizeDetailScreen} from "../../localization/localize";
 
 const renderInput = ({placeholder, input: {onChange, inputType, ...restInput}}) => {
     return <TextInput placeholder={placeholder}
@@ -117,15 +118,15 @@ class DetailScreen extends Component {
                     <TextInput onChangeText={(value) => {
                         // this.setState({eventName: value})
                         this.props.setNewEventName(value)
-                    }} value={this.props.newEventName} placeholder={'Event Name...'}/>
+                    }} value={this.props.newEventName} placeholder={localizeDetailScreen.eventNameText}/>
                     <TextInput onChangeText={(value) => {
                         // this.setState({description: value})
                         this.props.setNewEventDescr(value)
-                    }} value={this.props.newEventDescr} placeholder={'Type here the description of your event...'}/>
+                    }} value={this.props.newEventDescr} placeholder={localizeDetailScreen.eventDescrText}/>
                     <TextInput onChangeText={(value) => {
                         //this.setState({category: value})
                         this.props.setNewEventCat(value)
-                    }} value={this.props.newEventCat} placeholder={'Choose category...'}/>
+                    }} value={this.props.newEventCat} placeholder={localizeDetailScreen.eventCategText}/>
                 </View>
                 <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <TouchableOpacity onPress={() =>
@@ -136,7 +137,7 @@ class DetailScreen extends Component {
                                           alignItems: 'center',
                                           marginTop: 10
                                       }}>
-                        <Text style={{color: 'rgba(0,0,0,0.72)', fontWeight: 'bold', fontSize: 20}}>Pick Place</Text>
+                        <Text style={{color: 'rgba(0,0,0,0.72)', fontWeight: 'bold', fontSize: 20}}>{localizeDetailScreen.PickPlaceText}</Text>
                         <Icon name="explore" size={40} color={'rgba(0,0,0,0.72)'}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
