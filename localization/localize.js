@@ -18,7 +18,7 @@ export const localizeDetailScreen = new LocalizedStrings({
         PickPlaceText: "Pick place on map"
     },
     ru: {
-        eventNameText: "Название события...",
+        eventNameText: "Введите название события...",
         eventDescrText: "Краткое описание события...",
         eventCategText: "Выберите категорию...",
         PickPlaceText: "Выберите место события"
@@ -98,5 +98,22 @@ export const localizeSignUpScreen = new LocalizedStrings({
         loginText: "Введите логин",
         passText: "Пароль",
         passReText: "Повторите пароль"
+    }
+});
+
+export const localizeEventDetScreen = new LocalizedStrings({
+    "en-US": {
+        youGoText: "You go",
+        iGoText: "I go!",
+        eventDialogText: "Event dialog",
+        orgText: "Creator",
+        streetText: "Address"
+    },
+    ru: {
+        youGoText: "Вы идете",
+        iGoText: "Я пойду!",
+        eventDialogText: "Диалог события",
+        orgText: "Организатор",
+        streetText: "Адрес"
     }
 });

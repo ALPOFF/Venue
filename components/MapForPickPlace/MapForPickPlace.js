@@ -16,6 +16,7 @@ import mapStyle from "../../common/mapConfig";
 import {Icon} from "react-native-elements";
 import {connect} from "react-redux";
 import {setMarker} from "../../state/appReducer";
+import MapInput from "./MapInput";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -67,6 +68,16 @@ class MapForPickPlace extends Component<{}> {
             // maximumAge: 100000
         });
     }
+    getCoordsFromName(loc) {
+        this.setState({
+            region: {
+                latitude: loc.lat,
+                longitude: loc.lng,
+                latitudeDelta: 0.003,
+                longitudeDelta: 0.003
+            }
+        });
+    }
 
     render() {
         let markers = [
@@ -74,6 +85,8 @@ class MapForPickPlace extends Component<{}> {
         ];
         return (
             <View style={styles.container}>
+                
+                <MapInput notifyChange={(loc) => this.getCoordsFromName(loc)}/>
                 {this.state.lat && this.state.long
                     ?
 
@@ -124,18 +137,31 @@ class MapForPickPlace extends Component<{}> {
                         <ActivityIndicator size="large" color="#009788"/>
                     </View>
                 }
+                {/*<TouchableOpacity activeOpacity={0.8}*/}
+                {/*                  style={{*/}
+                {/*                      position: 'absolute',*/}
+                {/*                      right: 10,*/}
+                {/*                      top: 10,*/}
+                {/*                      backgroundColor: 'transparent',*/}
+                {/*                      zIndex: 999*/}
+                {/*                  }}*/}
+                {/*                  onPress={() =>*/}
+                {/*                      this.props.navigation.navigate('Detail')}>*/}
+                {/*    <Icon style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}*/}
+                {/*          name="close" size={40} color={'#009788'}/>*/}
+                {/*</TouchableOpacity>*/}
                 <TouchableOpacity activeOpacity={0.8}
                                   style={{
                                       position: 'absolute',
                                       right: 10,
-                                      top: 10,
+                                      bottom: 10,
                                       backgroundColor: 'transparent',
                                       zIndex: 999
                                   }}
-                                  onPress={() =>
-                                      this.props.navigation.navigate('Detail')}>
-                    <Icon style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}
-                          name="close" size={40} color={'#009788'}/>
+                                  onPress={() => this.props.navigation.navigate('Detail')}>
+                    <Image
+                        style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}
+                        source={require('./../../assets/Venue_new/doneIcon3.png')}/>
                 </TouchableOpacity>
             </View>
         );
@@ -177,7 +203,7 @@ const styles = StyleSheet.create({
     },
     map: {
         position: 'absolute',
-        paddingTop: 20,
+        marginTop: 80,
         top: 0,
         left: 0,
         right: 0,

@@ -26,13 +26,16 @@ const HomeScreen = (props) => {
 
     const [refreshing, setRefreshing] = React.useState(false);
     const [userCoord, setUserCoord] = React.useState({});
-    const [postsRender, setPostsRender] = React.useState(true);
+    const [postsRender, setPostsRender] = React.useState(false);
     const [newlastPost, setNewLastPost] = React.useState(0);
 
     let sysLang = ''
     locale === 'ru_RU' ? sysLang = 'ru_RU' : sysLang = 'en_US';
 
+    //let closeActivityIndicator = () => setTimeout(() => setPostsRender(true), 10000)
+
     useEffect(() => {
+        //closeActivityIndicator()
         Geolocation.getCurrentPosition((position) => {
             setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
             axios.post(`http://185.12.95.84:3000/events`,
@@ -42,7 +45,7 @@ const HomeScreen = (props) => {
                     console.log('ALLLL:', res.data)
                     props.setEventData(res.data.data);
                     setNewLastPost(res.data.last_post)
-                    console.log('event_array:', props.eventData)
+                    console.log('event_array:', res.data.posts)
                     setPostsRender(res.data.posts)
                 });
             console.log('current_pos:', position);
@@ -67,6 +70,7 @@ const HomeScreen = (props) => {
     const scroll = React.createRef();
 
     const onRefresh = React.useCallback(() => {
+
         setRefreshing(true);
         Geolocation.getCurrentPosition((position) => {
             setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
@@ -78,6 +82,7 @@ const HomeScreen = (props) => {
                     props.setEventData(res.data.data);
                     setNewLastPost(res.data.last_post)
                     console.log('event_array:', props.eventData)
+                    console.log('event_array_posts:', props.eventData.posts)
                     setPostsRender(res.data.posts)
                 });
             console.log('current_pos:', position);
@@ -92,12 +97,14 @@ const HomeScreen = (props) => {
         wait(2000).then(() => setRefreshing(false));
     }, [refreshing]);
 
+
+
     return (
         // props.eventData.length !== 0 ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
         // postsRender ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
         <View style={{display: 'flex', backgroundColor: '#f1eff1', height: '100%'}}>
             <View style={{height: '100%'}}>
-                <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}
+                {/*{postsRender == true ? */ <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}
                             onScrollEndDrag={() => {
                                 Geolocation.getCurrentPosition((position) => {
                                     setUserCoord({
@@ -162,15 +169,15 @@ const HomeScreen = (props) => {
                                 <Text>{a.id}</Text>
                             </View></TouchableOpacity>)
                         : <View style={{alignItems: 'center',}}><Text style={{
-                            color: '#14171A',
+                            color: 'rgba(20,23,26,0.5)',
                             fontSize: 20,
                             textAlign: "center",
-                            fontFamily: 'Oxygen-Regular',
+                            fontFamily: 'Oxygen-Bold',
                             paddingTop: 20
                         }}>
                             {localizeHomeScreen.eventStatus}</Text></View>
                     }
-                </ScrollView>
+                </ScrollView> /*: <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" />*/}
             </View>
             <TouchableOpacity activeOpacity={0.8}
                               style={{

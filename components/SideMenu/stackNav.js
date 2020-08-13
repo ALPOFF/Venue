@@ -44,8 +44,9 @@ const stackNav = createStackNavigator({
     Detail: {
         screen: stackNavPlace,
         navigationOptions: ({navigation}) => ({
-            title: "Create new event",
-            headerStyle: {height: 55, paddingTop: 10},
+            headerTransparent: true,
+            //title: "Create new event",
+            headerStyle: {height: 20},
             headerTintColor: 'black',
             headerTitleStyle: {
                 paddingLeft: 20,

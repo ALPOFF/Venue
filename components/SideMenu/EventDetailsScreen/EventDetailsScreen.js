@@ -23,6 +23,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import AnimatedWithChildren from "react-native-web/dist/vendor/react-native/Animated/nodes/AnimatedWithChildren";
 import {NativeModules} from 'react-native'
 import PushNotification from "react-native-push-notification";
+import {localizeEventDetScreen} from "../../../localization/localize";
 
 
 // iOS:
@@ -241,16 +242,14 @@ class EventDetailsScreen extends Component {
                             <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                               onPress={() => iDontGo()}>
                                 <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                                    <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>Вы
-                                        идете</Text>
+                                    <Text style={{fontWeight: 'bold', fontSize: 15, color: 'grey', margin: 10}}>{localizeEventDetScreen.youGoText}</Text>
                                 </View>
                             </TouchableOpacity>
                             :
                             <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                               onPress={() => iGo()}>
                                 <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                                    <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>Я
-                                        пойду!</Text>
+                                    <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>{localizeEventDetScreen.iGoText}</Text>
                                 </View>
                             </TouchableOpacity>
                         }
@@ -280,16 +279,15 @@ class EventDetailsScreen extends Component {
                                               })
                                           }}>
                             <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>Перейти в
-                                    беседу</Text>
+                                <Text style={{fontWeight: 'bold', fontSize: 15, color: 'black', margin: 10}}>{localizeEventDetScreen.eventDialogText}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
                     <Text style={{fontSize: 20, color: 'black'}}>{this.state.postTitle}</Text>
-                    <Text>Организатор: {this.state.org}</Text>
-                    <Text>Street: {this.state.town}</Text>
-                    <Text>{this.state.postText}</Text>
-                    <Text onPress={() => this.testPush()}>defsdf</Text>
+                    <Text>{localizeEventDetScreen.orgText}: {this.state.org}</Text>
+                    <Text>{localizeEventDetScreen.streetText}: {this.state.town}</Text>
+                    {/*<Text>{localizeEventDetScreen.streetText}</Text>*/}
+                    {/*<Text onPress={() => this.testPush()}>defsdf</Text>*/}
                 </View>
         )
     }

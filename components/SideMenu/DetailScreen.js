@@ -115,18 +115,27 @@ class DetailScreen extends Component {
                                alt=""/>
                     </TouchableOpacity>}
                 <View>
-                    <TextInput onChangeText={(value) => {
-                        // this.setState({eventName: value})
-                        this.props.setNewEventName(value)
-                    }} value={this.props.newEventName} placeholder={localizeDetailScreen.eventNameText}/>
-                    <TextInput onChangeText={(value) => {
-                        // this.setState({description: value})
-                        this.props.setNewEventDescr(value)
-                    }} value={this.props.newEventDescr} placeholder={localizeDetailScreen.eventDescrText}/>
-                    <TextInput onChangeText={(value) => {
-                        //this.setState({category: value})
-                        this.props.setNewEventCat(value)
-                    }} value={this.props.newEventCat} placeholder={localizeDetailScreen.eventCategText}/>
+                    <View style={{paddingBottom: 10}}>
+                        <Text>Название:</Text>
+                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {
+                            // this.setState({eventName: value})
+                            this.props.setNewEventName(value)
+                        }} value={this.props.newEventName} placeholder={localizeDetailScreen.eventNameText}/>
+                    </View >
+                    <View style={{paddingBottom: 10}}>
+                        <Text>Описание:</Text>
+                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {
+                            // this.setState({description: value})
+                            this.props.setNewEventDescr(value)
+                        }} value={this.props.newEventDescr} placeholder={localizeDetailScreen.eventDescrText}/>
+                    </View>
+                    <View style={{paddingBottom: 10}}>
+                        <Text>Категория:</Text>
+                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {
+                            //this.setState({category: value})
+                            this.props.setNewEventCat(value)
+                        }} value={this.props.newEventCat} placeholder={localizeDetailScreen.eventCategText}/>
+                    </View>
                 </View>
                 <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <TouchableOpacity onPress={() =>
