@@ -59,3 +59,44 @@ export const localizeMapScreen = new LocalizedStrings({
         YouAreHereText: "Вы здесь"
     }
 });
+
+export const localizeSignInScreen = new LocalizedStrings({
+    "en-US": {
+        dontHaveAccText: "Don't have an account?",
+        forgotPassText: "Forgot your password?",
+        resetText: "Reset password",
+        signUpText: "Sign Up"
+    },
+    ru: {
+        dontHaveAccText: "Нет аккаунта?",
+        forgotPassText: "Забыли пароль?",
+        resetText: "Сбросить пароль",
+        signUpText: "Регистрация"
+    }
+});
+
+export const localizeLoginReduxScreen = new LocalizedStrings({
+    "en-US": {
+        loginEmailText: "Login or Email",
+        passText: "Password"
+    },
+    ru: {
+        loginEmailText: "Логин или почта",
+        passText: "Пароль"
+    }
+});
+
+export const localizeSignUpScreen = new LocalizedStrings({
+    "en-US": {
+        emailText: "Email",
+        loginText: "Login",
+        passText: "Password",
+        passReText: "Retype password"
+    },
+    ru: {
+        emailText: "Введите почту",
+        loginText: "Введите логин",
+        passText: "Пароль",
+        passReText: "Повторите пароль"
+    }
+});

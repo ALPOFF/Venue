@@ -2,6 +2,7 @@ import React from "react";
 import {View, TextInput, TouchableOpacity, Text, Image} from 'react-native'
 import { reduxForm, Field } from 'redux-form';
 import {Icon} from "react-native-elements";
+import {localizeLoginReduxScreen} from "../localization/localize";
 
 const renderInput = ({ placeholder, security, input: { onChange, inputType, ...restInput }}) => {
     return <TextInput placeholder={placeholder}
@@ -23,8 +24,8 @@ const LoginForm = (props) => {
 
     return (
         <>
-            <Field name="loginOrEmail" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={'Login or Email'}/>
-            <Field name="password" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={'Password'} security={true} inputType={'password'}/>
+            <Field name="loginOrEmail" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={localizeLoginReduxScreen.loginEmailText}/>
+            <Field name="password" onChange={() => {props.setHasError(false)}} component={renderInput} placeholder={localizeLoginReduxScreen.passText} security={true} inputType={'password'}/>
             {(hasError === 'ERROR') && <Text style={{color: 'red'}}>Incorrect login or password</Text>}
             <View style={{display: 'flex', justifyContent: 'flex-end', paddingTop: 20}}>
                 <TouchableOpacity onPress={handleSubmit(_signInAsync)}>

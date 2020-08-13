@@ -17,6 +17,7 @@ import * as axios from "axios";
 import {connect} from "react-redux";
 import {setUserId, setUserProfileBarThunk} from "../../state/appReducer";
 import {useDarkMode} from 'react-native-dark-mode'
+import {localizeSignInScreen} from "../../localization/localize";
 
 
 const SignInScreen = (props) => {
@@ -74,17 +75,15 @@ const SignInScreen = (props) => {
 
             {!keyboardT && <View style={{marginTop: 50, display: 'flex', alignItems: 'center'}}>
                 <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>Forgot
-                        your password? </Text>
+                    <Text style={{color: '#A7A7A7', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{localizeSignInScreen.forgotPassText} </Text>
                     <Text style={{color: '#009788', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}
-                          onPress={() => props.navigation.navigate('')}>Reset</Text>
+                          onPress={() => props.navigation.navigate('')}>{localizeSignInScreen.resetText}</Text>
                     <Text style={{color: 'orange', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>-In
                         dev</Text>
                 </View>
                 <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7'}}>Don't have an account? </Text>
-                    <Text style={{color: '#009788'}} onPress={() => props.navigation.navigate('SignUpScreen')}>Sign
-                        Up</Text>
+                    <Text style={{color: '#A7A7A7'}}>{localizeSignInScreen.dontHaveAccText} </Text>
+                    <Text style={{color: '#009788'}} onPress={() => props.navigation.navigate('SignUpScreen')}>{localizeSignInScreen.signUpText}</Text>
                 </View>
             </View>}
         </KeyboardAvoidingView>
