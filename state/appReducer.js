@@ -1,4 +1,4 @@
-import {getcurDUsers, getCurUsD, getUserDialog} from "../api/api";
+import {getcurDUsers, getCurUsD, getUserDialog, getUserProfileBar} from "../api/api";
 
 const SET_SOCKET = 'tariff/SET_SOCKET';
 const SET_CUR_DIALOGS_USER = 'tariff/SET_CUR_DIALOGS_USER';
@@ -17,6 +17,7 @@ const SET_NEW_EVENT_NAME = 'tariff/SET_NEW_EVENT_NAME';
 const SET_NEW_EVENT_DESCR = 'tariff/SET_NEW_EVENT_DESCR';
 const SET_NEW_EVENT_CAT = 'tariff/SET_NEW_EVENT_CAT';
 const SET_NEW_EVENT_PIC = 'tariff/SET_NEW_EVENT_PIC';
+const SET_USER_USER_PROFILE_BAR = 'tariff/SET_USER_USER_PROFILE_BAR';
 
 let initialState = {
     dialogList: [
@@ -41,7 +42,8 @@ let initialState = {
     newEventName: '',
     newEventDescr: '',
     newEventCat: '',
-    newEventPic: []
+    newEventPic: [],
+    userProfileBar: []
 };
 
 const appReducer = (state = initialState, action) => {
@@ -55,6 +57,11 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 eventData: action.eventData
+            };
+        case SET_USER_USER_PROFILE_BAR:
+            return {
+                ...state,
+                userProfileBar: action.userProfileBar
             };
         case ADD_NEW_EVENT_DATA:
             return {
@@ -262,6 +269,13 @@ export const setNewEventPic = (newEventPic) => {
     }
 };
 
+export const setUserProfileBar = (userProfileBar) => {
+    return {
+        type: SET_USER_USER_PROFILE_BAR,
+        userProfileBar
+    }
+};
+
 export const getCurDialogsUser = (currentUserId, currentUsername) => async (dispatch) => {
     console.log("1111111111111111111111")
     let response = await getCurUsD(currentUserId, currentUsername);
@@ -276,6 +290,11 @@ export const getDUsers = (dialog_id) => async (dispatch) => {
 export const setUserDialog = (dialog_id) => async (dispatch) => {
     let response = await getUserDialog(dialog_id)
     dispatch(setttUserDialog(response.data))
+}
+
+export const setUserProfileBarThunk = (currentUserId) => async (dispatch) => {
+    let response = await getUserProfileBar(currentUserId)
+    dispatch(setUserProfileBar(response.data))
 }
 
 

@@ -10,11 +10,11 @@ import {
     Text,
     TouchableOpacity,
     View,
-    ScrollView, ActivityIndicator
+    ScrollView, ActivityIndicator, AsyncStorage
 } from "react-native";
 import {connect} from "react-redux";
 import Geolocation from "@react-native-community/geolocation";
-import {addNewEventData, setEventData, setLastPost, setUserCoord} from "../state/appReducer";
+import {addNewEventData, setEventData, setLastPost, setUserCoord, setUserProfileBarThunk} from "../state/appReducer";
 import {NativeModules} from 'react-native'
 
 
@@ -54,7 +54,6 @@ const HomeScreen = (props) => {
             timeout: 10000,
             // maximumAge: 100000
         });
-
 
         console.log('userCoord:', props.userCoord)
     }, []);
@@ -223,7 +222,8 @@ const styles = StyleSheet.create({
 
 let mapStateProps = (state) => ({
     last_post: state.appReducer.last_post,
-    eventData: state.appReducer.eventData
+    eventData: state.appReducer.eventData,
+    userProfileBar: state.appReducer.userProfileBar
 })
 
-export default connect(mapStateProps, {setUserCoord, setLastPost, setEventData, addNewEventData})(HomeScreen);
+export default connect(mapStateProps, {setUserCoord, setUserProfileBarThunk, setLastPost, setEventData, addNewEventData})(HomeScreen);

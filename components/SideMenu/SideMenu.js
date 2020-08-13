@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styles from './SideMenu.style';
 import {NavigationActions} from 'react-navigation';
-import {ScrollView, Text, View, TouchableOpacity, AsyncStorage, Switch} from 'react-native';
+import {ScrollView, Text, View, TouchableOpacity, AsyncStorage, Switch, ImageBackground, Image} from 'react-native';
 import {Icon} from "react-native-elements";
+import {connect} from "react-redux";
+import {setUserProfileBarThunk} from "../../state/appReducer";
 
 class SideMenu extends Component {
   constructor(props) {
@@ -22,9 +24,15 @@ class SideMenu extends Component {
   };
 
   componentDidMount() {
+    console.log('userProfileBar:', this.props.userProfileBar)
     AsyncStorage.getItem('userName', (err, item) => {
       this.setState({name: item})
     })
+    AsyncStorage.getItem('userToken', (err, item) => {
+      console.log('sidebardata')
+      this.props.setUserProfileBarThunk(item)
+    });
+    console.log(this.props.userProfileBar)
     }
 
   render () {
@@ -32,10 +40,33 @@ class SideMenu extends Component {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={true} decelerationRate={"normal"}>
           <View>
-            <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#009788'}}>
-              <Icon name="verified-user" type='Ionicons' size={40} color='black'/>
-              <Text style={{fontWeight: 'bold', fontSize: 20, color: 'black', margin: 10}}>{this.state.name}</Text>
+            {/*{this.props.userProfileBar[0] != undefined && <ImageBackground source={{uri: this.props.userProfileBar[0].background_pic}} style={{height: 40}}>*/}
+
+              <View style={{
+                margin: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingBottom: 15,
+                borderBottomWidth: 1,
+                borderBottomColor: '#009788'
+              }}>
+                <Image source={{uri: this.props.userProfileBar[0].photo}} style={{height: 60, width: 60, borderRadius: 40}}/>
+                <View style={{display: "flex", flexDirection: "column", paddingLeft: 10}}>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  color: 'black'
+                }}>{this.props.userProfileBar[0].name}</Text>
+                <Text style={{
+                  fontSize: 18,
+                  color: 'lightgrey'
+                }}>@{this.props.userProfileBar[0].Username}</Text>
+              </View>
+
             </View>
+
+            {/*</ImageBackground>}*/}
           </View>
           <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                             onPress={() => this.props.navigation.navigate('switchNavEditProfile')}>
@@ -108,4 +139,8 @@ SideMenu.propTypes = {
   navigation: PropTypes.object
 };
 
-export default SideMenu;
+const mapStateToProps = (state) => ({
+  userProfileBar: state.appReducer.userProfileBar
+})
+
+export default connect(mapStateToProps, {setUserProfileBarThunk})(SideMenu);

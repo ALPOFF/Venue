@@ -12,6 +12,10 @@ export let getUserDialog = (dialog_id) => {
     return axios.post(`http://185.12.95.84:3000/userdialog`, {dialog_id: dialog_id})
 }
 
+export let getUserProfileBar = (currentUserId) => {
+    return axios.post(`http://185.12.95.84:3000/userprofilebar`, {currentUserId: currentUserId})
+}
+
 export const kudaGoAPI = () => {
     let city = 'Москва'
     const allEventsByLocation = (city) => {

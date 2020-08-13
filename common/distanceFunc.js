@@ -1,6 +1,4 @@
 export const distanceFunc = (eventCoord, userCoord) => {
-    console.log('eventCoordFunc:', eventCoord)
-    console.log('userCoordFunc:', userCoord)
     let lat1 = eventCoord.latitude
     let lat2 = userCoord.latitude
     let lon1 = eventCoord.longitude

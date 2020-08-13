@@ -15,7 +15,7 @@ import avaSign from "../../assets/Venue_new/avatarSign.png";
 import SignInReduxForm from "../../ReduxForm/LogInReduxForm";
 import * as axios from "axios";
 import {connect} from "react-redux";
-import {setUserId} from "../../state/appReducer";
+import {setUserId, setUserProfileBarThunk} from "../../state/appReducer";
 import {useDarkMode} from 'react-native-dark-mode'
 
 
@@ -25,9 +25,6 @@ const SignInScreen = (props) => {
     const [keyboardT, setKeyboardT] = useState(false);
 
     useEffect(() => {
-
-
-
         AsyncStorage.setItem('darkMode', false);
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
