@@ -55,6 +55,7 @@ class EventDetailsScreen extends Component {
             visitors: this.props.navigation.state.params.visitors,
             activeSlide: 0,
             postTitle: this.props.navigation.state.params.postTitle,
+            postCat: this.props.navigation.state.params.postCat,
             town: '',
             whogo: [],
             org: '',
@@ -285,6 +286,7 @@ class EventDetailsScreen extends Component {
                     </View>
                     <Text style={{fontSize: 20, color: 'black'}}>{this.state.postTitle}</Text>
                     <Text>{localizeEventDetScreen.orgText}: {this.state.org}</Text>
+                    <Text>Category: {this.props.eventCat.filter(f => f.value == this.state.postCat[0])[0].label}</Text>
                     <Text>{localizeEventDetScreen.streetText}: {this.state.town}</Text>
                     {/*<Text>{localizeEventDetScreen.streetText}</Text>*/}
                     {/*<Text onPress={() => this.testPush()}>defsdf</Text>*/}
@@ -300,7 +302,10 @@ const styles = {
     }
 };
 
+const mapStateToProps = (state) => ({
+    eventCat: state.appReducer.eventCat
+})
 
-export default connect(null, {})(EventDetailsScreen);
+export default connect(mapStateToProps, {})(EventDetailsScreen);
 
 

@@ -12,6 +12,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {connect} from "react-redux";
 import {setMarker, setNewEventCat, setNewEventDescr, setNewEventName, setNewEventPic} from "../../state/appReducer";
 import {localizeDetailScreen} from "../../localization/localize";
+import RNPickerSelect from 'react-native-picker-select';
 
 const renderInput = ({placeholder, input: {onChange, inputType, ...restInput}}) => {
     return <TextInput placeholder={placeholder}
@@ -97,7 +98,7 @@ class DetailScreen extends Component {
                 )
                 this.props.setNewEventName('')
                 this.props.setNewEventDescr('')
-                this.props.setNewEventCat('')
+                this.props.setNewEventCat(null)
                 this.props.setMarker({})
                 this.props.setNewEventPic([])
             })
@@ -131,10 +132,22 @@ class DetailScreen extends Component {
                     </View>
                     <View style={{paddingBottom: 10}}>
                         <Text>Категория:</Text>
-                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {
-                            //this.setState({category: value})
-                            this.props.setNewEventCat(value)
-                        }} value={this.props.newEventCat} placeholder={localizeDetailScreen.eventCategText}/>
+                        {/*<TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {*/}
+                        {/*    //this.setState({category: value})*/}
+                        {/*    this.props.setNewEventCat(value)*/}
+                        {/*}} value={this.props.newEventCat} placeholder={localizeDetailScreen.eventCategText}/>*/}
+                        <RNPickerSelect placeholder={{label: localizeDetailScreen.eventCategText}} style={{borderBottomWidth: 1, borderBottomColor: 'black'}}
+                            onValueChange={(value) => this.props.setNewEventCat(value)}
+                            items={[
+                                { label: 'Квартирник', value: '0' },
+                                { label: 'Концерт', value: '1' },
+                                { label: 'Игры', value: '2' },
+                                { label: 'Бизнес', value: '3' },
+                                { label: 'Здоровье', value: '4' },
+                                { label: 'Образование', value: '5' },
+                                { label: 'Спорт', value: '6' }
+                            ]}
+                        />
                     </View>
                 </View>
                 <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>

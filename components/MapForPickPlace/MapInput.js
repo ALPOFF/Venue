@@ -1,5 +1,5 @@
 import React from 'react';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import GooglePlacesAutocomplete from 'react-native-google-places-autocomplete';
 
 class MapInput extends React.Component {
 
@@ -9,7 +9,7 @@ class MapInput extends React.Component {
             <GooglePlacesAutocomplete
                 placeholder='Search'
                 minLength={2} // minimum length of text to search
-                autoFocus={true}
+                // autoFocus={true}
                 returnKeyType={'search'} // Can be left out for default return key
                 listViewDisplayed={false}    // true/false/undefined
                 fetchDetails={true}
@@ -17,10 +17,11 @@ class MapInput extends React.Component {
                     this.props.notifyChange(details.geometry.location);
                 }
                 }
-
+                currentLocation={true}
+                currentLocationLabel='Current location'
                 query={{
                     key: 'AIzaSyAyc75zIrPhbrdYEY9mFn-JsIJsSi-Ghmg',
-                    language: 'en'
+                    language: 'ru'
                 }}
 
                 nearbyPlacesAPI='GooglePlacesSearch'

@@ -66,38 +66,32 @@ class SideMenu extends Component {
                                 }}>@{this.props.userProfileBar[0].Username}</Text>
                             </View>
                         </View>
-                        <View style={{paddingTop: 10}}>
-                            <Text style={{
-                                fontWeight: 'bold',
-                                fontFamily: 'Oxygen-Bold',
-                                fontSize: 16,
-                                color: '#14171A',
-                            }}>{localizeSideMenuScreen.SubscribersText}: {this.props.userProfileBar[0].subscribers.length}</Text>
-                            <Text style={{
-                                fontWeight: 'bold',
-                                fontFamily: 'Oxygen-Bold',
-                                fontSize: 16,
-                                color: '#14171A',
-                            }}>{localizeSideMenuScreen.SubscriptionsText}: {this.props.userProfileBar[0].subscribes.length}</Text>
-                        </View>
+                        {/*<View style={{paddingTop: 10}}>*/}
+                        {/*    <Text style={{*/}
+                        {/*        fontWeight: 'bold',*/}
+                        {/*        fontFamily: 'Oxygen-Bold',*/}
+                        {/*        fontSize: 16,*/}
+                        {/*        color: '#14171A',*/}
+                        {/*    }}>{localizeSideMenuScreen.SubscribersText}: {this.props.userProfileBar[0].subscribers.length}</Text>*/}
+                        {/*    <Text style={{*/}
+                        {/*        fontWeight: 'bold',*/}
+                        {/*        fontFamily: 'Oxygen-Bold',*/}
+                        {/*        fontSize: 16,*/}
+                        {/*        color: '#14171A',*/}
+                        {/*    }}>{localizeSideMenuScreen.SubscriptionsText}: {this.props.userProfileBar[0].subscribes.length}</Text>*/}
+                        {/*</View>*/}
                         {/*</ImageBackground>}*/}
                     </View>}
                     <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                       onPress={() => this.props.navigation.navigate('switchNavEditProfile')}>
-                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{marginLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <View style={{width: 30}}><Icon name="md-person" type='ionicon' size={25} color='#263238'/></View>
                             <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>{localizeSideMenuScreen.YourProfileText}</Text>
                         </View>
                     </TouchableOpacity>
-                    {/*<TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}*/}
-                    {/*                  onPress={() => this.props.navigation.navigate('MyFriends')}>*/}
-                    {/*  <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>*/}
-                    {/*    <View style={{width: 30}}><Icon name="people" size={25} color='#263238'/></View>*/}
-                    {/*    <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Friends</Text>*/}
-                    {/*  </View>*/}
-                    {/*</TouchableOpacity>*/}
+
                     <View>
-                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{marginLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <View style={{width: 30}}><Icon name="ios-settings" type='ionicon' size={25}
                                                             color='#263238'/></View>
                             <Text style={{
@@ -111,48 +105,39 @@ class SideMenu extends Component {
                             <Text style={{color: 'orange'}}>In dev</Text>
                         </View>
                     </View>
-                    {/*<TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}*/}
-                    {/*                  onPress={() => this.props.navigation.navigate('MyEvents')}>*/}
-                    {/*  <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>*/}
-                    {/*    <View style={{width: 30}}><Icon name="event-note" size={25} color='#263238'/></View>*/}
-                    {/*    <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>My events</Text>*/}
-                    {/*  </View>*/}
-                    {/*</TouchableOpacity>*/}
+
                     <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}} onPress={async () => {
                         await AsyncStorage.clear();
                         this.props.navigation.navigate('Auth')
                     }}>
-                        <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{marginLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <View style={{width: 30}}><Icon name="md-exit" type='ionicon' size={25}
                                                             color='#263238'/></View>
                             <Text style={styles.sectionHeadingStyle}>{localizeSideMenuScreen.SignOutText}</Text>
                         </View>
                     </TouchableOpacity>
                 </ScrollView>
-                <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                                  onPress={() => {
-                                      AsyncStorage.setItem('darkMode', true);
-                                      AsyncStorage.getItem('darkMode', (err, item) => {
-                                          console.log('darkMode:', item)
-                                      });
-                                  }}>
-                    <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <View style={{width: 30}}><Icon name="switch" type='entypo' size={25} color='#263238'/></View>
-                        <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Dark Mode</Text>
-                    </View>
-                </TouchableOpacity>
+                {/*<TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}*/}
+                {/*                  onPress={() => {*/}
+                {/*                      AsyncStorage.setItem('darkMode', true);*/}
+                {/*                      AsyncStorage.getItem('darkMode', (err, item) => {*/}
+                {/*                          console.log('darkMode:', item)*/}
+                {/*                      });*/}
+                {/*                  }}>*/}
+                {/*    <View style={{margin: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>*/}
+                {/*        <View style={{width: 30}}><Icon name="switch" type='entypo' size={25} color='#263238'/></View>*/}
+                {/*        <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>Dark Mode</Text>*/}
+                {/*    </View>*/}
+                {/*</TouchableOpacity>*/}
 
-                <Switch
-                    trackColor={{false: "#767577", true: "#81b0ff"}}
-                    thumbColor="#f5dd4b"
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={(value) => this.setState({toggle: value})}
-                    value={this.state.toggle}
-                />
+                {/*<Switch*/}
+                {/*    trackColor={{false: "#767577", true: "#81b0ff"}}*/}
+                {/*    thumbColor="#f5dd4b"*/}
+                {/*    ios_backgroundColor="#3e3e3e"*/}
+                {/*    onValueChange={(value) => this.setState({toggle: value})}*/}
+                {/*    value={this.state.toggle}*/}
+                {/*/>*/}
 
-                {/*        <View style={styles.footerContainer}>
-          <Text>Fixed footer for info</Text>
-        </View>*/}
             </View>
         );
     }

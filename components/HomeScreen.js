@@ -102,7 +102,7 @@ const HomeScreen = (props) => {
     return (
         // props.eventData.length !== 0 ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
         // postsRender ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
-        <View style={{display: 'flex', backgroundColor: '#f1eff1', height: '100%'}}>
+        <View style={{display: 'flex', backgroundColor: '#ffffff', height: '100%'}}>
             <View style={{height: '100%'}}>
                 {/*{postsRender == true ? */ <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}
                             onScrollEndDrag={() => {
@@ -141,7 +141,8 @@ const HomeScreen = (props) => {
                                 postText: a.postText,
                                 pic: a.pic,
                                 visitors: a.visitors,
-                                postTitle: a.postTitle
+                                postTitle: a.postTitle,
+                                postCat: a.eventCat
                             })}>
                             <View style={{
                                 marginBottom: 10,
