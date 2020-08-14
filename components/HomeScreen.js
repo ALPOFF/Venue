@@ -150,7 +150,7 @@ const HomeScreen = (props) => {
                                 padding: 10,
                                 borderBottomWidth: 1,
                                 borderBottomColor: 'lightgrey'
-                            }}>
+                            }}>  
                                 <Text style={{
                                     color: '#14171A',
                                     fontSize: 20,
