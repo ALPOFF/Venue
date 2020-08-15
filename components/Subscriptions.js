@@ -20,18 +20,41 @@ const Subscriptions = (props) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.innerContainer}>
-                {subscrip.map(s => <View style={{display: "flex", flexDirection: "row"}}>
-                    {s.profile_pic == null ? <Image source={ava} style={{height: 40, width: 40}}/> :
-                        <Image source={{uri: s.profile_pic}} style={{height: 40, width: 40, borderRadius: 30}}/>}
-                    <TouchableOpacity onPress={() => {props.navigation.navigate('UserProfile', {user_id: s.user_id})}}>
-                        <Text style={{
-                        paddingLeft: 10, color: '#14171A',
-                        fontSize: 18,
-                        fontFamily: 'Oxygen-Bold',
-                        paddingVertical: 7
-                    }}>{s.Username}</Text>
-                    </TouchableOpacity>
-                </View>)}
+                {subscrip.map(s =>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: "center"}}>
+                        {s.profile_pic != undefined ? <Image source={{uri: s.profile_pic}} style={{
+                                height: 40,
+                                borderWidth: 1,
+                                borderColor: 'rgba(51,55,51,0.87)',
+                                width: 40,
+                                borderRadius: 30,
+                                position: 'relative',
+                                zIndex: 1,
+                                marginRight: 8,
+                                backgroundColor: 'white',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}/> :
+                            <Image source={ava} style={{
+                                height: 40,
+                                borderWidth: 1,
+                                borderColor: 'rgba(51,55,51,0.87)',
+                                width: 40,
+                                borderRadius: 30,
+                                position: 'relative',
+                                zIndex: 1,
+                                marginRight: 8,
+                                backgroundColor: 'white',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}/>}
+                        <TouchableOpacity onPress={() => {props.navigation.navigate('UserProfile', {user_id: s.user_id})}}>
+                            <Text>{s.name}</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
                 <TouchableOpacity activeOpacity={0.8}
                                   style={{
                                       position: 'absolute',
