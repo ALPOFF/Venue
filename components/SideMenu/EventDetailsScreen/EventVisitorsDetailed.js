@@ -8,12 +8,19 @@ import Geolocation from "@react-native-community/geolocation";
 const EventVisitorsDetailed = (props) => {
 
     const visitors = props.navigation.state.params.visitors;
+
+    const [visitorsDetail, setVisitorDetail] = React.useState([]);
+
+    useEffect(() => {
+        axios.post(`http://185.12.95.84:3000/userdetails`, {visitorsId: visitors}).then(res => setVisitorDetail(res.data))
+    }, {})
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.innerContainer}>
-                {visitors.map(v =>
-                    <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Image source={userPic} style={{
+                {visitorsDetail.map(v =>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: "center"}}>
+                        <Image source={{uri: v.profile_pic}} style={{
                             height: 40,
                             borderWidth: 1,
                             borderColor: 'rgba(51,55,51,0.87)',
@@ -21,12 +28,13 @@ const EventVisitorsDetailed = (props) => {
                             borderRadius: 30,
                             position: 'relative',
                             zIndex: 1,
+                            marginRight: 8,
                             backgroundColor: 'white',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}/>
-                        <Text>{v}</Text>
+                        <Text>{v.name}</Text>
                     </View>)}
                 <TouchableOpacity activeOpacity={0.8}
                                   style={{

@@ -25,12 +25,6 @@ const SearchScreen = (props) => {
             });
     }
 
-    let addToFriends = (friend_id) => {
-        AsyncStorage.getItem('userToken', (err, item) => {
-            axios.post(`http://185.12.95.84:3000/addtofriends`, {user_id: item, friend_id: friend_id})
-        });
-    }
-
     return (
         <View>
             <TextInput style={{
@@ -52,21 +46,16 @@ const SearchScreen = (props) => {
                     alignItems: 'center',
                     padding: 10
                 }}>
-                    <Image source={{uri: d.profile_pic}} style={{height: 40, width: 40, borderRadius: 30}}/>
+                    <Image source={{uri: d.profile_pic}} style={{height: 40, width: 40, borderRadius: 30, marginRight: 8}}/>
                     <TouchableOpacity onPress={() => {
                         props.navigation.navigate('UserProfile', {user_id: d.user_id})
                     }}>
-                        <Text style={{fontSize: 20, paddingRight: 15}}>
+                        <Text style={{fontSize: 20, paddingRight: 10}}>
                             {d.Username}
                         </Text>
                     </TouchableOpacity>
                     {d.profile_pic == null ? <Image source={ava} style={{height: 100, width: 100}}/> :
                         <Image source={{uri: d.profile_pic}}/>}
-                    <TouchableOpacity key={d.Username} onPress={() =>
-                        addToFriends(d.user_id)
-                    }>
-                        <Icon name="person-add" size={30} color={'grey'}/>
-                    </TouchableOpacity>
                     <TouchableOpacity key={d.Username} onPress={() => {
                         AsyncStorage.getItem('userToken', (err, item) => {
                             console.log('cuId:', item)

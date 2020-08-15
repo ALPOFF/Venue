@@ -1,12 +1,8 @@
 import React, {useEffect} from "react";
 import {AsyncStorage, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Icon} from "react-native-elements";
-import Geolocation from "@react-native-community/geolocation";
 import * as axios from "axios";
-import testimg from './../assets/Venue_new/testimg.jpg'
-import prof from './../assets/Venue_new/prof.jpg'
 import {formatDate} from "../common/formatDate";
-import {distanceFunc} from "../common/distanceFunc";
 
 const UserProfile = (props) => {
     let user_id = props.navigation.state.params.user_id;
@@ -91,6 +87,13 @@ const UserProfile = (props) => {
             })
     }
 
+    let addToFriends = (friend_id) => {
+        AsyncStorage.getItem('userToken', (err, item) => {
+            axios.post(`http://185.12.95.84:3000/addtofriends`, {user_id: item, friend_id: friend_id})
+        });
+    }
+
+
     return (
         <View style={{display: 'flex', flexDirection: 'column'}}>
             <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"} refreshControl={
@@ -113,7 +116,11 @@ const UserProfile = (props) => {
                 </View>
                 <View style={{height: '70%'}}>
 
-
+                    <TouchableOpacity key={user_id} onPress={() =>
+                        addToFriends(user_id)
+                    }>
+                        <Icon name="person-add" size={30} color={'grey'}/>
+                    </TouchableOpacity>
                     <View style={{
                         display: "flex",
                         flexDirection: "row",

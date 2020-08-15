@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import {setMarker, setNewEventCat, setNewEventDescr, setNewEventName, setNewEventPic} from "../../state/appReducer";
 import {localizeDetailScreen} from "../../localization/localize";
 import RNPickerSelect from 'react-native-picker-select';
+import {geocodeLocationByCoords, geocodeLocationByCoordsYandex} from "../../common/locationservice";
 
 const renderInput = ({placeholder, input: {onChange, inputType, ...restInput}}) => {
     return <TextInput placeholder={placeholder}
@@ -37,7 +38,8 @@ class DetailScreen extends Component {
             eventName: '',
             category: '',
             description: '',
-            pickedImg: []
+            pickedImg: [],
+            town: ""
         };
     }
 
@@ -106,75 +108,111 @@ class DetailScreen extends Component {
 
         return (
             <View style={styles.container}>
+                <View style={{width: '100%', height: 40, display: "flex", justifyContent: "flex-end", flexDirection: "row"}}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MapForPickPlace')}>
+                        <Text style={{
+                            color: '#14171A',
+                            fontSize: 17,
+                            fontFamily: 'Oxygen-Regular'
+                        }}>Далее</Text>
+                    </TouchableOpacity>
+                </View>
                 {this.props.newEventPic[0] === undefined ?
                     <TouchableOpacity onPress={_getPhotoLibrary}>
-                        <Image source={imgEvent} style={{width: '100%', height: 200}}
+                        <Image source={imgEvent} style={{width: '100%', height: 160}}
                                alt=""/>
                     </TouchableOpacity>
                     : <TouchableOpacity onPress={_getPhotoLibrary}>
-                        <Image source={{uri: this.props.newEventPic[0].path}} style={{width: '100%', height: 200}}
+                        <Image source={{uri: this.props.newEventPic[0].path}} style={{width: '100%', height: 160}}
                                alt=""/>
                     </TouchableOpacity>}
                 <View>
                     <View style={{paddingBottom: 10}}>
                         <Text>Название:</Text>
-                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {
-                            // this.setState({eventName: value})
-                            this.props.setNewEventName(value)
-                        }} value={this.props.newEventName} placeholder={localizeDetailScreen.eventNameText}/>
-                    </View >
-                    <View style={{paddingBottom: 10}}>
-                        <Text>Описание:</Text>
-                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {
-                            // this.setState({description: value})
-                            this.props.setNewEventDescr(value)
-                        }} value={this.props.newEventDescr} placeholder={localizeDetailScreen.eventDescrText}/>
+                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}}
+                                   onChangeText={(value) => {
+                                       // this.setState({eventName: value})
+                                       this.props.setNewEventName(value)
+                                   }} value={this.props.newEventName} placeholder={localizeDetailScreen.eventNameText}/>
                     </View>
                     <View style={{paddingBottom: 10}}>
+                        <Text>Описание:</Text>
+                        <TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}}
+                                   onChangeText={(value) => {
+                                       // this.setState({description: value})
+                                       this.props.setNewEventDescr(value)
+                                   }} value={this.props.newEventDescr}
+                                   placeholder={localizeDetailScreen.eventDescrText}/>
+                    </View>
+                    <View>
                         <Text>Категория:</Text>
                         {/*<TextInput style={{borderBottomWidth: 2, borderBottomColor: 'lightgrey', paddingBottom: 5}} onChangeText={(value) => {*/}
                         {/*    //this.setState({category: value})*/}
                         {/*    this.props.setNewEventCat(value)*/}
                         {/*}} value={this.props.newEventCat} placeholder={localizeDetailScreen.eventCategText}/>*/}
-                        <RNPickerSelect placeholder={{label: localizeDetailScreen.eventCategText}} style={{borderBottomWidth: 1, borderBottomColor: 'black'}}
-                            onValueChange={(value) => this.props.setNewEventCat(value)}
-                            items={[
-                                { label: 'Квартирник', value: '0' },
-                                { label: 'Концерт', value: '1' },
-                                { label: 'Игры', value: '2' },
-                                { label: 'Бизнес', value: '3' },
-                                { label: 'Здоровье', value: '4' },
-                                { label: 'Образование', value: '5' },
-                                { label: 'Спорт', value: '6' }
-                            ]}
+                        <RNPickerSelect placeholder={{label: localizeDetailScreen.eventCategText}}
+                                        style={{ borderBottomWidth: 1, borderBottomColor: 'black'}}
+                                        onValueChange={(value) => this.props.setNewEventCat(value)}
+                                        items={[
+                                            {label: 'Квартирник', value: '0'},
+                                            {label: 'Концерт', value: '1'},
+                                            {label: 'Игры', value: '2'},
+                                            {label: 'Бизнес', value: '3'},
+                                            {label: 'Здоровье', value: '4'},
+                                            {label: 'Образование', value: '5'},
+                                            {label: 'Спорт', value: '6'}
+                                        ]}
                         />
                     </View>
+                    {this.props.town != "" && <View>
+                        <Text>Место:</Text>
+                        {this.props.town != "" &&
+                        <Text>{this.props.town}</Text>}
+                    </View>}
                 </View>
                 <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <TouchableOpacity onPress={() =>
-                        this.props.navigation.navigate('MapForPickPlace')}
-                                      style={{
-                                          display: 'flex',
-                                          flexDirection: 'row',
-                                          alignItems: 'center',
-                                          marginTop: 10
-                                      }}>
-                        <Text style={{color: 'rgba(0,0,0,0.72)', fontWeight: 'bold', fontSize: 20}}>{localizeDetailScreen.PickPlaceText}</Text>
-                        <Icon name="explore" size={40} color={'rgba(0,0,0,0.72)'}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        sendimg();
-                    }}
-                                      style={{
-                                          display: 'flex',
-                                          flexDirection: 'row',
-                                          alignItems: 'center',
-                                          marginTop: 10
-                                      }}>
-                        <Text style={{color: 'rgba(0,0,0,0.72)', fontWeight: 'bold', fontSize: 20}}>Complete</Text>
-                        <Icon name="done" size={40} color={'rgba(0,0,0,0.72)'}/>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity onPress={() =>*/}
+                    {/*    this.props.navigation.navigate('MapForPickPlace')}*/}
+                    {/*                  style={{*/}
+                    {/*                      display: 'flex',*/}
+                    {/*                      flexDirection: 'row',*/}
+                    {/*                      alignItems: 'center'*/}
+                    {/*                  }}>*/}
+                    {/*    <Text style={{*/}
+                    {/*        color: 'rgba(0,0,0,0.72)',*/}
+                    {/*        fontWeight: 'bold',*/}
+                    {/*        fontSize: 16*/}
+                    {/*    }}>{localizeDetailScreen.PickPlaceText}</Text>*/}
+                    {/*    <Icon name="explore" size={40} color={'rgba(0,0,0,0.72)'}/>*/}
+                    {/*</TouchableOpacity>*/}
+                    {/*<TouchableOpacity onPress={() => {*/}
+                    {/*    sendimg();*/}
+                    {/*}}*/}
+                    {/*                  style={{*/}
+                    {/*                      display: 'flex',*/}
+                    {/*                      flexDirection: 'row',*/}
+                    {/*                      alignItems: 'center',*/}
+                    {/*                      marginTop: 10*/}
+                    {/*                  }}>*/}
+                    {/*    <Text style={{color: 'rgba(0,0,0,0.72)', fontWeight: 'bold', fontSize: 20}}>Complete</Text>*/}
+                    {/*    <Icon name="done" size={40} color={'rgba(0,0,0,0.72)'}/>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
+                {this.props.marker.latitude != undefined && <TouchableOpacity activeOpacity={0.8}
+                                   style={{
+                                       position: 'absolute',
+                                       right: 0,
+                                       bottom: 0,
+                                       backgroundColor: 'transparent',
+                                       zIndex: 999
+                                   }}
+                                   onPress={() => {
+                                       sendimg();
+                                   }}>
+                    <Image
+                        style={{opacity: 1, width: 50, height: 50, marginBottom: 25, marginTop: 5}}
+                        source={require('./../../assets/Venue_new/doneIcon3.png')}/>
+                </TouchableOpacity>}
             </View>
         );
     }
@@ -182,9 +220,11 @@ class DetailScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        margin: '5%'
+        // flex: 1,
+        // justifyContent: 'center',
+        margin: '5%',
+        marginTop: 10,
+        height: '100%'
     }
 });
 
@@ -193,7 +233,8 @@ const mapStateToProps = (state) => ({
     newEventName: state.appReducer.newEventName,
     newEventDescr: state.appReducer.newEventDescr,
     newEventCat: state.appReducer.newEventCat,
-    newEventPic: state.appReducer.newEventPic
+    newEventPic: state.appReducer.newEventPic,
+    town: state.appReducer.town
 });
 
 export default connect(mapStateToProps, {

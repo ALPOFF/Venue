@@ -15,9 +15,10 @@ import MapView, {Marker} from "react-native-maps";
 import mapStyle from "../../common/mapConfig";
 import {Icon} from "react-native-elements";
 import {connect} from "react-redux";
-import {setMarker} from "../../state/appReducer";
+import {setMarker, setThunkTown} from "../../state/appReducer";
 import MapInput from "./MapInput";
 import {geocodeLocationByName, getLocation} from "../../common/locationservice";
+import * as axios from "axios";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -52,7 +53,8 @@ class MapForPickPlace extends Component<{}> {
             lat: null,
             long: null,
             err: '',
-            region: {}
+            region: {},
+            coord: {}
             // marker: {}
         };
     }
@@ -98,6 +100,11 @@ class MapForPickPlace extends Component<{}> {
         this.setState({ region });
     }
 
+    geocodeLocationByCoordsYandex (lat, long) {
+        axios.get(`https://geocode-maps.yandex.ru/1.x?apikey=a2b8af4a-0675-4706-aafc-c386bc1661ee&lang=en_US&format=json&geocode=${long},${lat}`).then(res => {
+            this.setState({town: res.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AddressLine})
+        })
+    }
 
     render() {
         let markers = [
@@ -123,6 +130,8 @@ class MapForPickPlace extends Component<{}> {
                         onPress={(e) => {
                             console.log(e.nativeEvent.coordinate);
                             this.props.setMarker(e.nativeEvent.coordinate)
+                            //this.props.setThunkTown(e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude)
+                            this.setState({coord: {latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude}})
                         }}
                     >
                         {this.props.marker.latitude != null &&
@@ -177,9 +186,12 @@ class MapForPickPlace extends Component<{}> {
                                           backgroundColor: 'transparent',
                                           zIndex: 999
                                       }}
-                                      onPress={() => this.props.navigation.navigate('Detail')}>
+                                      onPress={() => {
+                                          this.props.setThunkTown(this.state.coord.latitude, this.state.coord.longitude)
+                                          this.props.navigation.navigate('Detail');
+                                      }}>
                         <Image
-                            style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}
+                            style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 90, marginTop: 5}}
                             source={require('./../../assets/Venue_new/doneIcon3.png')}/>
                     </TouchableOpacity>
                 </View>
@@ -193,7 +205,7 @@ const mapStateToProps = (state) => ({
     marker: state.appReducer.marker
 });
 
-export default connect(mapStateToProps, {setMarker})(MapForPickPlace);
+export default connect(mapStateToProps, {setMarker, setThunkTown})(MapForPickPlace);
 
 const styles = StyleSheet.create({
     resetSignUpView: {

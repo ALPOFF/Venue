@@ -16,6 +16,10 @@ export let getUserProfileBar = (currentUserId) => {
     return axios.post(`http://185.12.95.84:3000/userprofilebar`, {currentUserId: currentUserId})
 }
 
+export let getTown = (lat ,long) => {
+    return axios.get(`https://geocode-maps.yandex.ru/1.x?apikey=a2b8af4a-0675-4706-aafc-c386bc1661ee&lang=en_US&format=json&geocode=${long},${lat}`)
+}
+
 export const kudaGoAPI = () => {
     let city = 'Москва'
     const allEventsByLocation = (city) => {

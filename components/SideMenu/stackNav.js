@@ -1,8 +1,7 @@
 import React from 'react';
-import {TouchableOpacity, Image} from 'react-native';
+import {TouchableOpacity, Image, Text} from 'react-native';
 
 import {createStackNavigator} from 'react-navigation-stack';
-import DetailScreen from "./DetailScreen";
 import HomeScreen from "../HomeScreen";
 import EventDetailsScreen from "./EventDetailsScreen/EventDetailsScreen";
 import UserEvents from "../UserEvents";
@@ -42,20 +41,9 @@ const stackNav = createStackNavigator({
         })
     },
     Detail: {
-        screen: stackNavPlace,
+        screen: stackNavPlace, //header at detailscreen
         navigationOptions: ({navigation}) => ({
-            headerTransparent: true,
-            //title: "Create new event",
-            headerStyle: {height: 20},
-            headerTintColor: 'black',
-            headerTitleStyle: {
-                paddingLeft: 20,
-                paddingBottom: 5,
-                fontStyle: 'italic',
-                fontSize: 28,
-                letterSpacing: -0.015,
-                color: '#009788'
-            }
+        header: null
 
         })
     },

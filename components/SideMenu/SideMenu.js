@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styles from './SideMenu.style';
 import {NavigationActions} from 'react-navigation';
-import {ScrollView, Text, View, TouchableOpacity, AsyncStorage, Switch, ImageBackground, Image} from 'react-native';
+import {AsyncStorage, Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Icon} from "react-native-elements";
 import {connect} from "react-redux";
 import {setUserProfileBarThunk} from "../../state/appReducer";

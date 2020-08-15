@@ -1,4 +1,4 @@
-import {getcurDUsers, getCurUsD, getUserDialog, getUserProfileBar} from "../api/api";
+import {getcurDUsers, getCurUsD, getTown, getUserDialog, getUserProfileBar} from "../api/api";
 
 const SET_SOCKET = 'tariff/SET_SOCKET';
 const SET_CUR_DIALOGS_USER = 'tariff/SET_CUR_DIALOGS_USER';
@@ -18,6 +18,7 @@ const SET_NEW_EVENT_DESCR = 'tariff/SET_NEW_EVENT_DESCR';
 const SET_NEW_EVENT_CAT = 'tariff/SET_NEW_EVENT_CAT';
 const SET_NEW_EVENT_PIC = 'tariff/SET_NEW_EVENT_PIC';
 const SET_USER_USER_PROFILE_BAR = 'tariff/SET_USER_USER_PROFILE_BAR';
+const SET_TOWN = 'tariff/SET_TOWN';
 
 let initialState = {
     dialogList: [
@@ -51,7 +52,8 @@ let initialState = {
     newEventDescr: '',
     newEventCat: '',
     newEventPic: [],
-    userProfileBar: []
+    userProfileBar: [],
+    town: ""
 };
 
 const appReducer = (state = initialState, action) => {
@@ -65,6 +67,11 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 eventData: action.eventData
+            };
+        case SET_TOWN:
+            return {
+                ...state,
+                town: action.town
             };
         case SET_USER_USER_PROFILE_BAR:
             return {
@@ -160,6 +167,13 @@ export const setMarker = (marker) => {
     return {
         type: SET_MARKER,
         marker
+    }
+};
+
+export const setTown = (town) => {
+    return {
+        type: SET_TOWN,
+        town
     }
 };
 
@@ -305,5 +319,10 @@ export const setUserProfileBarThunk = (currentUserId) => async (dispatch) => {
     dispatch(setUserProfileBar(response.data))
 }
 
+export const setThunkTown = (lat, long) => async (dispatch) => {
+    let response = await getTown(lat, long)
+    dispatch(setTown(response.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AddressLine))
+}
+// setThunkTown
 
 export default appReducer;
