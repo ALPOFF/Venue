@@ -19,7 +19,7 @@ const EventVisitors = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <Image source={userPic} style={{
+                    <Image source={{uri: props.visitors[0].profile_pic}} style={{
                         height: 40,
                         borderWidth: 1,
                         borderColor: '#333733',
@@ -52,7 +52,7 @@ const EventVisitors = (props) => {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <Image source={userPic} style={{
+                    <Image source={{uri: props.visitors[1].profile_pic}} style={{
                         height: 40,
                         shadowColor: 'black',
                         borderWidth: 1,
@@ -77,7 +77,7 @@ const EventVisitors = (props) => {
                     zIndex: 1,
                     backgroundColor: 'white'
                 }}>
-                    <Image source={userPic} style={{
+                    <Image source={{uri: props.visitors[2].profile_pic}} style={{
                         height: 40,
                         borderWidth: 1,
                         borderColor: 'rgba(51,55,51,0.87)',

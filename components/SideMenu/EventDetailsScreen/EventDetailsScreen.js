@@ -59,7 +59,8 @@ class EventDetailsScreen extends Component {
             town: '',
             whogo: [],
             org: '',
-            timer: 1594848753100
+            timer: 1594848753100,
+            visitorsDetail: []
         };
 
         PushNotification.configure({
@@ -116,6 +117,8 @@ class EventDetailsScreen extends Component {
     }
 
     componentDidMount() {
+        axios.post(`http://185.12.95.84:3000/userdetails`, {visitorsId: this.state.visitors}).then(res => this.setState({visitorsDetail: res.data}))
+
         AppState.addEventListener('change', this.handleAppStateChange)
 
         // if (new Date() >= new Date(this.state.timer)) {alert('COMPLETE')}
@@ -232,11 +235,11 @@ class EventDetailsScreen extends Component {
                         <SafeAreaView style={styles.container}>
                             <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                               onPress={() => this.props.navigation.navigate('EventVisitorsDetailed', {
-                                                  visitors: this.state.visitors
+                                                  visitors: this.state.visitorsDetail
                                               })}>
-                                {this.state.visitors.length >= 3 && <EventVisitors visitors={this.state.visitors}/>}
-                                {this.state.visitors.length === 2 && <EventVisitorsTwo visitors={this.state.visitors}/>}
-                                {this.state.visitors.length === 1 && <EventVisitorsOne visitors={this.state.visitors}/>}
+                                {this.state.visitors.length >= 3 && <EventVisitors visitors={this.state.visitorsDetail}/>}
+                                {this.state.visitors.length === 2 && <EventVisitorsTwo visitors={this.state.visitorsDetail}/>}
+                                {this.state.visitors.length === 1 && <EventVisitorsOne visitors={this.state.visitorsDetail}/>}
                             </TouchableOpacity>
                         </SafeAreaView>
                         {this.state.whogo.some(v => this.state.currentUserId == v) ?

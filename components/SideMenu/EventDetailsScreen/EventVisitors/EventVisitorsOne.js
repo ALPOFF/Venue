@@ -19,7 +19,7 @@ const EventVisitorsOne = (props) => {
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-            <Image source={userPic} style={{
+            <Image source={{uri: props.visitors[0].profile_pic}} style={{
                 height: 40,
                 borderWidth: 1,
                 borderColor: '#333733',
