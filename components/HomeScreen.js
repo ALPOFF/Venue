@@ -3,6 +3,7 @@ import * as axios from "axios";
 import {distanceFunc} from "../common/distanceFunc";
 
 import {
+    AsyncStorage,
     Image,
     ImageBackground,
     NativeModules,
@@ -15,7 +16,14 @@ import {
 } from "react-native";
 import {connect} from "react-redux";
 import Geolocation from "@react-native-community/geolocation";
-import {addNewEventData, setEventData, setLastPost, setUserCoord, setUserProfileBarThunk} from "../state/appReducer";
+import {
+    addNewEventData,
+    setCurrentUserid,
+    setEventData,
+    setLastPost,
+    setUserCoord,
+    setUserProfileBarThunk
+} from "../state/appReducer";
 import {localizeHomeScreen} from "../localization/localize";
 
 // Android:
@@ -36,6 +44,9 @@ const HomeScreen = (props) => {
 
     useEffect(() => {
         //closeActivityIndicator()
+        AsyncStorage.getItem('userToken', (err, item) => {
+            props.setCurrentUserid(item)
+        })
         Geolocation.getCurrentPosition((position) => {
             setUserCoord({"latitude": position.coords.latitude, "longitude": position.coords.longitude})
             axios.post(`http://185.12.95.84:3000/events`,
@@ -285,5 +296,6 @@ export default connect(mapStateProps, {
     setUserProfileBarThunk,
     setLastPost,
     setEventData,
-    addNewEventData
+    addNewEventData,
+    setCurrentUserid
 })(HomeScreen);

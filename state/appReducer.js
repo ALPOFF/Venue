@@ -19,6 +19,7 @@ const SET_NEW_EVENT_CAT = 'tariff/SET_NEW_EVENT_CAT';
 const SET_NEW_EVENT_PIC = 'tariff/SET_NEW_EVENT_PIC';
 const SET_USER_USER_PROFILE_BAR = 'tariff/SET_USER_USER_PROFILE_BAR';
 const SET_TOWN = 'tariff/SET_TOWN';
+const SET_CURRENT_USER_ID = 'tariff/SET_CURRENT_USER_ID';
 
 let initialState = {
     dialogList: [
@@ -53,7 +54,8 @@ let initialState = {
     newEventCat: '',
     newEventPic: [],
     userProfileBar: [],
-    town: ""
+    town: "",
+    cur_us_id: null
 };
 
 const appReducer = (state = initialState, action) => {
@@ -72,6 +74,11 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 town: action.town
+            };
+        case SET_CURRENT_USER_ID:
+            return {
+                ...state,
+                cur_us_id: action.cur_us_id
             };
         case SET_USER_USER_PROFILE_BAR:
             return {
@@ -295,6 +302,13 @@ export const setUserProfileBar = (userProfileBar) => {
     return {
         type: SET_USER_USER_PROFILE_BAR,
         userProfileBar
+    }
+};
+
+export const setCurrentUserid = (cur_us_id) => {
+    return {
+        type: SET_CURRENT_USER_ID,
+        cur_us_id
     }
 };
 

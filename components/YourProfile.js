@@ -19,9 +19,11 @@ const YourProfile = (props) => {
     const [backgroundPic, setBackgroundPic] = React.useState('');
     const [profilePic, setProfilePic] = React.useState('');
     const [refreshing, setRefreshing] = React.useState(false);
+    const [curUsId, setCurUsId] = React.useState(null);
 
     useEffect(() => {
         AsyncStorage.getItem('userToken', (err, item) => {
+            setCurUsId(item)
             axios.post(`http://185.12.95.84:3000/getprofile`, {
                 userId: item
             }).then(res => {
@@ -205,7 +207,7 @@ const YourProfile = (props) => {
                             </View>
                             <View style={{display: "flex", flexDirection: "row"}}>
                                 <TouchableOpacity style={{display: "flex", flexDirection: "row"}} onPress={() => {
-                                    props.navigation.navigate('Subscriptions', {subscriptions: subscribes})
+                                    props.navigation.navigate('Subscriptions', {subscriptions: subscribes, user_id: curUsId})
                                 }}>
                                     <Text style={{
                                         color: '#14171A',
@@ -223,7 +225,7 @@ const YourProfile = (props) => {
                                 <TouchableOpacity style={{display: "flex", flexDirection: "row", paddingLeft: 15}}
                                                   onPress={() => {
                                                       props.navigation.navigate('Subscribers', {
-                                                          subscribers
+                                                          subscribers, user_id: curUsId
                                                       })
                                                   }}>
                                     <Text style={{

@@ -3,6 +3,7 @@ import {AsyncStorage, Image, RefreshControl, ScrollView, StyleSheet, Text, Touch
 import {Icon} from "react-native-elements";
 import * as axios from "axios";
 import {formatDate} from "../common/formatDate";
+import {connect} from "react-redux";
 
 const UserProfile = (props) => {
     let user_id = props.navigation.state.params.user_id;
@@ -18,7 +19,16 @@ const UserProfile = (props) => {
     const [refreshing, setRefreshing] = React.useState(false);
 
     useEffect(() => {
+        props.userProfileBar[0].subscribers.length != 0 && console.log('userProfileBarX:', props.userProfileBar[0].subscribers)
             console.log(user_id)
+            AsyncStorage.getItem('userToken', (err, item) => {
+
+                axios.post(`http://185.12.95.84:5000/checkforfriend`, {currentUserId: item, userId: user_id})
+                    .then(res => {
+                        console.log('t od f:', res.data)
+                    });
+            })
+
             axios.post(`http://185.12.95.84:3000/getprofile`, {
                 userId: user_id
             }).then(res => {
@@ -40,7 +50,7 @@ const UserProfile = (props) => {
                 console.log(res.data)
             })
 
-    }, []);
+    }, [user_id]);
 
     const wait = (timeout) => {
         return new Promise(resolve => {
@@ -115,12 +125,6 @@ const UserProfile = (props) => {
                                  }}/>}
                 </View>
                 <View style={{height: '70%'}}>
-
-                    <TouchableOpacity key={user_id} onPress={() =>
-                        addToFriends(user_id)
-                    }>
-                        <Icon name="person-add" size={30} color={'grey'}/>
-                    </TouchableOpacity>
                     <View style={{
                         display: "flex",
                         flexDirection: "row",
@@ -143,7 +147,12 @@ const UserProfile = (props) => {
                                     fontFamily: 'Oxygen-Bold',
                                     paddingVertical: 7
                                 }}>@{profile.Username}</Text>
-                                <View>
+                                <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                                    {!props.userProfileBar[0].subscribers.some(s => user_id == s) && <TouchableOpacity style={{paddingRight: 20}} key={user_id} onPress={() =>
+                                        addToFriends(user_id)
+                                    }>
+                                        <Icon name="person-add" size={30} color={'grey'}/>
+                                    </TouchableOpacity> && 
                                     <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                                       onPress={() => {
                                                           props.navigation.navigate('EditProfile', {
@@ -164,7 +173,7 @@ const UserProfile = (props) => {
                                             paddingLeft: 9,
                                             paddingRight: 9
                                         }}>Edit</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity>}
                                 </View>
                             </View>
                             {profile.name !== '' && <View style={{display: "flex", flexDirection: "row"}}>
@@ -211,7 +220,7 @@ const UserProfile = (props) => {
                             </View>
                             <View style={{display: "flex", flexDirection: "row"}}>
                                 <TouchableOpacity style={{display: "flex", flexDirection: "row"}} onPress={() => {
-                                    props.navigation.navigate('Subscriptions', {subscriptions: subscribes})
+                                    props.navigation.navigate('Subscriptions', {subscriptions: subscribes, user_id: user_id})
                                 }}>
                                     <Text style={{
                                         color: '#14171A',
@@ -229,7 +238,7 @@ const UserProfile = (props) => {
                                 <TouchableOpacity style={{display: "flex", flexDirection: "row", paddingLeft: 15}}
                                                   onPress={() => {
                                                       props.navigation.navigate('Subscribers', {
-                                                          subscribers
+                                                          subscribers, user_id: user_id
                                                       })
                                                   }}>
                                     <Text style={{
@@ -333,4 +342,10 @@ const styles = StyleSheet.create({
     }
 });
 
-export default UserProfile;
+let mapStateToProps = (state) => ({
+    cur_us_id: state.appReducer.cur_us_id,
+    userProfileBar: state.appReducer.userProfileBar
+})
+
+export default connect(mapStateToProps, {})(UserProfile);
+
