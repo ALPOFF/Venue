@@ -26,3 +26,9 @@ export const kudaGoAPI = () => {
         return axios.get(`https://kudago.com/public-api/v1.4/events/?lang=&fields=&expand=&order_by=&text_format=&ids=&location=&actual_since=1444385206&actual_until=1444385405&is_free=&categories=kvn,-magic&lon=&lat=&radius=`)
     }
 }
+
+export const userProfileAPI = {
+    getUserProfile (user_id) {
+        return axios.post(`http://185.12.95.84:3000/getprofile`, {userId: user_id})
+    }
+}

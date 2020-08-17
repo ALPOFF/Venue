@@ -1,5 +1,15 @@
 import React, {useEffect} from "react";
-import {AsyncStorage, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+    AsyncStorage,
+    Image,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Alert
+} from "react-native";
 import {Icon} from "react-native-elements";
 import * as axios from "axios";
 import {formatDate} from "../common/formatDate";
@@ -19,38 +29,43 @@ const UserProfile = (props) => {
     const [refreshing, setRefreshing] = React.useState(false);
 
     useEffect(() => {
-        props.userProfileBar[0].subscribers.length != 0 && console.log('userProfileBarX:', props.userProfileBar[0].subscribers)
-            console.log(user_id)
-            AsyncStorage.getItem('userToken', (err, item) => {
+        console.log('redraw')
+        console.log('subs current:', props.userProfileBar[0].subscribes)
+        console.log(props.userProfileBar[0].subscribes.some(s => s == 30))
+        console.log(props.userProfileBar[0].subscribes)
+        props.userProfileBar[0].subscribers.length != 0 && console.log('userProfileBarX:', props.userProfileBar[0])
+        console.log(user_id)
+        AsyncStorage.getItem('userToken', (err, item) => {
 
-                axios.post(`http://185.12.95.84:5000/checkforfriend`, {currentUserId: item, userId: user_id})
-                    .then(res => {
-                        console.log('t od f:', res.data)
-                    });
-            })
+            axios.post(`http://185.12.95.84:5000/checkforfriend`, {currentUserId: item, userId: user_id})
+                .then(res => {
+                    console.log('t od f:', res.data)
+                });
+        })
 
-            axios.post(`http://185.12.95.84:3000/getprofile`, {
-                userId: user_id
-            }).then(res => {
-                setProfile(res.data[0]);
-                console.log('res:', res.data);
-                console.log('lngth:', res.data[0].subscribers.length);
-                setSubscribes(res.data[0].subscribes);
-                setSubscribers(res.data[0].subscribers)
-                setProfilePic(res.data[0].profile_pic)
-                console.log('pr_pic:', res.data[0].profile_pic)
-                setBackgroundPic(res.data[0].background_pic)
-            })
+        axios.post(`http://185.12.95.84:3000/getprofile`, {
+            userId: user_id
+        }).then(res => {
+            setProfile(res.data[0]);
+            setSubscribes(res.data[0].subscribes);
+            setSubscribers(res.data[0].subscribers)
+            setProfilePic(res.data[0].profile_pic)
+            setBackgroundPic(res.data[0].background_pic)
+        })
 
-            axios.post(`http://185.12.95.84:3000/geteventinfo`, {
-                userId: user_id,
-                eventType: 0
-            }).then(res => {
-                setEventInfoData(res.data);
-                console.log(res.data)
-            })
+        axios.post(`http://185.12.95.84:3000/geteventinfo`, {
+            userId: user_id,
+            eventType: 0
+        }).then(res => {
+            setEventInfoData(res.data);
+            console.log(res.data)
+        })
 
-    }, [user_id]);
+        console.log('subscribes:', subscribes)
+        console.log('subscribers:', subscribers)
+        console.log('userProfileBar:', props.userProfileBar)
+
+    }, [user_id, subscribers.length, subscribes.length]);
 
     const wait = (timeout) => {
         return new Promise(resolve => {
@@ -63,44 +78,77 @@ const UserProfile = (props) => {
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
 
-            axios.post(`http://185.12.95.84:3000/getprofile`, {
-                userId: user_id
-            }).then(res => {
-                setProfile(res.data[0]);
-                console.log('res:', res.data);
-                console.log('lngth:', res.data[0].subscribers.length);
-                setSubscribes(res.data[0].subscribes);
-                setSubscribers(res.data[0].subscribers)
-                setProfilePic(res.data[0].profile_pic)
-                console.log('pr_pic:', res.data[0].profile_pic)
-                setBackgroundPic(res.data[0].background_pic)
-            })
+        axios.post(`http://185.12.95.84:3000/getprofile`, {
+            userId: user_id
+        }).then(res => {
+            setProfile(res.data[0]);
+            setSubscribes(res.data[0].subscribes);
+            setSubscribers(res.data[0].subscribers)
+            setProfilePic(res.data[0].profile_pic)
+            setBackgroundPic(res.data[0].background_pic)
+        })
 
-            axios.post(`http://185.12.95.84:3000/geteventinfo`, {
-                userId: user_id,
-                eventType: 0
-            }).then(res => {
-                setEventInfoData(res.data);
-                console.log(res.data)
-            })
+        axios.post(`http://185.12.95.84:3000/geteventinfo`, {
+            userId: user_id,
+            eventType: 0
+        }).then(res => {
+            setEventInfoData(res.data);
+            console.log(res.data)
+        })
 
         wait(2000).then(() => setRefreshing(false));
     }, [refreshing]);
 
     const eventInfo = () => {
-             axios.post(`http://185.12.95.84:3000/geteventinfo`, {
-                userId: user_id,
-                eventType: eventType
-            }).then(res => {
-                setEventInfoData(res.data);
-                console.log(res.data)
-            })
+        axios.post(`http://185.12.95.84:3000/geteventinfo`, {
+            userId: user_id,
+            eventType: eventType
+        }).then(res => {
+            setEventInfoData(res.data);
+            console.log(res.data)
+        })
     }
 
     let addToFriends = (friend_id) => {
         AsyncStorage.getItem('userToken', (err, item) => {
             axios.post(`http://185.12.95.84:3000/addtofriends`, {user_id: item, friend_id: friend_id})
+            props.userProfileBar[0].subscribes.push(Number(user_id))
+            console.log('friend_id:', friend_id)
+            setSubscribers(subscribers.push(user_id))
+            console.log(subscribers)
         });
+    }
+
+    let removeFromFriends = (friend_id) => {
+        Alert.alert(
+            "Unsubscribe",
+            "Are you shure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Yes", onPress: () => {
+                        console.log("OK Pressed")
+                        AsyncStorage.getItem('userToken', (err, item) => {
+                            axios.post(`http://185.12.95.84:3000/deletefriend`, {user_id: item, friend_id: friend_id})
+                            let index = subscribers.indexOf(friend_id);
+                            props.userProfileBar[0].subscribes.splice(index, 1)
+                            console.log('index:', index)
+                            setSubscribers(subscribers.splice(index, 1))
+                            console.log(subscribers)
+
+                            console.log('friend_id:', friend_id)
+
+                        });
+
+                    }
+                }
+            ],
+            {cancelable: true}
+        );
     }
 
 
@@ -148,11 +196,42 @@ const UserProfile = (props) => {
                                     paddingVertical: 7
                                 }}>@{profile.Username}</Text>
                                 <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                                    {!props.userProfileBar[0].subscribers.some(s => user_id == s) && <TouchableOpacity style={{paddingRight: 20}} key={user_id} onPress={() =>
-                                        addToFriends(user_id)
-                                    }>
-                                        <Icon name="person-add" size={30} color={'grey'}/>
-                                    </TouchableOpacity> && 
+                                    {!props.userProfileBar[0].subscribes.some(s => user_id == s) ?
+                                        <TouchableOpacity key={user_id} onPress={() =>
+                                            addToFriends(user_id)
+                                        }>
+                                            {/*<Icon name="person-add" size={30} color={'grey'}/>*/}
+                                            <Text style={{
+                                                color: 'rgba(20,23,26,0.56)',
+                                                fontSize: 18,
+                                                fontFamily: 'Oxygen-Bold',
+                                                borderWidth: 2,
+                                                borderColor: '#009788',
+                                                borderRadius: 30,
+                                                paddingTop: 6,
+                                                paddingBottom: 1,
+                                                paddingLeft: 9,
+                                                paddingRight: 9
+                                            }}>Subscribe</Text>
+                                        </TouchableOpacity> :
+                                        <TouchableOpacity key={user_id} onPress={() =>
+                                            removeFromFriends(user_id)
+                                        }>
+                                            {/*<Icon name="person-add" size={30} color={'grey'}/>*/}
+                                            <Text style={{
+                                                color: 'rgba(20,23,26,0.56)',
+                                                fontSize: 18,
+                                                fontFamily: 'Oxygen-Bold',
+                                                borderWidth: 2,
+                                                borderColor: '#009788',
+                                                borderRadius: 30,
+                                                paddingTop: 6,
+                                                paddingBottom: 1,
+                                                paddingLeft: 9,
+                                                paddingRight: 9
+                                            }}>Subscribed</Text>
+                                        </TouchableOpacity>}
+                                    {!props.userProfileBar[0].subscribers.some(s => user_id == s) &&
                                     <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
                                                       onPress={() => {
                                                           props.navigation.navigate('EditProfile', {
@@ -220,7 +299,10 @@ const UserProfile = (props) => {
                             </View>
                             <View style={{display: "flex", flexDirection: "row"}}>
                                 <TouchableOpacity style={{display: "flex", flexDirection: "row"}} onPress={() => {
-                                    props.navigation.navigate('Subscriptions', {subscriptions: subscribes, user_id: user_id})
+                                    props.navigation.navigate('Subscriptions', {
+                                        subscriptions: subscribes,
+                                        user_id: user_id
+                                    })
                                 }}>
                                     <Text style={{
                                         color: '#14171A',
