@@ -93,10 +93,10 @@ const stackNav = createStackNavigator({
     stackNavSubs: {
         screen: stackNavSubs,
         navigationOptions: ({navigation}) => ({
-            headerRight: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('Main')}>
-                <Icon name="arrowright" type="antdesign" size={30} color='white'/>
-            </TouchableOpacity>),
-            headerLeft: null,
+            // headerLeft: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('Main')}>
+            //     <Icon name="arrowleft" type="antdesign" size={30} color='white'/>
+            // </TouchableOpacity>),
+            //headerLeft: null,
             headerTransparent: true,
             headerTitleStyle: {
                 paddingLeft: 20,

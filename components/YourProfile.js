@@ -1,5 +1,15 @@
 import React, {useEffect} from "react";
-import {AsyncStorage, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+    ActivityIndicator,
+    AsyncStorage,
+    Image,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
 import {Icon} from "react-native-elements";
 import Geolocation from "@react-native-community/geolocation";
 import * as axios from "axios";
@@ -7,6 +17,7 @@ import testimg from './../assets/Venue_new/testimg.jpg'
 import prof from './../assets/Venue_new/prof.jpg'
 import {formatDate} from "../common/formatDate";
 import {distanceFunc} from "../common/distanceFunc";
+import { BlurView } from "@react-native-community/blur";
 
 const YourProfile = (props) => {
 
@@ -95,6 +106,8 @@ const YourProfile = (props) => {
     }
 
     return (
+        backgroundPic == '' ?
+        <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
         <View style={{display: 'flex', flexDirection: 'column'}}>
             <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"} refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {AsyncStorage, Image, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {AsyncStorage, Image, TouchableOpacity, View} from "react-native";
 import {Icon} from "react-native-elements";
 import ImagePicker from "react-native-image-crop-picker";
 import * as axios from "axios";
@@ -88,8 +88,8 @@ const EditProfile = (props) => {
     }
 
     return (
-        <View style={{display: 'flex', flexDirection: 'column'}}>
-            <View style={{height: '30%', marginBottom: 10}}>
+        <View style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+            <View style={{height: 180, marginBottom: 10}}>
                 {newBgPic.data === undefined ? <Image blurRadius={3} source={{uri: backgroundPic}}
                                                       style={{
                                                           height: '100%',
@@ -140,26 +140,6 @@ const EditProfile = (props) => {
                                bio: `${newBio}`,
                                birth: `${formatDate(new Date(newBirthday))}`
                            }}/>
-            {/*<View style={{height: '70%', paddingHorizontal: 10}}>*/}
-            {/*    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>*/}
-            {/*        <Text>Name: </Text>*/}
-            {/*        <TextInput onChangeText={(value) => {*/}
-            {/*            setNewName(value)*/}
-            {/*        }} value={newName} placeholder={'Enter your name...'}/>*/}
-            {/*    </View>*/}
-            {/*    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>*/}
-            {/*        <Text>Bio: </Text>*/}
-            {/*        <TextInput onChangeText={(value) => {*/}
-            {/*            setNewBio(value)*/}
-            {/*        }} value={newBio} placeholder={'Bio...'}/>*/}
-            {/*    </View>*/}
-            {/*    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>*/}
-            {/*        <Text>Birthday: </Text>*/}
-            {/*        <TextInput onChangeText={(value) => {*/}
-            {/*            setNewBirthday(value)*/}
-            {/*        }} value={formatDate(new Date(newBirthday))} placeholder={'Birthday...'}/>*/}
-            {/*    </View>*/}
-            {/*</View>*/}
             {/*<TouchableOpacity activeOpacity={0.8}*/}
             {/*                  style={{*/}
             {/*                      position: 'absolute',*/}
@@ -168,10 +148,13 @@ const EditProfile = (props) => {
             {/*                      backgroundColor: 'transparent',*/}
             {/*                      zIndex: 999*/}
             {/*                  }}*/}
-            {/*                  onPress={() => changeProfile()}>*/}
+            {/*                  onPress={() => {*/}
+            {/*                      this.props.setThunkTown(this.state.coord.latitude, this.state.coord.longitude)*/}
+            {/*                      this.props.navigation.navigate('Detail');*/}
+            {/*                  }}>*/}
             {/*    <Image*/}
-            {/*        style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}*/}
-            {/*        source={require('./../assets/Venue_new/addIcon3.png')}/>*/}
+            {/*        style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 90, marginTop: 5}}*/}
+            {/*        source={require('./../assets/Venue_new/doneIcon3.png')}/>*/}
             {/*</TouchableOpacity>*/}
         </View>
     )

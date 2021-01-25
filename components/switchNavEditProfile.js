@@ -18,16 +18,16 @@ const switchNavEditProfile = createSwitchNavigator({
         screen: EditProfile,
         navigationOptions: ({navigation
                             }) => ({
-            headerRight: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('YourProfile')}>
-                <Icon name="arrowright" type="antdesign" size={30} color='white'/>
-            </TouchableOpacity>)
+            headerLeft: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('YourProfile')}>
+                <Icon name="arrowleft" type="antdesign" size={30} color='white'/>
+            </TouchableOpacity>),
         })
     },
     UserProfile: {
         screen: UserProfile,
         navigationOptions: ({navigation
                             }) => ({
-            headerRight: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('YourProfile')}>
+            headerLeft: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('YourProfile')}>
                 <Icon name="arrowright" type="antdesign" size={30} color='white'/>
             </TouchableOpacity>)
         })

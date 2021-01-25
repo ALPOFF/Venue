@@ -22,16 +22,29 @@ const EditForm = (props) => {
     const {hasError, xxxx, handleSubmit} = props;
 
     return (
-        <>
-            <Field name="name" component={renderInput} placeholder={'Enter name ...'}/>
+        <View style={{alignItems: "center", height: '70%'}}>
+            <Field name="name" component={renderInput} placeholder={'Enter username ...'}/>
             <Field name="bio" component={renderInput} placeholder={'Enter bio ...'}/>
             <Field name="birth" component={renderInput} placeholder={'Enter birthday ...'}/>
-            <TouchableOpacity onPress={handleSubmit(xxxx)}
-                              style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
-                <Text style={{color: '#009788', fontWeight: 'bold', fontSize: 20}}>Save</Text>
-                <Icon name="explore" size={40} color={'#009788'}/>
+            {/*<TouchableOpacity onPress={handleSubmit(xxxx)}*/}
+            {/*                  style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 30}}>*/}
+            {/*    <Text style={{color: '#009788', fontWeight: 'bold', fontSize: 20}}>Save</Text>*/}
+            {/*    <Icon name="explore" size={40} color={'#009788'}/>*/}
+            {/*</TouchableOpacity>*/}
+            <TouchableOpacity activeOpacity={0.8}
+                              style={{
+                                  position: 'absolute',
+                                  right: 10,
+                                  bottom: 10,
+                                  backgroundColor: 'transparent',
+                                  zIndex: 999
+                              }}
+                              onPress={handleSubmit(xxxx)}>
+                <Image
+                    style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 50, marginTop: 5}}
+                    source={require('./../assets/Venue_new/doneIcon3.png')}/>
             </TouchableOpacity>
-        </>
+        </View>
     )
 };
 

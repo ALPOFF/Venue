@@ -89,7 +89,7 @@ class EventDetailsScreen extends Component {
             headerRight: (<TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('Main')}>
                 <Icon name="arrowright" type="antdesign" size={30} color='white'/>
             </TouchableOpacity>),
-            headerLeft: null,
+
             headerTintColor: 'black',
             headerTitleStyle: {
                 textAlign: 'center',

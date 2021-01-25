@@ -37,7 +37,7 @@ const SearchNav = createStackNavigator({
         UserProfile: {
             screen: UserProfile,
             navigationOptions: ({navigation}) => ({
-                headerRight: (
+                headerLeft: (
                     <TouchableOpacity style={{paddingRight: 10}} onPress={() => navigation.navigate('SearchScreen')}>
                         <Icon name="arrowright" type="antdesign" size={30} color='white'/>
                     </TouchableOpacity>)

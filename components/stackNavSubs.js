@@ -42,7 +42,8 @@ const stackNavSubs = createStackNavigator({
         transparentCard: true,
         cardStyle: {
             opacity: 1,
-        }
+        },
+
     },
     // {
     //     headerMode: 'none',

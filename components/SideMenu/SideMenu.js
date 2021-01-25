@@ -13,7 +13,8 @@ class SideMenu extends Component {
         super(props);
         this.state = {
             name: '',
-            toggle: false
+            toggle: false,
+            user_id: null
         }
     }
 
@@ -30,6 +31,7 @@ class SideMenu extends Component {
             this.setState({name: item})
         })
         AsyncStorage.getItem('userToken', (err, item) => {
+            this.setState({user_id: item})
             console.log('sidebardata')
             this.props.setUserProfileBarThunk(item)
         });
@@ -83,7 +85,7 @@ class SideMenu extends Component {
                         {/*</ImageBackground>}*/}
                     </View>}
                     <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                                      onPress={() => this.props.navigation.navigate('switchNavEditProfile')}>
+                                      onPress={() => this.props.navigation.navigate('switchNavEditProfile', {user_id: this.state.user_id})}>
                         <View style={{marginLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <View style={{width: 30}}><Icon name="md-person" type='ionicon' size={25} color='#263238'/></View>
                             <Text style={{fontWeight: 'regular', fontSize: 20, color: 'black', margin: 10}}>{localizeSideMenuScreen.YourProfileText}</Text>
