@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
     AsyncStorage,
     Image,
@@ -10,10 +10,11 @@ import {
     View,
     Alert, ActivityIndicator
 } from "react-native";
-import {Icon} from "react-native-elements";
+import { Icon } from "react-native-elements";
 import * as axios from "axios";
-import {formatDate} from "../common/formatDate";
-import {connect} from "react-redux";
+import { formatDate } from "../common/formatDate";
+import { connect } from "react-redux";
+import { localizeUserProfile } from "../localization/localize";
 
 const UserProfile = (props) => {
     let user_id = props.navigation.state.params.user_id;
@@ -37,7 +38,7 @@ const UserProfile = (props) => {
         console.log(user_id)
         AsyncStorage.getItem('userToken', (err, item) => {
 
-            axios.post(`http://185.12.95.84:5000/checkforfriend`, {currentUserId: item, userId: user_id})
+            axios.post(`http://185.12.95.84:5000/checkforfriend`, { currentUserId: item, userId: user_id })
                 .then(res => {
                     console.log('t od f:', res.data)
                 });
@@ -153,36 +154,36 @@ const UserProfile = (props) => {
                     }
                 }
             ],
-            {cancelable: true}
+            { cancelable: true }
         );
     }
 
 
     return (
         backgroundPic == '' ?
-            <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788"/> :
-            <View style={{display: 'flex', flexDirection: 'column'}}>
+            <ActivityIndicator size="large" style={{ paddingTop: '50%' }} color="#009788" /> :
+            <View style={{ display: 'flex', flexDirection: 'column' }}>
                 <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-                    <View style={{height: 180, marginBottom: 10}}>
-                        {a && <Image blurRadius={0.7} source={{uri: backgroundPic}}
-                                     style={{height: '100%', position: 'relative', zIndex: -100, top: 0}}/>}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+                    <View style={{ height: 180, marginBottom: 10 }}>
+                        {a && <Image blurRadius={0.7} source={{ uri: backgroundPic }}
+                            style={{ height: '100%', position: 'relative', zIndex: -100, top: 0 }} />}
 
 
-                        {a && <Image source={{uri: profilePic}}
-                                     style={{
-                                         width: '30%',
-                                         height: '60%',
-                                         borderRadius: 100,
-                                         borderWidth: 2,
-                                         borderColor: 'white',
-                                         top: '20%',
-                                         left: '35%',
-                                         position: 'absolute'
-                                     }}/>}
+                        {a && <Image source={{ uri: profilePic }}
+                            style={{
+                                width: '30%',
+                                height: '60%',
+                                borderRadius: 100,
+                                borderWidth: 2,
+                                borderColor: 'white',
+                                top: '20%',
+                                left: '35%',
+                                position: 'absolute'
+                            }} />}
                     </View>
-                    <View style={{height: '70%'}}>
+                    <View style={{ height: '70%' }}>
                         <View style={{
                             display: "flex",
                             flexDirection: "row",
@@ -192,7 +193,7 @@ const UserProfile = (props) => {
                             paddingBottom: 5,
                             alignItems: "center"
                         }}>
-                            <View style={{width: '100%'}}>
+                            <View style={{ width: '100%' }}>
                                 <View style={{
                                     display: "flex",
                                     flexDirection: "row",
@@ -205,7 +206,7 @@ const UserProfile = (props) => {
                                         fontFamily: 'Oxygen-Bold',
                                         paddingVertical: 7
                                     }}>@{profile.Username}</Text>
-                                    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                                         {!props.userProfileBar[0].subscribes.some(s => user_id == s) ?
                                             <TouchableOpacity key={user_id} onPress={() =>
                                                 addToFriends(user_id)
@@ -242,36 +243,36 @@ const UserProfile = (props) => {
                                                 }}>Subscribed</Text>
                                             </TouchableOpacity>}
                                         {!props.userProfileBar[0].subscribers.some(s => user_id == s) &&
-                                        <TouchableOpacity style={{display: 'flex', flexDirection: 'row'}}
-                                                          onPress={() => {
-                                                              props.navigation.navigate('EditProfile', {
-                                                                  profilePic,
-                                                                  backgroundPic,
-                                                                  profile
-                                                              })
-                                                          }}>
-                                            <Text style={{
-                                                color: 'rgba(20,23,26,0.56)',
-                                                fontSize: 18,
-                                                fontFamily: 'Oxygen-Bold',
-                                                borderWidth: 2,
-                                                borderColor: '#009788',
-                                                borderRadius: 30,
-                                                paddingTop: 6,
-                                                paddingBottom: 1,
-                                                paddingLeft: 9,
-                                                paddingRight: 9
-                                            }}>Edit</Text>
-                                        </TouchableOpacity>}
+                                            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' }}
+                                                onPress={() => {
+                                                    props.navigation.navigate('EditProfile', {
+                                                        profilePic,
+                                                        backgroundPic,
+                                                        profile
+                                                    })
+                                                }}>
+                                                <Text style={{
+                                                    color: 'rgba(20,23,26,0.56)',
+                                                    fontSize: 18,
+                                                    fontFamily: 'Oxygen-Bold',
+                                                    borderWidth: 2,
+                                                    borderColor: '#009788',
+                                                    borderRadius: 30,
+                                                    paddingTop: 6,
+                                                    paddingBottom: 1,
+                                                    paddingLeft: 9,
+                                                    paddingRight: 9
+                                                }}>{localizeUserProfile.editText}</Text>
+                                            </TouchableOpacity>}
                                     </View>
                                 </View>
-                                {profile.name !== '' && <View style={{display: "flex", flexDirection: "row"}}>
+                                {profile.name !== '' && <View style={{ display: "flex", flexDirection: "row" }}>
                                     <Text style={{
                                         color: '#14171A',
                                         fontSize: 16,
                                         fontFamily: 'Oxygen-Bold',
                                         paddingVertical: 2
-                                    }}>Name: </Text>
+                                    }}>{localizeUserProfile.nameText}: </Text>
                                     <Text style={{
                                         color: '#14171A',
                                         fontSize: 16,
@@ -279,13 +280,13 @@ const UserProfile = (props) => {
                                         paddingVertical: 2
                                     }}>{profile.name}</Text>
                                 </View>}
-                                {profile.description !== '' && <View style={{display: "flex", flexDirection: "row"}}>
+                                {profile.description !== '' && <View style={{ display: "flex", flexDirection: "row" }}>
                                     <Text style={{
                                         color: '#14171A',
                                         fontSize: 16,
                                         fontFamily: 'Oxygen-Bold',
                                         paddingVertical: 2
-                                    }}>Bio: </Text>
+                                    }}>{localizeUserProfile.bioText}: </Text>
                                     <Text style={{
                                         color: '#14171A',
                                         fontSize: 16,
@@ -293,13 +294,13 @@ const UserProfile = (props) => {
                                         paddingVertical: 2
                                     }}>{profile.description}</Text>
                                 </View>}
-                                <View style={{display: "flex", flexDirection: "row"}}>
+                                <View style={{ display: "flex", flexDirection: "row" }}>
                                     <Text style={{
                                         color: '#14171A',
                                         fontSize: 16,
                                         fontFamily: 'Oxygen-Bold',
                                         paddingVertical: 2
-                                    }}>Birthday: </Text>
+                                    }}>{localizeUserProfile.birthdayText}: </Text>
                                     <Text style={{
                                         color: '#14171A',
                                         fontSize: 16,
@@ -307,8 +308,8 @@ const UserProfile = (props) => {
                                         paddingVertical: 2
                                     }}>{formatDate(new Date(profile.birthday))}</Text>
                                 </View>
-                                <View style={{display: "flex", flexDirection: "row"}}>
-                                    <TouchableOpacity style={{display: "flex", flexDirection: "row"}} onPress={() => {
+                                <View style={{ display: "flex", flexDirection: "row" }}>
+                                    <TouchableOpacity style={{ display: "flex", flexDirection: "row" }} onPress={() => {
                                         props.navigation.navigate('Subscriptions', {
                                             subscriptions: subscribes,
                                             user_id: user_id
@@ -325,14 +326,14 @@ const UserProfile = (props) => {
                                             fontSize: 16,
                                             fontFamily: 'Oxygen-Bold',
                                             paddingVertical: 2
-                                        }}>Subscriptions</Text>
+                                        }}>{localizeUserProfile.subscriptionsText}</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{display: "flex", flexDirection: "row", paddingLeft: 15}}
-                                                      onPress={() => {
-                                                          props.navigation.navigate('Subscribers', {
-                                                              subscribers, user_id: user_id
-                                                          })
-                                                      }}>
+                                    <TouchableOpacity style={{ display: "flex", flexDirection: "row", paddingLeft: 15 }}
+                                        onPress={() => {
+                                            props.navigation.navigate('Subscribers', {
+                                                subscribers, user_id: user_id
+                                            })
+                                        }}>
                                         <Text style={{
                                             color: '#14171A',
                                             fontSize: 16,
@@ -344,7 +345,7 @@ const UserProfile = (props) => {
                                             fontSize: 16,
                                             fontFamily: 'Oxygen-Bold',
                                             paddingVertical: 2
-                                        }}>Subscribers</Text>
+                                        }}>{localizeUserProfile.subscribersText}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -353,60 +354,58 @@ const UserProfile = (props) => {
 
                         <View>
                             <View
-                                style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+                                style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
                                 <TouchableOpacity onPress={() => {
                                     setEventType(0);
                                     eventInfo();
-                                }}><Text style={eventType === 0 ? styles.nav : styles.navChoosed}>Organized
-                                    events</Text></TouchableOpacity>
+                                }}><Text style={eventType === 0 ? styles.nav : styles.navChoosed}>{localizeUserProfile.organizedEventsText}</Text></TouchableOpacity>
                                 <TouchableOpacity onPress={() => {
                                     setEventType(1);
                                     eventInfo();
-                                }}><Text style={eventType === 0 ? styles.navChoosed : styles.nav}>Visited
-                                    events</Text></TouchableOpacity>
+                                }}><Text style={eventType === 0 ? styles.navChoosed : styles.nav}>{localizeUserProfile.visitedEventsText}</Text></TouchableOpacity>
                             </View>
 
 
-                            <View style={{paddingHorizontal: 10}}>
+                            <View style={{ paddingHorizontal: 10 }}>
                                 {eventInfoData.length === 0 ?
-                                    <View style={{display: 'flex', alignItems: "center", paddingTop: 10}}><Text style={{
+                                    <View style={{ display: 'flex', alignItems: "center", paddingTop: 10 }}><Text style={{
                                         color: 'rgba(20,23,26,0.39)',
                                         fontSize: 20,
                                         fontFamily: 'Oxygen-Bold'
-                                    }}>Nothing found</Text></View> :
+                                    }}>{localizeUserProfile.nothingFoundText}</Text></View> :
                                     <View>
                                         {eventInfoData.map(a => <TouchableOpacity activeOpacity={0.8} key={a.id}
-                                                                                  onPress={() =>
-                                                                                      props.navigation.navigate('EventDetails', {
-                                                                                          postId: a.id,
-                                                                                          userId: a.userId,
-                                                                                          postText: a.postText,
-                                                                                          pic: a.pic,
-                                                                                          visitors: a.visitors,
-                                                                                          postTitle: a.postTitle
-                                                                                      })}><View style={{
-                                            marginBottom: 10,
-                                            alignItems: 'center',
-                                            padding: 10,
-                                            borderBottomWidth: 1,
-                                            borderBottomColor: 'lightgrey'
-                                        }}>
-                                            <Text style={{
-                                                color: '#14171A',
-                                                fontSize: 20,
-                                                fontFamily: 'Oxygen-Regular'
-                                            }}>{a.postTitle}</Text>
-                                            {a.pic[0] != null && <Image
-                                                style={{width: '100%', height: 200, borderRadius: 8}}
-                                                source={{uri: a.pic[0]}}
-                                            />}
-                                            <Text style={{
-                                                color: '#14171A',
-                                                fontSize: 15,
-                                                fontFamily: 'Oxygen-Regular'
-                                            }}>{a.postText.substr(0, 120) + '...'}</Text>
-                                            <Text>{a.id}</Text>
-                                        </View></TouchableOpacity>)}
+                                            onPress={() =>
+                                                props.navigation.navigate('EventDetails', {
+                                                    postId: a.id,
+                                                    userId: a.userId,
+                                                    postText: a.postText,
+                                                    pic: a.pic,
+                                                    visitors: a.visitors,
+                                                    postTitle: a.postTitle
+                                                })}><View style={{
+                                                    marginBottom: 10,
+                                                    alignItems: 'center',
+                                                    padding: 10,
+                                                    borderBottomWidth: 1,
+                                                    borderBottomColor: 'lightgrey'
+                                                }}>
+                                                <Text style={{
+                                                    color: '#14171A',
+                                                    fontSize: 20,
+                                                    fontFamily: 'Oxygen-Regular'
+                                                }}>{a.postTitle}</Text>
+                                                {a.pic[0] != null && <Image
+                                                    style={{ width: '100%', height: 200, borderRadius: 8 }}
+                                                    source={{ uri: a.pic[0] }}
+                                                />}
+                                                <Text style={{
+                                                    color: '#14171A',
+                                                    fontSize: 15,
+                                                    fontFamily: 'Oxygen-Regular'
+                                                }}>{a.postText.substr(0, 120) + '...'}</Text>
+                                                <Text>{a.id}</Text>
+                                            </View></TouchableOpacity>)}
                                     </View>
                                 }
                             </View>

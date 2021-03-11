@@ -3,10 +3,10 @@ import LocalizedStrings from 'react-native-localization';
 
 export const localizeHomeScreen = new LocalizedStrings({
     "en-US": {
-        eventStatus: "No events found nearby"
+        eventStatus: "No events found nearby. Add your event and will be the first!"
     },
     ru: {
-        eventStatus: "Поблизости не найдено ни одного события"
+        eventStatus: "Поблизости не найдено ни одного события. Добавь свое событие и стань первым!"
     }
 });
 
@@ -115,5 +115,64 @@ export const localizeEventDetScreen = new LocalizedStrings({
         eventDialogText: "Диалог события",
         orgText: "Организатор",
         streetText: "Адрес"
+    }
+});
+
+export const localizeUserProfile = new LocalizedStrings({
+    "en-US": {
+        edit: "Edit",
+        nameText: "Name",
+        bioText: "Bio",
+        birthdayText: "Birthday",
+        subscriptionsText: "Subscriptions",
+        subscribersText: "Subscribers",
+        organizedEventsText: "Organized events",
+        visitedEventsText: "Visited events",
+        nothingFoundText: "Nothing found",
+    },
+    ru: {
+        edit: "Редактировать",
+        nameText: 'Имя',
+        bioText: 'Био',
+        birthdayText: 'Дата рождения',
+        subscriptionsText: 'Подписки',
+        subscribersText: 'Подписчики',
+        organizedEventsText: 'Организванные события',
+        visitedEventsText: 'Посещенные события',
+        nothingFoundText: 'Ничего не найдено',
+    }
+});
+
+export const localizeYourProfile = new LocalizedStrings({
+    "en-US": {
+        editText: "Edit",
+        nameText: "Name",
+        bioText: "Bio",
+        birthdayText: "Birthday",
+        subscriptionsText: "Subscriptions",
+        subscribersText: "Subscribers",
+        organizedEventsText: "Organized events",
+        visitedEventsText: "Visited events",
+        nothingFoundText: "Nothing found",
+    },
+    ru: {
+        editText: "Редактировать",
+        nameText: 'Имя',
+        bioText: 'Био',
+        birthdayText: 'Дата рождения',
+        subscriptionsText: 'Подписки',
+        subscribersText: 'Подписчики',
+        organizedEventsText: 'Организванные',
+        visitedEventsText: 'Посещенные',
+        nothingFoundText: 'Ничего не найдено',
+    }
+});
+
+export const localizeHHH = new LocalizedStrings({
+    "en-US": {
+        subscribersText: "Subscribers",
+    },
+    ru: {
+        subscribersText: "Подписчики",
     }
 });
