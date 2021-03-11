@@ -176,3 +176,16 @@ export const localizeHHH = new LocalizedStrings({
         subscribersText: "Подписчики",
     }
 });
+
+export const localizeEditProfileForm = new LocalizedStrings({
+    "en-US": {
+        nameText: "Name",
+        bioText: "Bio",
+        birthdayText: "Birthday",
+    },
+    ru: {
+        nameText: 'Имя',
+        bioText: 'Био',
+        birthdayText: 'Дата рождения',
+    }
+});
