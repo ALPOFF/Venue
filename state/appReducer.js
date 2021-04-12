@@ -1,4 +1,4 @@
-import {getcurDUsers, getCurUsD, getTown, getUserDialog, getUserProfileBar} from "../api/api";
+import { getcurDUsers, getCurUsD, getTown, getUserDialog, getUserProfileBar } from "../api/api";
 
 const SET_SOCKET = 'tariff/SET_SOCKET';
 const SET_CUR_DIALOGS_USER = 'tariff/SET_CUR_DIALOGS_USER';
@@ -20,23 +20,24 @@ const SET_NEW_EVENT_PIC = 'tariff/SET_NEW_EVENT_PIC';
 const SET_USER_USER_PROFILE_BAR = 'tariff/SET_USER_USER_PROFILE_BAR';
 const SET_TOWN = 'tariff/SET_TOWN';
 const SET_CURRENT_USER_ID = 'tariff/SET_CURRENT_USER_ID';
+const SET_SUGGEST_COORDS = 'tariff/SET_SUGGEST_COORDS';
 
 let initialState = {
     dialogList: [
-        {nickname: 'Alex', lastMsg: 'some text'},
-        {nickname: 'Lev', lastMsg: 'some text2'},
-        {nickname: 'Test1', lastMsg: 'some text1'},
-        {nickname: 'Test2', lastMsg: 'some text3'},
-        {nickname: 'Test3', lastMsg: 'some text5'},
+        { nickname: 'Alex', lastMsg: 'some text' },
+        { nickname: 'Lev', lastMsg: 'some text2' },
+        { nickname: 'Test1', lastMsg: 'some text1' },
+        { nickname: 'Test2', lastMsg: 'some text3' },
+        { nickname: 'Test3', lastMsg: 'some text5' },
     ],
     eventCat: [
-        {label: 'Квартирник', value: '0'},
-        {label: 'Концерт', value: '1'},
-        {label: 'Игры', value: '2'},
-        {label: 'Бизнес', value: '3'},
-        {label: 'Здоровье', value: '4'},
-        {label: 'Образование', value: '5'},
-        {label: 'Спорт', value: '6'}],
+        { label: 'Квартирник', value: '0' },
+        { label: 'Концерт', value: '1' },
+        { label: 'Игры', value: '2' },
+        { label: 'Бизнес', value: '3' },
+        { label: 'Здоровье', value: '4' },
+        { label: 'Образование', value: '5' },
+        { label: 'Спорт', value: '6' }],
     skt: null,
     dialogs: [],
     curdialogusers: [],
@@ -55,7 +56,8 @@ let initialState = {
     newEventPic: [],
     userProfileBar: [],
     town: "",
-    cur_us_id: null
+    cur_us_id: null,
+    suggestCoords: {}
 };
 
 const appReducer = (state = initialState, action) => {
@@ -123,7 +125,7 @@ const appReducer = (state = initialState, action) => {
         case SET_USER_COORD:
             return {
                 ...state,
-                userCoord: {"latitude": state.lat, "longitude": state.long}
+                userCoord: { "latitude": state.lat, "longitude": state.long }
             };
         case SET_NEW_LST_MSG:
             return {
@@ -164,6 +166,11 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 newEventPic: action.newEventPic
+            };
+        case SET_SUGGEST_COORDS:
+            return {
+                ...state,
+                suggestCoords: action.suggestCoords
             };
         default:
             return state;
@@ -309,6 +316,13 @@ export const setCurrentUserid = (cur_us_id) => {
     return {
         type: SET_CURRENT_USER_ID,
         cur_us_id
+    }
+};
+
+export const setSuggestCoords = (suggestCoords) => {
+    return {
+        type: SET_SUGGEST_COORDS,
+        suggestCoords
     }
 };
 

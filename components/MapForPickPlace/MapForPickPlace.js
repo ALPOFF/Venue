@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     ActivityIndicator,
     Alert,
@@ -11,14 +11,16 @@ import {
     View
 } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
-import MapView, {Marker} from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import mapStyle from "../../common/mapConfig";
-import {Icon} from "react-native-elements";
-import {connect} from "react-redux";
-import {setMarker, setThunkTown} from "../../state/appReducer";
+import { Icon } from "react-native-elements";
+import { connect } from "react-redux";
+import { setMarker, setThunkTown } from "../../state/appReducer";
 import MapInput from "./MapInput";
-import {geocodeLocationByName, getLocation} from "../../common/locationservice";
+import { geocodeLocationByName, getLocation } from "../../common/locationservice";
 import * as axios from "axios";
+import { localizeMapScreen } from "../../localization/localize";
+
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -46,7 +48,8 @@ export async function request_location_runtime_permission() {
     }
 }
 
-class MapForPickPlace extends Component<{}> {
+class MapForPickPlace extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -54,13 +57,56 @@ class MapForPickPlace extends Component<{}> {
             long: null,
             err: '',
             region: {},
-            coord: {}
+            coord: {},
+            suggestCoords: {}
             // marker: {}
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.getInitialState();
+    }
+
+    // componentWillReceiveProps(nextProps) {
+    //     const duration = 500
+    //     console.log('FFFFFFFFFFFFF', this.marker)
+    //     if (this.props.suggestCoords !== nextProps.suggestCoords) {
+    //         if (Platform.OS === 'android') {
+    //             if (this.marker) {
+    //                 this.marker.animateMarkerToCoordinate(
+    //                     nextProps.suggestCoords,
+    //                     duration
+    //                 );
+    //             }
+    //         } else {
+    //             this.state.suggestCoords.timing({
+    //                 ...nextProps.suggestCoords,
+    //                 duration
+    //             }).start();
+    //         }
+    //     }
+    // }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const duration = 500
+        console.log('FFFFFFFFFFFFF', this.mapRef)
+        if (this.props.suggestCoords !== prevProps.suggestCoords) {
+            this.mapRef.fitToCoordinates([54.42167759934996, 23.08439078181983], { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: true })
+
+            if (Platform.OS === 'android') {
+                if (this.marker) {
+                    this.marker.animateMarkerToCoordinate(
+                        nextProps.suggestCoords,
+                        duration
+                    );
+                }
+            } else {
+                this.state.suggestCoords.timing({
+                    ...nextProps.suggestCoords,
+                    duration
+                }).start();
+            }
+        }
     }
 
     getInitialState() {
@@ -96,103 +142,93 @@ class MapForPickPlace extends Component<{}> {
         );
     }
 
+
+    getSuggest = (suggest) => {
+
+        this.setState({ suggestCoords: suggest })
+
+
+    }
+
     onMapRegionChange(region) {
         this.setState({ region });
     }
 
-    geocodeLocationByCoordsYandex (lat, long) {
+    geocodeLocationByCoordsYandex(lat, long) {
         axios.get(`https://geocode-maps.yandex.ru/1.x?apikey=a2b8af4a-0675-4706-aafc-c386bc1661ee&lang=en_US&format=json&geocode=${long},${lat}`).then(res => {
-            this.setState({town: res.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AddressLine})
+            this.setState({ town: res.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AddressLine })
         })
     }
 
+
+
     render() {
         let markers = [
-            {"latitude": 37.42167759934996, "longitude": -122.08439078181983}
+            { "latitude": 37.42167759934996, "longitude": -122.08439078181983 }
         ];
         return (
-            <View style={{display: "flex", flexDirection: "column"}}>
-
+            <View style={{ display: "flex", flexDirection: "column" }}>
 
                 <View style={styles.container}>
-                    <View style={{width: '100%'}}>
-                        <MapInput notifyChange={(loc) => this.getCoordsFromName(loc)}/>
+                    <View style={{ width: '100%' }}>
+                        <MapInput getSuggest={this.getSuggest} notifyChange={(loc) => this.getCoordsFromName(loc)} />
                     </View>
-
 
                     {this.state.region['latitude'] ? <MapView
                         style={styles.map}
                         // onRegionChange={(reg) => this.onMapRegionChange(reg)}
+                        ref={map => { this.mapRef = map }}
                         showsUserLocation={true}
-                        autoFocus={false}
+                        autoFocus={true}
+                        moveOnMarkerPress={false}
                         region={this.state.region}
                         customMapStyle={mapStyle}
+                        onMarkerDragEnd={() => alert('hi')}
                         onPress={(e) => {
                             console.log(e.nativeEvent.coordinate);
                             this.props.setMarker(e.nativeEvent.coordinate)
                             //this.props.setThunkTown(e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude)
-                            this.setState({coord: {latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude}})
+                            this.setState({ coord: { latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude } })
                         }}
                     >
                         {this.props.marker.latitude != null &&
-                        <Marker
-                            draggable
-                            coordinate={{
-                                latitude: this.props.marker.latitude,
-                                longitude: this.props.marker.longitude,
-                            }}
-                            onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
-                        >
-                            <View style={{display: 'flex', alignItems: 'center'}}>
-                                <Icon name="explore" size={40} color={'#010743'}/>
-                                <Text style={{color: '#010743', fontWeight: 'bold'}}>HERE!</Text>
-                            </View>
-                        </Marker>
+                            <Marker
+                                draggable
+                                coordinate={{
+                                    latitude: this.props.marker.latitude,
+                                    longitude: this.props.marker.longitude,
+                                }}
+                                onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
+                            >
+                                <View style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Image
+                                        style={{ opacity: 1, width: 40, height: 60 }}
+                                        source={require('./../../assets/Venue_new/gpsIcon.png')} />
+                                    <Text style={{ color: '#004740', fontWeight: 'bold' }}>{localizeMapScreen.pointerText}!</Text>
+                                </View>
+                            </Marker>
                         }
+                        {this.state.suggestCoords.latitude != undefined && <Marker.Animated
+                            ref={marker => { this.marker = marker }}
+                            coordinate={this.state.suggestCoords}
+                        />}
+                    </MapView> : null}
 
-                        {/*{<Marker*/}
-                        {/*    draggable*/}
-                        {/*    coordinate={{*/}
-                        {/*        latitude: this.state.region.latitude,*/}
-                        {/*        longitude: this.state.region.longitude,*/}
-                        {/*    }}*/}
-                        {/*    onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}*/}
-                        {/*>*/}
-                        {/*    <Text style={{color: '#010743', fontWeight: 'bold'}}>You HERE</Text>*/}
-                        {/*    <Icon name="navigation" size={30} color={'#010743'}/>*/}
-                        {/*</Marker>*/}
-                        {/*}*/}
-
-                    </MapView> : null }
-
-                    {/*<TouchableOpacity activeOpacity={0.8}*/}
-                    {/*                  style={{*/}
-                    {/*                      position: 'absolute',*/}
-                    {/*                      right: 10,*/}
-                    {/*                      top: 10,*/}
-                    {/*                      backgroundColor: 'transparent',*/}
-                    {/*                      zIndex: 999*/}
-                    {/*                  }}*/}
-                    {/*                  onPress={() =>*/}
-                    {/*                      this.props.navigation.navigate('Detail')}>*/}
-                    {/*    <Icon style={{opacity: .8, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5}}*/}
-                    {/*          name="close" size={40} color={'#009788'}/>*/}
-                    {/*</TouchableOpacity>*/}
                     <TouchableOpacity activeOpacity={0.8}
-                                      style={{
-                                          position: 'absolute',
-                                          right: 10,
-                                          bottom: 10,
-                                          backgroundColor: 'transparent',
-                                          zIndex: 999
-                                      }}
-                                      onPress={() => {
-                                          this.props.setThunkTown(this.state.coord.latitude, this.state.coord.longitude)
-                                          this.props.navigation.navigate('Detail');
-                                      }}>
+                        style={{
+                            position: 'absolute',
+                            right: 10,
+                            bottom: 10,
+                            backgroundColor: 'transparent',
+                            zIndex: 999
+                        }}
+                        onPress={() => {
+                            this.props.setThunkTown(this.state.coord.latitude, this.state.coord.longitude)
+                            this.props.navigation.navigate('Detail');
+                        }}>
                         <Image
-                            style={{opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 90, marginTop: 5}}
-                            source={require('./../../assets/Venue_new/doneIcon3.png')}/>
+                            style={{ opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 90, marginTop: 5 }}
+                            source={require('./../../assets/Venue_new/doneIcon3.png')} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -202,10 +238,11 @@ class MapForPickPlace extends Component<{}> {
 }
 
 const mapStateToProps = (state) => ({
-    marker: state.appReducer.marker
+    marker: state.appReducer.marker,
+    suggestCoords: state.appReducer.suggestCoords
 });
 
-export default connect(mapStateToProps, {setMarker, setThunkTown})(MapForPickPlace);
+export default connect(mapStateToProps, { setMarker, setThunkTown })(MapForPickPlace);
 
 const styles = StyleSheet.create({
     resetSignUpView: {

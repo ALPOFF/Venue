@@ -53,10 +53,12 @@ export const localizeSideMenuScreen = new LocalizedStrings({
 
 export const localizeMapScreen = new LocalizedStrings({
     "en-US": {
-        YouAreHereText: "You are here"
+        YouAreHereText: "You are here",
+        pointerText: "Here",
     },
     ru: {
-        YouAreHereText: "Вы здесь"
+        YouAreHereText: "Вы здесь",
+        pointerText: "Сюда",
     }
 });
 
