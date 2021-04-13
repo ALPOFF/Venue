@@ -113,10 +113,14 @@ const YourProfile = (props) => {
                 <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"} refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                     <View style={{ height: 180, marginBottom: 10 }}>
-                        {a && <Image blurRadius={0.7} source={{ uri: backgroundPic }}
-                            style={{ height: '100%', position: 'relative', zIndex: -100, top: 0 }} />}
 
-                        {a && <Image source={{ uri: profilePic }}
+                        {backgroundPic !== null ? a && <Image blurRadius={0.7} source={{ uri: backgroundPic }}
+                            style={{ height: '100%', position: 'relative', zIndex: -100, top: 0 }} />
+                            : a && <Image blurRadius={0.7} source={{ uri: 'https://wallpapercave.com/wp/wp2445766.jpg' }}
+                                style={{ height: '100%', position: 'relative', zIndex: -100, top: 0 }} />
+                        }
+
+                        {profilePic !== null ? a && <Image source={{ uri: profilePic }}
                             style={{
                                 width: '30%',
                                 height: '60%',
@@ -126,11 +130,21 @@ const YourProfile = (props) => {
                                 top: '20%',
                                 left: '35%',
                                 position: 'absolute'
-                            }} />}
+                            }} />
+                            : a && <Image source={{ uri: 'https://eshendetesia.com/images/user-profile.png' }}
+                                style={{
+                                    width: '30%',
+                                    height: '60%',
+                                    borderRadius: 100,
+                                    borderWidth: 2,
+                                    borderColor: 'white',
+                                    top: '20%',
+                                    left: '35%',
+                                    position: 'absolute'
+                                }} />
+                        }
                     </View>
                     <View style={{ height: '70%' }}>
-
-
                         <View style={{
                             display: "flex",
                             flexDirection: "row",
