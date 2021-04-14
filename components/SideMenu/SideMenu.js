@@ -111,19 +111,7 @@ class SideMenu extends Component {
                             </ImageBackground>
                         }
                     </View>}
-                    {this.props.userProfileBar[0].name != undefined && <View style={{ display: "flex", paddingLeft: 40, flexDirection: "column", marginLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        {/* <View style={{ width: 30 }}><Icon name="ios-settings" type='ionicon' size={25}
-                            color='#263238' /></View> */}
-                        {this.props.userProfileBar[0].name != null && <Text style={{
-                            fontWeight: 'bold',
-                            fontSize: 20,
-                            color: 'black'
-                        }}>{this.props.userProfileBar[0].name}</Text>}
-                        <Text style={{
-                            fontSize: 18,
-                            color: 'black'
-                        }}>@{this.props.userProfileBar[0].Username}</Text>
-                    </View>}
+
                     <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' }}
                         onPress={() => this.props.navigation.navigate('switchNavEditProfile', { user_id: this.state.user_id })}>
                         <View style={{ marginLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
