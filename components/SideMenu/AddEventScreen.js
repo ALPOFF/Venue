@@ -164,11 +164,11 @@ class DetailScreen extends Component {
                             ]}
                         />
                     </View>
-                    {this.props.town != "" && <View>
+                    {this.props.town != "" && <TouchableOpacity onPress={() => this.props.navigation.navigate('MapForPickPlace')}><View>
                         <Text>Место:</Text>
                         {this.props.town != "" &&
                             <Text>{this.props.town}</Text>}
-                    </View>}
+                    </View></TouchableOpacity>}
                 </View>
                 {this.props.marker.latitude != undefined && this.props.town != '' && <TouchableOpacity activeOpacity={0.8}
                     style={{
