@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     AsyncStorage,
     Image,
@@ -14,10 +14,10 @@ import appIcon from "../../assets/Venue_new/logo_hands.png";
 import avaSign from "../../assets/Venue_new/avatarSign.png";
 import SignInReduxForm from "../../ReduxForm/LogInReduxForm";
 import * as axios from "axios";
-import {connect} from "react-redux";
-import {setUserId, setUserProfileBarThunk} from "../../state/appReducer";
-import {useDarkMode} from 'react-native-dark-mode'
-import {localizeSignInScreen} from "../../localization/localize";
+import { connect } from "react-redux";
+import { setUserId, setUserProfileBarThunk } from "../../state/appReducer";
+import { useDarkMode } from 'react-native-dark-mode'
+import { localizeSignInScreen } from "../../localization/localize";
 
 
 const SignInScreen = (props) => {
@@ -39,7 +39,7 @@ const SignInScreen = (props) => {
 
     const _signInAsync = (value) => {
         console.log('submitting form', value.loginOrEmail);
-        axios.post(`http://185.12.95.84:3000/auth/`, {loginOrEmail: value.loginOrEmail, Password: value.password})
+        axios.post(`http://185.12.95.84:3000/auth/`, { loginOrEmail: value.loginOrEmail, Password: value.password })
             .then(async res => {
                 console.log("ALL: " + res.data);
                 console.log(res.data);
@@ -63,27 +63,29 @@ const SignInScreen = (props) => {
         setKeyboardT(false)
     };
 
+    const sendEmail = () => {
+        axios.post(`http://185.12.95.84:3000/send_password_recovery_mail`, {})
+    }
+
     return (
         <KeyboardAvoidingView style={styles.container}>
-            {loading && <ActivityIndicator size="large" color="#009788"/>}
+            {loading && <ActivityIndicator size="large" color="#009788" />}
             <Text style={styles.custom}>Venue</Text>
             {!keyboardT && <Image
-                style={{width: 130, height: 130, margin: 20}}
+                style={{ width: 130, height: 130, margin: 20 }}
                 source={avaSign}
             />}
-            <SignInReduxForm setHasError={setHasError} hasError={hasError} _signInAsync={_signInAsync}/>
+            <SignInReduxForm setHasError={setHasError} hasError={hasError} _signInAsync={_signInAsync} />
 
-            {!keyboardT && <View style={{marginTop: 50, display: 'flex', alignItems: 'center'}}>
+            {!keyboardT && <View style={{ marginTop: 50, display: 'flex', alignItems: 'center' }}>
                 <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{localizeSignInScreen.forgotPassText} </Text>
-                    <Text style={{color: '#009788', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}
-                          onPress={() => props.navigation.navigate('')}>{localizeSignInScreen.resetText}</Text>
-                    <Text style={{color: 'orange', textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>-In
-                        dev</Text>
+                    <Text style={{ color: '#A7A7A7', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{localizeSignInScreen.forgotPassText} </Text>
+                    <Text style={{ color: '#009788', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}
+                        onPress={() => sendEmail()}>{localizeSignInScreen.resetText}</Text>
                 </View>
                 <View style={styles.resetSignUpView}>
-                    <Text style={{color: '#A7A7A7'}}>{localizeSignInScreen.dontHaveAccText} </Text>
-                    <Text style={{color: '#009788'}} onPress={() => props.navigation.navigate('SignUpScreen')}>{localizeSignInScreen.signUpText}</Text>
+                    <Text style={{ color: '#A7A7A7' }}>{localizeSignInScreen.dontHaveAccText} </Text>
+                    <Text style={{ color: '#009788' }} onPress={() => props.navigation.navigate('SignUpScreen')}>{localizeSignInScreen.signUpText}</Text>
                 </View>
             </View>}
         </KeyboardAvoidingView>
@@ -145,4 +147,4 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({})
 
-export default connect(mapStateToProps, {setUserId})(SignInScreen);
+export default connect(mapStateToProps, { setUserId })(SignInScreen);

@@ -89,7 +89,7 @@ class MapForPickPlace extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const duration = 500
-        console.log('FFFFFFFFFFFFF', this.mapRef)
+        // console.log('FFFFFFFFFFFFF', this.mapRef)
         if (this.props.suggestCoords !== prevProps.suggestCoords) {
             this.mapRef.fitToCoordinates([54.42167759934996, 23.08439078181983], { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: true })
 
