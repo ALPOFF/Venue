@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as axios from "axios";
 import { distanceFunc } from "../common/distanceFunc";
 import Modal from 'react-native-modal';
-
+import RNPickerSelect from 'react-native-picker-select';
 
 import {
     AsyncStorage,
@@ -209,7 +209,7 @@ const HomeScreen = (props) => {
                 {/* <ModalComponent isModalVisible={isModalVisible} toggleModal={toggleModal} /> */}
 
                 <Modal isVisible={isModalVisible}
-                    swipeDirection={['up', 'left', 'right', 'down']}
+                    // swipeDirection={['up', 'left', 'right', 'down']}
                     style={styles.modalView}
                     transparent={true}
                     onRequestClose={() => { setModalVisible(false) }}
@@ -222,10 +222,44 @@ const HomeScreen = (props) => {
                     </TouchableOpacity>
                     <View style={styles.containerStyle}>
                         <View style={styles.content}>
-
+                            <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold" }}>Фильтры</Text>
+                            <View>
+                                <TouchableOpacity><Text style={{ fontSize: 18, fontWeight: "bold" }}>Категория</Text></TouchableOpacity>
+                                <RNPickerSelect placeholder={{ label: 'Выберите' }}
+                                    style={{ borderBottomWidth: 1, borderBottomColor: 'black' }}
+                                    onValueChange={(value) => this.props.setNewEventCat(value)}
+                                    items={[
+                                        { label: 'Квартирник', value: '0' },
+                                        { label: 'Концерт', value: '1' },
+                                        { label: 'Игры', value: '2' },
+                                        { label: 'Бизнес', value: '3' },
+                                        { label: 'Здоровье', value: '4' },
+                                        { label: 'Образование', value: '5' },
+                                        { label: 'Спорт', value: '6' },
+                                    ]}
+                                />
+                            </View>
+                            <View>
+                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>Дата</Text>
+                                <RNPickerSelect placeholder={{ label: 'Выберите' }}
+                                    style={{ borderBottomWidth: 1, borderBottomColor: 'black' }}
+                                    onValueChange={(value) => this.props.setNewEventCat(value)}
+                                    items={[
+                                        { label: 'Сегодня', value: '0' },
+                                        { label: 'За эту неделю', value: '0' },
+                                        { label: 'За этот месяц', value: '0' },
+                                    ]}
+                                />
+                            </View>
+                            <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold" }}>Упорядочить</Text>
+                            <View>
+                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>По дате проведения</Text>
+                                <View style={{ opacity: 0.3, display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>По числу просмотров</Text><Text> In dev</Text>
+                                </View>
+                            </View>
                         </View>
                     </View>
-
                 </Modal>
             </View>
             <TouchableOpacity activeOpacity={0.8}
@@ -319,6 +353,7 @@ const styles = StyleSheet.create({
         height: '50%',
         backgroundColor: 'white',
         overflow: 'hidden',
+        padding: 20,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25
     },
