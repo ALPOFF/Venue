@@ -45,9 +45,6 @@ class DetailScreen extends Component {
         };
     }
 
-
-
-
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
@@ -67,7 +64,16 @@ class DetailScreen extends Component {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "Ок", onPress: () => this.props.navigation.goBack(null) }
+                {
+                    text: "Ок", onPress: () => {
+                        this.props.navigation.goBack(null);
+                        this.props.setNewEventName('')
+                        this.props.setNewEventDescr('')
+                        this.props.setNewEventCat(null)
+                        this.props.setMarker({})
+                        this.props.setNewEventPic([])
+                    }
+                }
             ]
         );
 
