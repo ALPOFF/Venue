@@ -8,7 +8,8 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View
+    View,
+    BackHandler
 } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import MapView, { Marker } from "react-native-maps";
@@ -52,6 +53,7 @@ class MapForPickPlace extends Component {
 
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         this.state = {
             lat: null,
             long: null,
@@ -63,29 +65,39 @@ class MapForPickPlace extends Component {
         };
     }
 
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        console.log(this)
+        Alert.alert(
+            "Внимание!",
+            "Ваш эвент не будет сохранен",
+            [
+                {
+                    text: "Отмена",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Ок", onPress: () => {
+                        //TODO: clear data, refactor it to separate fucntion
+                    }
+                }
+            ]
+        );
+
+        return true;
+    }
+
     componentDidMount() {
         this.getInitialState();
     }
-
-    // componentWillReceiveProps(nextProps) {
-    //     const duration = 500
-    //     console.log('FFFFFFFFFFFFF', this.marker)
-    //     if (this.props.suggestCoords !== nextProps.suggestCoords) {
-    //         if (Platform.OS === 'android') {
-    //             if (this.marker) {
-    //                 this.marker.animateMarkerToCoordinate(
-    //                     nextProps.suggestCoords,
-    //                     duration
-    //                 );
-    //             }
-    //         } else {
-    //             this.state.suggestCoords.timing({
-    //                 ...nextProps.suggestCoords,
-    //                 duration
-    //             }).start();
-    //         }
-    //     }
-    // }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const duration = 500
