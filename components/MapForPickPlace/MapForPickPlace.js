@@ -112,7 +112,7 @@ class MapForPickPlace extends Component {
     getInitialState() {
         getLocation().then(
             (data) => {
-                console.log(data);
+                // console.log(data);
                 this.setState({
                     region: {
                         latitude: data.latitude,
@@ -126,10 +126,10 @@ class MapForPickPlace extends Component {
     }
 
     getCoordsFromName(loc) {
-        console.log(loc)
+        // console.log(loc)
         geocodeLocationByName(loc).then(
             (data) => {
-                console.log(data);
+                // console.log(data);
                 this.setState({
                     region: {
                         latitude: data.results[0].geometry.location.latitude,
@@ -142,12 +142,22 @@ class MapForPickPlace extends Component {
         );
     }
 
+    moveToMarker = (geoData) => {
+        console.log('this', this)
+        console.log('geoDATA:', geoData)
+        this.setState({
+            region: {
+                latitude: geoData.latitude,
+                longitude: geoData.longitude,
+                latitudeDelta: 0.003,
+                longitudeDelta: 0.003
+            }
+        });
+    }
+
 
     getSuggest = (suggest) => {
-
         this.setState({ suggestCoords: suggest })
-
-
     }
 
     onMapRegionChange(region) {
@@ -171,7 +181,7 @@ class MapForPickPlace extends Component {
 
                 <View style={styles.container}>
                     <View style={{ width: '100%' }}>
-                        <MapInput getSuggest={this.getSuggest} notifyChange={(loc) => this.getCoordsFromName(loc)} />
+                        <MapInput moveToMarker={this.moveToMarker} getSuggest={this.getSuggest} notifyChange={(loc) => this.getCoordsFromName(loc)} />
                     </View>
 
                     {this.state.region['latitude'] ? <MapView
@@ -179,8 +189,8 @@ class MapForPickPlace extends Component {
                         // onRegionChange={(reg) => this.onMapRegionChange(reg)}
                         ref={map => { this.mapRef = map }}
                         showsUserLocation={true}
-                        autoFocus={true}
-                        moveOnMarkerPress={false}
+                        autoFocus={false}
+                        moveOnMarkerPress={true}
                         region={this.state.region}
                         customMapStyle={mapStyle}
                         onMarkerDragEnd={() => alert('hi')}

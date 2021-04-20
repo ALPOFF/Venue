@@ -43,6 +43,7 @@ const HomeScreen = (props) => {
     //let closeActivityIndicator = () => setTimeout(() => setPostsRender(true), 10000)
 
     useEffect(() => {
+
         //closeActivityIndicator()
         AsyncStorage.getItem('userToken', (err, item) => {
             props.setCurrentUserid(item)

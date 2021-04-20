@@ -38,7 +38,6 @@ const MapInput = (props) => {
             .catch(error => console.log("error", error));
     }
 
-
     return (
         <View style={{ display: 'flex', flexDirection: 'column', position: 'absolute', width: '100%', height: 300, zIndex: 999 }}>
             <TextInput
@@ -46,7 +45,13 @@ const MapInput = (props) => {
                     setQueryText(value); suggest(value); setSuggestListVision(true)
                 }} value={queryText} placeholder={'some text'} />
             {suggestListVision && <View style={{ backgroundColor: 'white', marginTop: -10 }}>
-                {suggestResult.map(el => <TouchableOpacity onPress={() => { setQueryText(el.value); props.getSuggest({ latitude: Number(el.data.geo_lat), longitude: Number(el.data.geo_lon) }); setSuggestListVision(false) }} >
+                {suggestResult.map(el => <TouchableOpacity onPress={() => {
+                    props.moveToMarker({ latitude: Number(el.data.geo_lat), longitude: Number(el.data.geo_lon) });
+                    setQueryText(el.value); props.getSuggest({
+                        latitude: Number(el.data.geo_lat), longitude:
+                            Number(el.data.geo_lon)
+                    }); setSuggestListVision(false)
+                }} >
                     <View style={{ borderWidth: 1, borderColor: 'lightgrey', height: 40, paddingLeft: 5, display: 'flex', justifyContent: 'center' }}>
                         <Text>{el.value}</Text>
                     </View>

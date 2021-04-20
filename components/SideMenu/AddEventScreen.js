@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react';
 import {
     View,
-    StyleSheet, AsyncStorage, TouchableOpacity, Text, Image, TextInput
+    StyleSheet, AsyncStorage, TouchableOpacity, Text, Image, TextInput, Alert
 } from 'react-native';
 import EventReduxForm from "../../ReduxForm/EventReduxForm";
 import * as axios from "axios";
@@ -14,6 +14,7 @@ import { setMarker, setNewEventCat, setNewEventDescr, setNewEventName, setNewEve
 import { localizeDetailScreen } from "../../localization/localize";
 import RNPickerSelect from 'react-native-picker-select';
 import { geocodeLocationByCoords, geocodeLocationByCoordsYandex } from "../../common/locationservice";
+import { BackHandler } from 'react-native';
 
 const renderInput = ({ placeholder, input: { onChange, inputType, ...restInput } }) => {
     return <TextInput placeholder={placeholder}
@@ -32,6 +33,7 @@ const renderInput = ({ placeholder, input: { onChange, inputType, ...restInput }
 class DetailScreen extends Component {
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         this.state = {
             image: {},
             res: null,
@@ -43,8 +45,33 @@ class DetailScreen extends Component {
         };
     }
 
-    componentDidMount() {
-        console.log('mnted')
+
+
+
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        console.log(this)
+        Alert.alert(
+            "Внимание!",
+            "Ваш эвент не будет сохранен",
+            [
+                {
+                    text: "Отмена",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Ок", onPress: () => this.props.navigation.goBack(null) }
+            ]
+        );
+
+        return true;
     }
 
 
