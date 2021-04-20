@@ -118,7 +118,9 @@ const HomeScreen = (props) => {
         wait(2000).then(() => setRefreshing(false));
     }, [refreshing]);
 
-
+    const sortByDate = () => {
+        console.log('sort by date')
+    }
 
     return (
         // props.eventData.length !== 0 ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
@@ -222,7 +224,7 @@ const HomeScreen = (props) => {
                     </TouchableOpacity>
                     <View style={styles.containerStyle}>
                         <View style={styles.content}>
-                            <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold" }}>Фильтры</Text>
+                            <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Фильтры</Text>
                             <View>
                                 <TouchableOpacity><Text style={{ fontSize: 18, fontWeight: "bold" }}>Категория</Text></TouchableOpacity>
                                 <RNPickerSelect placeholder={{ label: 'Выберите' }}
@@ -246,16 +248,18 @@ const HomeScreen = (props) => {
                                     onValueChange={(value) => this.props.setNewEventCat(value)}
                                     items={[
                                         { label: 'Сегодня', value: '0' },
-                                        { label: 'За эту неделю', value: '0' },
-                                        { label: 'За этот месяц', value: '0' },
+                                        { label: 'За эту неделю', value: '1' },
+                                        { label: 'За этот месяц', value: '2' },
                                     ]}
                                 />
                             </View>
-                            <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold" }}>Упорядочить</Text>
+                            <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Упорядочить</Text>
                             <View>
-                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>По дате проведения</Text>
+                                <TouchableOpacity onPress={() => { sortByDate() }}>
+                                    <Text style={{ fontSize: 18, fontWeight: "bold", paddingBottom: 5 }}>По дате проведения</Text>
+                                </TouchableOpacity>
                                 <View style={{ opacity: 0.3, display: "flex", flexDirection: "row", alignItems: "center" }}>
-                                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>По числу просмотров</Text><Text> In dev</Text>
+                                    <Text style={{ fontSize: 18, fontWeight: "bold", paddingBottom: 5 }}>По числу просмотров</Text><Text> In dev</Text>
                                 </View>
                             </View>
                         </View>
@@ -286,7 +290,7 @@ const HomeScreen = (props) => {
                 onPress={() => toggleModal()}>
                 <Image
                     style={{ opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5 }}
-                    source={require('./../assets/Venue_new/addIcon3.png')} />
+                    source={require('./../assets/Venue_new/modal.png')} />
             </TouchableOpacity>
         </View >
     );
@@ -338,7 +342,6 @@ const styles = StyleSheet.create({
     },
     modalView: {
         margin: 0,
-
         justifyContent: 'flex-end',
     },
     containerStyle: {
@@ -350,7 +353,7 @@ const styles = StyleSheet.create({
     },
     content: {
         width: '100%',
-        height: '50%',
+        height: '57%',
         backgroundColor: 'white',
         overflow: 'hidden',
         padding: 20,
