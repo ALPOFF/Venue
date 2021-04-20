@@ -47,8 +47,8 @@ const SearchScreen = (props) => {
                     alignItems: 'center',
                     padding: 10
                 }}>
-                    {d.profile_pic == null ? <Image source={{ uri: 'https://eshendetesia.com/images/user-profile.png' }} style={{ height: 40, width: 40, borderRadius: 30, marginRight: 8 }} />
-                        : <Image source={{ uri: d.profile_pic }} style={{ height: 40, width: 40, borderRadius: 30, marginRight: 8 }} />}
+                    {d.profile_pic == null ? <Image source={{ uri: 'https://eshendetesia.com/images/user-profile.png' }} style={{ height: 55, width: 55, borderRadius: 30, marginRight: 8 }} />
+                        : <Image source={{ uri: d.profile_pic }} style={{ height: 55, width: 55, borderRadius: 30, marginRight: 8 }} />}
                     <TouchableOpacity onPress={() => {
                         props.navigation.navigate('UserProfile', { user_id: d.user_id })
                     }}>
