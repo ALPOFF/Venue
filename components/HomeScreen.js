@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as axios from "axios";
 import { distanceFunc } from "../common/distanceFunc";
+import Modal from 'react-native-modal';
+
 
 import {
     AsyncStorage,
@@ -12,7 +14,8 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Button
 } from "react-native";
 import { connect } from "react-redux";
 import Geolocation from "@react-native-community/geolocation";
@@ -31,6 +34,12 @@ const locale = NativeModules.I18nManager.localeIdentifier // "fr_FR"
 
 
 const HomeScreen = (props) => {
+
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     const [refreshing, setRefreshing] = React.useState(false);
     const [userCoord, setUserCoord] = React.useState({});
@@ -156,31 +165,6 @@ const HomeScreen = (props) => {
                                 postTitle: a.postTitle,
                                 postCat: a.eventCat
                             })}>
-                        {/*<View style={{*/}
-                        {/*    marginBottom: 10,*/}
-                        {/*    alignItems: 'center',*/}
-                        {/*    padding: 10,*/}
-                        {/*    borderBottomWidth: 1,*/}
-                        {/*    borderBottomColor: 'lightgrey'*/}
-                        {/*}}>*/}
-                        {/*    <Text style={{*/}
-                        {/*        color: '#14171A',*/}
-                        {/*        fontSize: 20,*/}
-                        {/*        fontFamily: 'Oxygen-Regular'*/}
-                        {/*    }}>{a.postTitle}</Text>*/}
-                        {/*    <Text>{(Math.ceil((distanceFunc(a.place, userCoord)) * 100) / 100)} km from*/}
-                        {/*        you</Text>*/}
-                        {/*    {a.pic[0] != null && <Image*/}
-                        {/*        style={{width: '100%', height: 200, borderRadius: 8}}*/}
-                        {/*        source={{uri: a.pic[0]}}*/}
-                        {/*    />}*/}
-                        {/*    <Text style={{*/}
-                        {/*        color: '#14171A',*/}
-                        {/*        fontSize: 15,*/}
-                        {/*        fontFamily: 'Oxygen-Regular'*/}
-                        {/*    }}>{a.postText.substr(0, 120) + '...'}</Text>*/}
-                        {/*    <Text>{a.id}</Text>*/}
-                        {/*</View>*/}
                         {a.pic[0] != null && <ImageBackground style={{ height: 200, marginBottom: 25, marginLeft: 10, marginRight: 10 }} imageStyle={{ borderRadius: 15 }} source={{ uri: a.pic[0] }}>
                             <View style={{ height: 200, backgroundColor: 'black', opacity: 0.3, borderRadius: 15 }}>
                             </View>
@@ -222,6 +206,27 @@ const HomeScreen = (props) => {
                             {localizeHomeScreen.eventStatus}</Text></View>
                     }
                 </ScrollView> /*: <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" />*/}
+                {/* <ModalComponent isModalVisible={isModalVisible} toggleModal={toggleModal} /> */}
+
+                <Modal isVisible={isModalVisible}
+                    swipeDirection={['up', 'left', 'right', 'down']}
+                    style={styles.modalView}
+                    transparent={true}
+                    onRequestClose={() => { setModalVisible(false) }}
+                >
+                    <TouchableOpacity
+                        style={styles.container}
+                        activeOpacity={1}
+                        onPressOut={() => { setModalVisible(false) }}
+                    >
+                    </TouchableOpacity>
+                    <View style={styles.containerStyle}>
+                        <View style={styles.content}>
+
+                        </View>
+                    </View>
+
+                </Modal>
             </View>
             <TouchableOpacity activeOpacity={0.8}
                 style={{
@@ -236,7 +241,20 @@ const HomeScreen = (props) => {
                     style={{ opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5 }}
                     source={require('./../assets/Venue_new/addIcon3.png')} />
             </TouchableOpacity>
-        </View>
+            <TouchableOpacity activeOpacity={0.8}
+                style={{
+                    position: 'absolute',
+                    left: 20,
+                    bottom: 10,
+                    backgroundColor: 'transparent',
+                    zIndex: 999
+                }}
+                onPress={() => toggleModal()}>
+                <Image
+                    style={{ opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5 }}
+                    source={require('./../assets/Venue_new/addIcon3.png')} />
+            </TouchableOpacity>
+        </View >
     );
 };
 
@@ -283,6 +301,26 @@ const styles = StyleSheet.create({
         width: 220,
         borderRadius: 5,
         margin: 5,
+    },
+    modalView: {
+        margin: 0,
+
+        justifyContent: 'flex-end',
+    },
+    containerStyle: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'flex-end',
+
+    },
+    content: {
+        width: '100%',
+        height: '50%',
+        backgroundColor: 'white',
+        overflow: 'hidden',
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25
     },
 });
 
