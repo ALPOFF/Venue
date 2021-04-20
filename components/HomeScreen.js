@@ -122,6 +122,19 @@ const HomeScreen = (props) => {
         console.log('sort by date')
     }
 
+    const filterByCategory = () => {
+        axios.post(`http://185.12.95.84:3000/events`,
+            { "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang }
+        )
+            .then(res => {
+                console.log('ALLLL:', res.data)
+                props.setEventData(res.data.data);
+                setNewLastPost(res.data.last_post)
+                console.log('event_array:', res.data.posts)
+                setPostsRender(res.data.posts)
+            });
+    }
+
     return (
         // props.eventData.length !== 0 ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
         // postsRender ? <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" /> :
@@ -214,6 +227,7 @@ const HomeScreen = (props) => {
                     // swipeDirection={['up', 'left', 'right', 'down']}
                     style={styles.modalView}
                     transparent={true}
+                    backdropTransitionOutTiming={0}
                     onRequestClose={() => { setModalVisible(false) }}
                 >
                     <TouchableOpacity
@@ -241,7 +255,7 @@ const HomeScreen = (props) => {
                                     ]}
                                 />
                             </View>
-                            <View>
+                            {/* <View>
                                 <Text style={{ fontSize: 18, fontWeight: "bold" }}>Дата</Text>
                                 <RNPickerSelect placeholder={{ label: 'Выберите' }}
                                     style={{ borderBottomWidth: 1, borderBottomColor: 'black' }}
@@ -252,7 +266,7 @@ const HomeScreen = (props) => {
                                         { label: 'За этот месяц', value: '2' },
                                     ]}
                                 />
-                            </View>
+                            </View> */}
                             <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Упорядочить</Text>
                             <View>
                                 <TouchableOpacity onPress={() => { sortByDate() }}>
@@ -353,7 +367,7 @@ const styles = StyleSheet.create({
     },
     content: {
         width: '100%',
-        height: '57%',
+        height: '45%',
         backgroundColor: 'white',
         overflow: 'hidden',
         padding: 20,
