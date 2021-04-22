@@ -37,14 +37,18 @@ const HomeScreen = (props) => {
 
     const [isModalVisible, setModalVisible] = useState(false);
 
+    //filter
+    const [byCategoryValue, setByCategoryValue] = useState(0); //true -> new false -> older || default sorted by new added posts
+    const [byEventDataValue, setByEventDataValue] = useState(false);
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-    const [refreshing, setRefreshing] = React.useState(false);
-    const [userCoord, setUserCoord] = React.useState({});
-    const [postsRender, setPostsRender] = React.useState(false);
-    const [newlastPost, setNewLastPost] = React.useState(0);
+    const [refreshing, setRefreshing] = useState(false);
+    const [userCoord, setUserCoord] = useState({});
+    const [postsRender, setPostsRender] = useState(false);
+    const [newlastPost, setNewLastPost] = useState(0);
 
     let sysLang = ''
     locale === 'ru_RU' ? sysLang = 'ru_RU' : sysLang = 'en_US';
@@ -122,9 +126,12 @@ const HomeScreen = (props) => {
         console.log('sort by date')
     }
 
-    const filterByCategory = () => {
+    const filterByCategory = (data) => {
         axios.post(`http://185.12.95.84:3000/events`,
-            { "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang }
+            {
+                "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang,
+                "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
+            }
         )
             .then(res => {
                 console.log('ALLLL:', res.data)
@@ -243,7 +250,7 @@ const HomeScreen = (props) => {
                                 <TouchableOpacity><Text style={{ fontSize: 18, fontWeight: "bold" }}>Категория</Text></TouchableOpacity>
                                 <RNPickerSelect placeholder={{ label: 'Выберите' }}
                                     style={{ borderBottomWidth: 1, borderBottomColor: 'black' }}
-                                    onValueChange={(value) => this.props.setNewEventCat(value)}
+                                    onValueChange={(value) => { setByCategoryValue(value); console.log('value', value) }}
                                     items={[
                                         { label: 'Квартирник', value: '0' },
                                         { label: 'Концерт', value: '1' },
@@ -269,7 +276,7 @@ const HomeScreen = (props) => {
                             </View> */}
                             <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Упорядочить</Text>
                             <View>
-                                <TouchableOpacity onPress={() => { sortByDate() }}>
+                                <TouchableOpacity onPress={() => { setByEventDataValue(!byEventDataValue) }}>
                                     <Text style={{ fontSize: 18, fontWeight: "bold", paddingBottom: 5 }}>По дате проведения</Text>
                                 </TouchableOpacity>
                                 <View style={{ opacity: 0.3, display: "flex", flexDirection: "row", alignItems: "center" }}>

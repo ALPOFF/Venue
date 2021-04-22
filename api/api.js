@@ -32,3 +32,5 @@ export const userProfileAPI = {
         return axios.post(`http://185.12.95.84:3000/getprofile`, { userId: user_id })
     }
 }
+
+
