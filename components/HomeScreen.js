@@ -151,7 +151,12 @@ const HomeScreen = (props) => {
             }
         )
             .then(res => {
-                console.log('TTTTTTTTTTTTTTTTTT:', res.data)
+                console.log('ALLLL:', res.data)
+                props.setEventData(res.data.data);
+                setNewLastPost(res.data.last_post)
+                console.log('event_array:', props.eventData)
+                console.log('event_array_posts:', props.eventData.posts)
+                setPostsRender(res.data.posts)
             });
     }
 
