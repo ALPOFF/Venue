@@ -28,6 +28,8 @@ import {
     setUserProfileBarThunk
 } from "../state/appReducer";
 import { localizeHomeScreen } from "../localization/localize";
+import ModalComponent from "./ModalComponent/ModalComponent";
+import testPush from "../common/pushNotificationFunc";
 
 // Android:
 const locale = NativeModules.I18nManager.localeIdentifier // "fr_FR"
@@ -41,7 +43,8 @@ const HomeScreen = (props) => {
     const [byCategoryValue, setByCategoryValue] = useState(0); //true -> new false -> older || default sorted by new added posts
     const [byEventDataValue, setByEventDataValue] = useState(false);
 
-    const toggleModal = () => {
+    const toggleModal = (x) => {
+        // console.log(x)
         setModalVisible(!isModalVisible);
     };
 
@@ -56,7 +59,7 @@ const HomeScreen = (props) => {
     //let closeActivityIndicator = () => setTimeout(() => setPostsRender(true), 10000)
 
     useEffect(() => {
-
+        // testPush()
         //closeActivityIndicator()
         AsyncStorage.getItem('userToken', (err, item) => {
             props.setCurrentUserid(item)
@@ -228,6 +231,7 @@ const HomeScreen = (props) => {
                             {localizeHomeScreen.eventStatus}</Text></View>
                     }
                 </ScrollView> /*: <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" />*/}
+
                 {/* <ModalComponent isModalVisible={isModalVisible} toggleModal={toggleModal} /> */}
 
                 <Modal isVisible={isModalVisible}
@@ -262,18 +266,6 @@ const HomeScreen = (props) => {
                                     ]}
                                 />
                             </View>
-                            {/* <View>
-                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>Дата</Text>
-                                <RNPickerSelect placeholder={{ label: 'Выберите' }}
-                                    style={{ borderBottomWidth: 1, borderBottomColor: 'black' }}
-                                    onValueChange={(value) => this.props.setNewEventCat(value)}
-                                    items={[
-                                        { label: 'Сегодня', value: '0' },
-                                        { label: 'За эту неделю', value: '1' },
-                                        { label: 'За этот месяц', value: '2' },
-                                    ]}
-                                />
-                            </View> */}
                             <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Упорядочить</Text>
                             <View>
                                 <TouchableOpacity onPress={() => { setByEventDataValue(!byEventDataValue) }}>

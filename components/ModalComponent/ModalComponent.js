@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from 'react-native-modal';
 
 import {
@@ -10,17 +10,21 @@ import {
 
 const ModalComponent = (props) => {
 
+    useEffect(() => {
+        console.log('ddddd', props.isModalVisible)
+    }, [])
+
     return (
         <Modal isVisible={props.isModalVisible}
             swipeDirection={['up', 'left', 'right', 'down']}
             style={styles.modalView}
             transparent={true}
-            onRequestClose={() => { props.toggleModal() }}
+            onRequestClose={() => { props.toggleModal(2) }}
         >
             <TouchableOpacity
                 style={styles.container}
                 activeOpacity={1}
-                onPressOut={() => { props.toggleModal(); console.log('clicked') }}
+                onPressOut={() => { props.toggleModal(2); console.log('clicked') }}
             >
             </TouchableOpacity>
             <View style={styles.containerStyle}>
@@ -36,7 +40,7 @@ const ModalComponent = (props) => {
 const styles = StyleSheet.create({
     modalView: {
         margin: 0,
-
+        // backgroundColor: 'black',
         justifyContent: 'flex-end',
     },
     containerStyle: {
