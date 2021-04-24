@@ -21,6 +21,7 @@ const SET_USER_USER_PROFILE_BAR = 'tariff/SET_USER_USER_PROFILE_BAR';
 const SET_TOWN = 'tariff/SET_TOWN';
 const SET_CURRENT_USER_ID = 'tariff/SET_CURRENT_USER_ID';
 const SET_SUGGEST_COORDS = 'tariff/SET_SUGGEST_COORDS';
+const SET_NEW_EVENT_DATE = 'tariff/SET_NEW_EVENT_DATE';
 
 let initialState = {
     dialogList: [
@@ -57,7 +58,8 @@ let initialState = {
     userProfileBar: [],
     town: "",
     cur_us_id: null,
-    suggestCoords: {}
+    suggestCoords: {},
+    newEventDate: {}
 };
 
 const appReducer = (state = initialState, action) => {
@@ -171,6 +173,11 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 suggestCoords: action.suggestCoords
+            };
+        case SET_NEW_EVENT_DATE:
+            return {
+                ...state,
+                newEventDate: action.newEventDate
             };
         default:
             return state;
@@ -323,6 +330,13 @@ export const setSuggestCoords = (suggestCoords) => {
     return {
         type: SET_SUGGEST_COORDS,
         suggestCoords
+    }
+};
+
+export const setNewEventDate = (newEventDate) => {
+    return {
+        type: SET_NEW_EVENT_DATE,
+        newEventDate
     }
 };
 

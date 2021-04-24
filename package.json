@@ -24,6 +24,7 @@
     "react-native": "0.62.2",
     "react-native-appearance": "^0.3.4",
     "react-native-dark-mode": "^0.2.2",
+    "react-native-date-picker": "^3.2.10",
     "react-native-elements": "^1.2.7",
     "react-native-geocoding": "^0.4.0",
     "react-native-gesture-handler": "^1.5.2",

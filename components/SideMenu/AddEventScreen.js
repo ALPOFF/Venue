@@ -15,6 +15,9 @@ import { localizeDetailScreen } from "../../localization/localize";
 import RNPickerSelect from 'react-native-picker-select';
 import { geocodeLocationByCoords, geocodeLocationByCoordsYandex } from "../../common/locationservice";
 import { BackHandler } from 'react-native';
+import DatePicker from 'react-native-date-picker'
+import DateTimePicker from '../../common/DateTimePicker';
+import { formatDateAndTime } from '../../common/formatDateAndTime';
 
 const renderInput = ({ placeholder, input: { onChange, inputType, ...restInput } }) => {
     return <TextInput placeholder={placeholder}
@@ -194,8 +197,14 @@ class DetailScreen extends Component {
                                 { label: 'Здоровье', value: '4' },
                                 { label: 'Образование', value: '5' },
                                 { label: 'Спорт', value: '6' },
+                                { label: 'Другое', value: '7' }
                             ]}
                         />
+                    </View>
+                    <View>
+                        <Text>Время и дата события:</Text>
+                        <Text>{formatDateAndTime(this.props.newEventDate)}</Text>
+                        <DateTimePicker />
                     </View>
                     {this.props.town != "" && <TouchableOpacity onPress={() => this.props.navigation.navigate('MapForPickPlace')}><View>
                         <Text>Место:</Text>
@@ -237,7 +246,8 @@ const mapStateToProps = (state) => ({
     newEventDescr: state.appReducer.newEventDescr,
     newEventCat: state.appReducer.newEventCat,
     newEventPic: state.appReducer.newEventPic,
-    town: state.appReducer.town
+    town: state.appReducer.town,
+    newEventDate: state.appReducer.newEventDate
 });
 
 export default connect(mapStateToProps, {
