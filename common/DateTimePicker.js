@@ -8,7 +8,7 @@ const DateTimePicker = (props) => {
     const [date, setDate] = useState(new Date())
 
     useEffect(() => {
-        props.setNewEventDate(date)
+        props.setNewEventDate(JSON.stringify(date))
     }, [date])
 
     return (

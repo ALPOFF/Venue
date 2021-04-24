@@ -59,7 +59,7 @@ let initialState = {
     town: "",
     cur_us_id: null,
     suggestCoords: {},
-    newEventDate: {}
+    newEventDate: ''
 };
 
 const appReducer = (state = initialState, action) => {

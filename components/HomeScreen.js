@@ -143,14 +143,10 @@ const HomeScreen = (props) => {
         wait(2000).then(() => setRefreshing(false));
     }, [refreshing]);
 
-    const sortByDate = () => {
-        console.log('sort by date')
-    }
-
     const filterByCategory = (data) => {
         axios.post(`http://185.12.95.84:3000/events`,
             {
-                "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang,
+                "lastPost": newlastPost, "userCoord": userCoord, sysLang: sysLang,
                 "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
             }
         )
@@ -235,7 +231,6 @@ const HomeScreen = (props) => {
                                 </View>
                             </View>
 
-                            {/*<Text>{a.id}</Text>*/}
                         </ImageBackground>}
                     </TouchableOpacity>)
                         : <View style={{ alignItems: 'center', }}><Text style={{
@@ -297,6 +292,9 @@ const HomeScreen = (props) => {
                                     <Text style={{ fontSize: 18, fontWeight: "bold", paddingBottom: 5 }}>По числу просмотров</Text><Text> In dev</Text>
                                 </View>
                             </View>
+                            <TouchableOpacity onPress={() => filterByCategory()}>
+                                <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Подтвердить</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
