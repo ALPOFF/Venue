@@ -3,6 +3,7 @@ import * as axios from "axios";
 import { distanceFunc } from "../common/distanceFunc";
 import Modal from 'react-native-modal';
 import RNPickerSelect from 'react-native-picker-select';
+import { Icon } from "react-native-elements";
 
 import {
     AsyncStorage,
@@ -34,13 +35,24 @@ import testPush from "../common/pushNotificationFunc";
 // Android:
 const locale = NativeModules.I18nManager.localeIdentifier // "fr_FR"
 
+const categoryArray = [
+    { label: 'Квартирник', value: '0' },
+    { label: 'Концерт', value: '1' },
+    { label: 'Игры', value: '2' },
+    { label: 'Бизнес', value: '3' },
+    { label: 'Здоровье', value: '4' },
+    { label: 'Образование', value: '5' },
+    { label: 'Спорт', value: '6' },
+    { label: 'Другое', value: '7' },
+    { label: 'Все', value: '8' },
+]
 
 const HomeScreen = (props) => {
 
     const [isModalVisible, setModalVisible] = useState(false);
 
     //filter
-    const [byCategoryValue, setByCategoryValue] = useState(0); //true -> new false -> older || default sorted by new added posts
+    const [byCategoryValue, setByCategoryValue] = useState(8); //true -> new false -> older || default sorted by new added posts //null - vse
     const [byEventDataValue, setByEventDataValue] = useState(false);
 
     const toggleModal = (x) => {
@@ -59,7 +71,7 @@ const HomeScreen = (props) => {
     //let closeActivityIndicator = () => setTimeout(() => setPostsRender(true), 10000)
 
     useEffect(() => {
-        // testPush()
+        //testPush()
         //closeActivityIndicator()
         AsyncStorage.getItem('userToken', (err, item) => {
             props.setCurrentUserid(item)
@@ -67,7 +79,10 @@ const HomeScreen = (props) => {
         Geolocation.getCurrentPosition((position) => {
             setUserCoord({ "latitude": position.coords.latitude, "longitude": position.coords.longitude })
             axios.post(`http://185.12.95.84:3000/events`,
-                { "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang }
+                {
+                    "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang,
+                    "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
+                }
             )
                 .then(res => {
                     console.log('ALLLL:', res.data)
@@ -103,7 +118,10 @@ const HomeScreen = (props) => {
         Geolocation.getCurrentPosition((position) => {
             setUserCoord({ "latitude": position.coords.latitude, "longitude": position.coords.longitude })
             axios.post(`http://185.12.95.84:3000/events`,
-                { "lastPost": 0, "userCoord": position.coords, sysLang: sysLang }
+                {
+                    "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang,
+                    "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
+                }
             )
                 .then(res => {
                     console.log('ALLLL:', res.data)
@@ -137,11 +155,7 @@ const HomeScreen = (props) => {
             }
         )
             .then(res => {
-                console.log('ALLLL:', res.data)
-                props.setEventData(res.data.data);
-                setNewLastPost(res.data.last_post)
-                console.log('event_array:', res.data.posts)
-                setPostsRender(res.data.posts)
+                console.log('TTTTTTTTTTTTTTTTTT:', res.data)
             });
     }
 
@@ -158,7 +172,10 @@ const HomeScreen = (props) => {
                                 "longitude": position.coords.longitude
                             })
                             axios.post(`http://185.12.95.84:3000/events`,
-                                { "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang }
+                                {
+                                    "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang,
+                                    "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
+                                }
                             )
                                 .then(res => {
                                     console.log('ALLLL:', res.data)
@@ -252,24 +269,29 @@ const HomeScreen = (props) => {
                             <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Фильтры</Text>
                             <View>
                                 <TouchableOpacity><Text style={{ fontSize: 18, fontWeight: "bold" }}>Категория</Text></TouchableOpacity>
-                                <RNPickerSelect placeholder={{ label: 'Выберите' }}
+                                <RNPickerSelect placeholder={{ label: `${categoryArray[byCategoryValue].label}` }}
                                     style={{ borderBottomWidth: 1, borderBottomColor: 'black' }}
                                     onValueChange={(value) => { setByCategoryValue(value); console.log('value', value) }}
-                                    items={[
-                                        { label: 'Квартирник', value: '0' },
-                                        { label: 'Концерт', value: '1' },
-                                        { label: 'Игры', value: '2' },
-                                        { label: 'Бизнес', value: '3' },
-                                        { label: 'Здоровье', value: '4' },
-                                        { label: 'Образование', value: '5' },
-                                        { label: 'Спорт', value: '6' },
-                                    ]}
+                                    items={categoryArray}
                                 />
                             </View>
                             <Text style={{ textAlign: "center", fontSize: 22, fontWeight: "bold", paddingBottom: 10 }}>Упорядочить</Text>
                             <View>
                                 <TouchableOpacity onPress={() => { setByEventDataValue(!byEventDataValue) }}>
-                                    <Text style={{ fontSize: 18, fontWeight: "bold", paddingBottom: 5 }}>По дате проведения</Text>
+                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                        <Text style={{ fontSize: 18, fontWeight: "bold", paddingBottom: 5 }}>По дате проведения</Text>
+                                        {byEventDataValue ?
+                                            <Icon
+                                                name='chevron-down'
+                                                type='feather'
+                                                color='black'
+                                            /> :
+                                            <Icon
+                                                name='chevron-up'
+                                                type='feather'
+                                                color='black'
+                                            />}
+                                    </View>
                                 </TouchableOpacity>
                                 <View style={{ opacity: 0.3, display: "flex", flexDirection: "row", alignItems: "center" }}>
                                     <Text style={{ fontSize: 18, fontWeight: "bold", paddingBottom: 5 }}>По числу просмотров</Text><Text> In dev</Text>
