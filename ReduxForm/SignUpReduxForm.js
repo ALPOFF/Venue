@@ -35,8 +35,8 @@ const LoginForm = (props) => {
 
     return (
         <>
-            <Field name="email" onChange={() => { props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false) }} component={renderInput} placeholder={localizeSignUpScreen.emailText} />
-            <Field name="login" onChange={() => { props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false) }} component={renderInput} placeholder={localizeSignUpScreen.loginText} />
+            <Field name="email" onChange={() => { props.setHasError(false); props.setEmailExists(false); }} component={renderInput} placeholder={localizeSignUpScreen.emailText} />
+            <Field name="login" onChange={() => { props.setHasError(false); props.setLoginExists(false) }} component={renderInput} placeholder={localizeSignUpScreen.loginText} />
             <Field name="password" onChange={() => { props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false) }} component={renderInput} placeholder={localizeSignUpScreen.passText} security={true} inputType={'password'} />
             <Field name="passwordVerif" onChange={() => { props.setHasError(false); props.setEmailExists(false); props.setLoginExists(false) }} component={renderInput} placeholder={localizeSignUpScreen.passReText} security={true} inputType={'password'} />
             {(hasError === 'ERROR') && <Text style={{ color: 'red' }}>Password mismatch</Text>}
