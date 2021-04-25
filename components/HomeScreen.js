@@ -146,7 +146,7 @@ const HomeScreen = (props) => {
     const filterByCategory = (data) => {
         axios.post(`http://185.12.95.84:3000/events`,
             {
-                "lastPost": newlastPost, "userCoord": userCoord, sysLang: sysLang,
+                "lastPost": 0, "userCoord": userCoord, sysLang: sysLang,
                 "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
             }
         )
