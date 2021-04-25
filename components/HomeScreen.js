@@ -62,7 +62,7 @@ const HomeScreen = (props) => {
 
     const [refreshing, setRefreshing] = useState(false);
     const [userCoord, setUserCoord] = useState({});
-    const [postsRender, setPostsRender] = useState(false);
+    const [postsRender, setPostsRender] = useState(true);
     const [newlastPost, setNewLastPost] = useState(0);
 
     let sysLang = ''
@@ -261,6 +261,17 @@ const HomeScreen = (props) => {
                         }}>
                             {localizeHomeScreen.eventStatus}</Text></View>
                     }
+                    {postsRender && <View style={{ alignItems: 'center', }}>
+                        <Text style={{
+                            color: 'rgba(20,23,26,0.5)',
+                            fontSize: 20,
+                            textAlign: "center",
+                            fontFamily: 'Oxygen-Bold',
+                            paddingBottom: 20
+                        }}>
+                            События закончились
+                        </Text>
+                    </View>}
                 </ScrollView> /*: <ActivityIndicator size="large" style={{paddingTop: '50%'}} color="#009788" />*/}
 
                 {/* <ModalComponent isModalVisible={isModalVisible} toggleModal={toggleModal} /> */}
