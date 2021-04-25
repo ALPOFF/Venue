@@ -75,7 +75,7 @@ class DetailScreen extends Component {
                         this.props.setNewEventCat(null)
                         this.props.setMarker({})
                         this.props.setNewEventPic([])
-                        this.setNewEventDate('')
+                        this.props.setNewEventDate('')
                     }
                 }
             ]

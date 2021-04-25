@@ -158,6 +158,7 @@ const HomeScreen = (props) => {
                 console.log('event_array_posts:', props.eventData.posts)
                 setPostsRender(res.data.posts)
             });
+        toggleModal()
     }
 
     return (
@@ -167,33 +168,46 @@ const HomeScreen = (props) => {
             <View style={{ height: '100%', paddingTop: 20 }}>
                 {/*{postsRender == true ? */ <ScrollView ref={scroll} showsVerticalScrollIndicator={true} decelerationRate={"normal"}
                     onScrollEndDrag={() => {
-                        Geolocation.getCurrentPosition((position) => {
-                            setUserCoord({
-                                "latitude": position.coords.latitude,
-                                "longitude": position.coords.longitude
-                            })
-                            axios.post(`http://185.12.95.84:3000/events`,
-                                {
-                                    "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang,
-                                    "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
-                                }
-                            )
-                                .then(res => {
-                                    console.log('ALLLL:', res.data)
-                                    props.addNewEventData(res.data.data);
-                                    setNewLastPost(res.data.last_post)
-                                    console.log('event_array:', props.eventData)
-                                    setPostsRender(res.data.posts)
-                                });
-                            console.log('current_pos:', position);
-                        }, (error) => {
-                            // См. таблицы кодов ошибок выше.
-                            console.log(error.code, error.message);
-                        }, {
-                            enableHighAccuracy: false,
-                            timeout: 10000,
-                            // maximumAge: 100000
-                        });
+                        // Geolocation.getCurrentPosition((position) => {
+                        //     setUserCoord({
+                        //         "latitude": position.coords.latitude,
+                        //         "longitude": position.coords.longitude
+                        //     })
+                        //     axios.post(`http://185.12.95.84:3000/events`,
+                        //         {
+                        //             "lastPost": newlastPost, "userCoord": position.coords, sysLang: sysLang,
+                        //             "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
+                        //         }
+                        //     )
+                        //         .then(res => {
+                        //             console.log('ALLLL:', res.data)
+                        //             props.addNewEventData(res.data.data);
+                        //             setNewLastPost(res.data.last_post)
+                        //             console.log('event_array:', props.eventData)
+                        //             setPostsRender(res.data.posts)
+                        //         });
+                        //     console.log('current_pos:', position);
+                        // }, (error) => {
+                        //     // См. таблицы кодов ошибок выше.
+                        //     console.log(error.code, error.message);
+                        // }, {
+                        //     enableHighAccuracy: false,
+                        //     timeout: 10000,
+                        //     // maximumAge: 100000
+                        // });
+                        axios.post(`http://185.12.95.84:3000/events`,
+                            {
+                                "lastPost": newlastPost, "userCoord": userCoord, sysLang: sysLang,
+                                "filterParams": { "byCategory": byCategoryValue, "byEventDate": byEventDataValue }
+                            }
+                        )
+                            .then(res => {
+                                console.log('ALLLL:', res.data)
+                                props.addNewEventData(res.data.data);
+                                setNewLastPost(res.data.last_post)
+                                console.log('event_array:', props.eventData)
+                                setPostsRender(res.data.posts)
+                            });
                     }}
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
