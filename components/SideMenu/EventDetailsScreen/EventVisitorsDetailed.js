@@ -5,7 +5,7 @@ import userPic from '../../../assets/Screenshot_6.png'
 import * as axios from "axios";
 import Geolocation from "@react-native-community/geolocation";
 
-const EventVisitorsDetailed = (props) => {
+const EventVisitorsDetailed = (props) => { //NOT USED!/////////////////////////////////////////////////////////////////////////
 
     const visitors = props.navigation.state.params.visitors;
 

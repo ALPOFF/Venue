@@ -10,6 +10,8 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+import Modal from 'react-native-modal';
+
 import { Icon } from "react-native-elements";
 import Geolocation from "@react-native-community/geolocation";
 import * as axios from "axios";
@@ -19,8 +21,10 @@ import { formatDate } from "../common/formatDate";
 import { distanceFunc } from "../common/distanceFunc";
 import { BlurView } from "@react-native-community/blur";
 import { localizeYourProfile } from "../localization/localize";
+import Subscriptions from "./Subscriptions";
 
 const YourProfile = (props) => {
+    const [isModalVisible, setModalVisible] = React.useState(false);
 
     const [a, setA] = React.useState(true);
     const [profile, setProfile] = React.useState({});
@@ -63,6 +67,11 @@ const YourProfile = (props) => {
         return new Promise(resolve => {
             setTimeout(resolve, timeout);
         });
+    };
+
+    const toggleModal = (x) => {
+        // console.log(x)
+        setModalVisible(!isModalVisible);
     };
 
     const scroll = React.createRef();
@@ -234,9 +243,7 @@ const YourProfile = (props) => {
                                     }}>{formatDate(new Date(profile.birthday))}</Text>
                                 </View>
                                 <View style={{ display: "flex", flexDirection: "row" }}>
-                                    <TouchableOpacity style={{ display: "flex", flexDirection: "row" }} onPress={() => {
-                                        props.navigation.navigate('Subscriptions', { subscriptions: subscribes, user_id: curUsId })
-                                    }}>
+                                    <TouchableOpacity style={{ display: "flex", flexDirection: "row" }} onPress={() => { toggleModal() }}>
                                         <Text style={{
                                             color: '#14171A',
                                             fontSize: 16,
@@ -270,6 +277,27 @@ const YourProfile = (props) => {
                                         }}>{localizeYourProfile.subscribersText}</Text>
                                     </TouchableOpacity>
                                 </View>
+                                <Modal isVisible={isModalVisible}
+                                    // swipeDirection={['up', 'left', 'right', 'down']}
+                                    style={styles.modalView}
+                                    transparent={true}
+                                    backdropTransitionOutTiming={0}
+                                    onRequestClose={() => { toggleModal() }}
+                                >
+                                    <TouchableOpacity
+                                        style={styles.container}
+                                        activeOpacity={1}
+                                        onPressOut={() => { toggleModal() }}
+                                    >
+                                    </TouchableOpacity>
+                                    <View style={styles.containerStyle}>
+                                        <View style={styles.content}>
+
+                                            <Subscriptions subscriptions={subscribes} user_id={curUsId} />
+
+                                        </View>
+                                    </View>
+                                </Modal>
                             </View>
                         </View>
 
@@ -352,7 +380,27 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         borderTopWidth: 2,
         borderTopColor: '#009788'
-    }
+    },
+    modalView: {
+        margin: 0,
+        justifyContent: 'flex-end',
+    },
+    containerStyle: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'flex-end',
+
+    },
+    content: {
+        width: '100%',
+        height: '45%',
+        backgroundColor: 'white',
+        overflow: 'hidden',
+        padding: 20,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25
+    },
 });
 
 export default YourProfile;
