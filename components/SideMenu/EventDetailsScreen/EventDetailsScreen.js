@@ -25,6 +25,7 @@ import { NativeModules } from 'react-native'
 import PushNotification from "react-native-push-notification";
 import { localizeEventDetScreen } from "../../../localization/localize";
 import Modal from 'react-native-modal';
+import MiniMapForShowPlace from "./MapForShowPlace/MiniMapForShowPlace";
 
 
 // iOS:
@@ -57,6 +58,7 @@ class EventDetailsScreen extends Component {
             activeSlide: 0,
             postTitle: this.props.navigation.state.params.postTitle,
             postCat: this.props.navigation.state.params.postCat,
+            currentEventCoords: {},
             town: '',
             whogo: [],
             org: '',
@@ -138,6 +140,7 @@ class EventDetailsScreen extends Component {
                 this.setState({ town: res.data.town })
                 this.setState({ org: res.data.org })
                 this.setState({ whogo: res.data.whogo })
+                this.setState({ currentEventCoords: res.data.place })
                 console.log('rrrrrrrrrrrrrrrrr:', res.data)
                 console.log('whogo:', res.data.whogo)
                 console.log('whogostate:', this.state.whogo)
@@ -204,7 +207,7 @@ class EventDetailsScreen extends Component {
 
         return (
             this.state.town === "" ? <ActivityIndicator size="large" color="#009788" style={{ paddingTop: 150 }} /> :
-                <View style={{ display: 'flex', flexDirection: 'column', paddingLeft: 10, paddingRight: 10 }}>
+                <ScrollView><View style={{ display: 'flex', flexDirection: 'column', paddingLeft: 10, paddingRight: 10 }}>
                     <View>
                         <View style={{
                             alignItems: 'center',
@@ -295,9 +298,23 @@ class EventDetailsScreen extends Component {
                     <Text style={{ fontSize: 20, color: 'black' }}>{this.state.postTitle}</Text>
                     <Text>{localizeEventDetScreen.orgText}: {this.state.org}</Text>
                     <Text>Category: {this.props.eventCat.filter(f => f.value == this.state.postCat[0])[0].label}</Text>
-                    <Text>{localizeEventDetScreen.streetText}: {this.state.town}</Text>
-                    {/*<Text>{localizeEventDetScreen.streetText}</Text>*/}
-                    {/*<Text onPress={() => this.testPush()}>defsdf</Text>*/}
+
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('EventDetails', { //navig
+                        postId: a.id,
+                        userId: a.userId,
+                        postText: a.postText,
+                        pic: a.pic,
+                        visitors: a.visitors,
+                        postTitle: a.postTitle,
+                        postCat: a.eventCat
+                    })}>
+                        <Text>{localizeEventDetScreen.streetText}: {this.state.town}</Text>
+                        <View>
+                            <Text>{JSON.stringify(this.state.currentEventCoords.latitude != null)}</Text>
+                            {this.state.currentEventCoords.latitude != null && <MiniMapForShowPlace currentEventCoords={this.state.currentEventCoords} />}
+                        </View>
+                    </TouchableOpacity>
+
                     <Modal isVisible={this.state.isModalVisible}
                         // swipeDirection={['up', 'left', 'right', 'down']}
                         style={styles.modalView}
@@ -352,7 +369,8 @@ class EventDetailsScreen extends Component {
                             </View>
                         </View>
                     </Modal>
-                </View>
+                </View >
+                </ScrollView>
         )
     }
 }
