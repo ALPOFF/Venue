@@ -181,7 +181,6 @@ class MapForPickPlace extends Component {
         ];
         return (
             <View style={{ display: "flex", flexDirection: "column" }}>
-                <Text>{this.props.currentEventCoords.latitude}</Text>
                 <View style={styles.container}>
 
 
@@ -214,8 +213,10 @@ class MapForPickPlace extends Component {
                                 onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
 
                             >
-                                <Text style={{ color: '#010743', fontWeight: 'bold' }}>{localizeMapScreen.YouAreHereText}</Text>
-                                <Icon name="navigation" size={30} color={'#010743'} />
+                                <Text style={{ color: '#010743', fontWeight: 'bold' }}>Здесь</Text>
+                                <Image
+                                    style={{ opacity: 1, width: 30, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5 }}
+                                    source={require('./../../../../assets/Venue_new/gpsIcon.png')} />
                             </Marker>
                         }
                         {/* {this.state.suggestCoords.latitude != undefined && <Marker.Animated
@@ -224,7 +225,7 @@ class MapForPickPlace extends Component {
                         />} */}
                     </MapView> : null}
 
-                    <TouchableOpacity activeOpacity={0.8}
+                    {/* <TouchableOpacity activeOpacity={0.8}
                         style={{
                             position: 'absolute',
                             right: 10,
@@ -238,8 +239,8 @@ class MapForPickPlace extends Component {
                         }}>
                         <Image
                             style={{ opacity: 1, width: 50, height: 50, marginRight: 10, marginBottom: 90, marginTop: 5 }}
-                            source={require('./../../../../assets/Venue_new/doneIcon3.png')} />
-                    </TouchableOpacity>
+                            source={require('./../../../../assets/Venue_new/gpsIcon.png')} />
+                    </TouchableOpacity> */}
                 </View>
             </View>
         );
@@ -278,7 +279,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 400,
         position: 'relative',
-        marginTop: 42,
+        marginTop: 20,
         top: 0,
         left: 0,
         right: 0,

@@ -299,20 +299,14 @@ class EventDetailsScreen extends Component {
                     <Text>{localizeEventDetScreen.orgText}: {this.state.org}</Text>
                     <Text>Category: {this.props.eventCat.filter(f => f.value == this.state.postCat[0])[0].label}</Text>
 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('EventDetails', { //navig
-                        postId: a.id,
-                        userId: a.userId,
-                        postText: a.postText,
-                        pic: a.pic,
-                        visitors: a.visitors,
-                        postTitle: a.postTitle,
-                        postCat: a.eventCat
+                    <Text>{localizeEventDetScreen.streetText}: {this.state.town}</Text>
+
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MapForShowPlace', { //navig
+                        currentEventCoords: this.state.currentEventCoords
+                        // postId: a.id,
+                        // userId: a.userId,
                     })}>
-                        <Text>{localizeEventDetScreen.streetText}: {this.state.town}</Text>
-                        <View>
-                            <Text>{JSON.stringify(this.state.currentEventCoords.latitude != null)}</Text>
-                            {this.state.currentEventCoords.latitude != null && <MiniMapForShowPlace currentEventCoords={this.state.currentEventCoords} />}
-                        </View>
+                        {this.state.currentEventCoords.latitude != null && <MiniMapForShowPlace currentEventCoords={this.state.currentEventCoords} />}
                     </TouchableOpacity>
 
                     <Modal isVisible={this.state.isModalVisible}
