@@ -185,6 +185,10 @@ class MapForPickPlace extends Component {
 
 
                     {this.state.region['latitude'] ? <MapView
+                        pitchEnabled={false}
+                        rotateEnabled={false}
+                        zoomEnabled={false}
+                        scrollEnabled={false}
                         style={styles.map}
                         ref={map => { this.mapRef = map }}
                         autoFocus={false}
@@ -213,7 +217,6 @@ class MapForPickPlace extends Component {
                                 onDragEnd={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
 
                             >
-                                <Text style={{ color: '#010743', fontWeight: 'bold' }}>Здесь</Text>
                                 <Image
                                     style={{ opacity: 1, width: 30, height: 50, marginRight: 10, marginBottom: 10, marginTop: 5 }}
                                     source={require('./../../../../assets/Venue_new/gpsIcon.png')} />
@@ -273,13 +276,14 @@ const styles = StyleSheet.create({
         color: '#3C2274'
     },
     container: {
-
+        marginTop: 20,
+        borderColor: 'black',
+        borderWidth: 1,
     },
     map: {
         width: '100%',
-        height: 400,
+        height: 200,
         position: 'relative',
-        marginTop: 20,
         top: 0,
         left: 0,
         right: 0,
