@@ -88,6 +88,17 @@ export const localizeLoginReduxScreen = new LocalizedStrings({
     }
 });
 
+export const localizeResetPasswordReduxScreen = new LocalizedStrings({
+    "en-US": {
+        loginEmailText: "Enter email",
+        loginEmailTextCopy: "Repeat email"
+    },
+    ru: {
+        loginEmailText: "Введите почту",
+        loginEmailTextCopy: "Повторите почту"
+    }
+});
+
 export const localizeSignUpScreen = new LocalizedStrings({
     "en-US": {
         emailText: "Email",

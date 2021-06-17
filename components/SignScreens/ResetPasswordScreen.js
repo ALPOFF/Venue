@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import appIcon from "../../assets/Venue_new/logo_hands.png";
 import avaSign from "../../assets/Venue_new/avatarSign.png";
-import SignInReduxForm from "../../ReduxForm/LogInReduxForm";
+import ResetPasswordReduxForm from "../../ReduxForm/ResetPasswordReduxForm";
 import * as axios from "axios";
 import { connect } from "react-redux";
 import { setUserId, setUserProfileBarThunk } from "../../state/appReducer";
@@ -20,7 +20,7 @@ import { useDarkMode } from 'react-native-dark-mode'
 import { localizeSignInScreen } from "../../localization/localize";
 
 
-const SignInScreen = (props) => {
+const ResetPasswordScreen = (props) => {
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
     const [keyboardT, setKeyboardT] = useState(false);
@@ -37,21 +37,21 @@ const SignInScreen = (props) => {
         };
     }, []);
 
-    const _signInAsync = (value) => {
+    const _recoverAsync = (value) => {
         console.log('submitting form', value.loginOrEmail);
-        axios.post(`http://185.12.95.84:3000/auth/`, { loginOrEmail: value.loginOrEmail, Password: value.password })
+        axios.post(`http://185.12.95.84:3000/send_password_recovery_mail/`, { loginOrEmail: value.loginOrEmail, loginOrEmailCopy: value.loginOrEmailCopy })
             .then(async res => {
                 console.log("ALL: " + res.data);
-                console.log(res.data);
-                if (res.data === 'ERROR') {
-                    setHasError(res.data);
-                } else if (res.data.done === true) {
-                    await AsyncStorage.setItem('userToken', res.data.resRows[0].user_id.toString());
-                    await AsyncStorage.setItem('userName', res.data.resRows[0].Username.toString());
-                    props.navigation.navigate('App')
-                } else {
-                    alert('server error')
-                }
+                // console.log(res.data);
+                // if (res.data === 'ERROR') {
+                //     setHasError(res.data);
+                // } else if (res.data.done === true) {
+                //     await AsyncStorage.setItem('userToken', res.data.resRows[0].user_id.toString());
+                //     await AsyncStorage.setItem('userName', res.data.resRows[0].Username.toString());
+                //     props.navigation.navigate('App')
+                // } else {
+                //     alert('server error')
+                // }
             });
     };
 
@@ -75,19 +75,9 @@ const SignInScreen = (props) => {
                 style={{ width: 130, height: 130, margin: 20 }}
                 source={avaSign}
             />}
-            <SignInReduxForm setHasError={setHasError} hasError={hasError} _signInAsync={_signInAsync} />
+            <ResetPasswordReduxForm setHasError={setHasError} hasError={hasError} _recoverAsync={_recoverAsync} />
 
             {!keyboardT && <View style={{ marginTop: 50, display: 'flex', alignItems: 'center' }}>
-                <View style={styles.resetSignUpView}>
-                    <Text style={{ color: '#A7A7A7' }}
-                        onPress={() => props.navigation.navigate('ResetPasswordScreen')}>{localizeSignInScreen.forgotPassText} </Text>
-                    <Text style={{ color: '#009788' }}
-                        onPress={() => props.navigation.navigate('ResetPasswordScreen')}>{localizeSignInScreen.resetText}</Text>
-                </View>
-                <View style={styles.resetSignUpView}>
-                    <Text style={{ color: '#A7A7A7' }}>{localizeSignInScreen.dontHaveAccText} </Text>
-                    <Text style={{ color: '#009788' }} onPress={() => props.navigation.navigate('SignUpScreen')}>{localizeSignInScreen.signUpText}</Text>
-                </View>
             </View>}
         </KeyboardAvoidingView>
     );
@@ -148,4 +138,4 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({})
 
-export default connect(mapStateToProps, { setUserId })(SignInScreen);
+export default connect(mapStateToProps, { setUserId })(ResetPasswordScreen);
